@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Александр Присекин](https://up.htmlacademy.ru/javascript/21/user/1541091).
-* Наставник: `Неизвестно`.
+* Наставник:  [Антон Попов](https://htmlacademy.ru/profile/joker).
 
 ---
 
