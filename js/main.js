@@ -77,3 +77,42 @@ var generateAddsDescriptions = function (target = addsDescriptions, quantity = 8
 		target.push(add);
 	}
 };
+
+generateAddsDescriptions();
+console.log(addsDescriptions)
+
+document.querySelector('.map').classList.remove('map--faded');
+
+var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+/** Prepares and returns .map__pin element with mocksObject's data
+	@param {object} mocksObject - An object with mocks data needed for pin element filling
+	@return {HTMLobject?} pin element
+*/
+var getPinElement = function (mocksObject) {
+	console.log(mocksObject.location.y);
+	console.log(mocksObject.location.x);
+	var pinElement = pinTemplate.cloneNode(true);
+	var pinElementImage = pinElement.querySelector('img');
+	pinElement.style.left = `${mocksObject.location.x - pinElementImage.style.width / 2}px`;
+	pinElement.style.top = `${mocksObject.location.y - pinElementImage.style.heigth + 22}px`;
+	pinElementImage.src = `${mocksObject.author.avatar}`;
+	pinElementImage.alt = `${mocksObject.offer.title}`;
+
+	return pinElement;
+};
+
+var fragment = document.createDocumentFragment();
+var mapPins = document.querySelector('.map__pins');
+/** Adds prepared pin elements to a html fragment and render the fragment into .map__pins
+*/
+var renderPins = function (adds = addsDescriptions) {
+	for (var i = 0; i < adds.length; i++) {
+		console.log(adds[i]);
+
+		fragment.appendChild(getPinElement(adds[i]));
+		console.log(fragment);
+		mapPins.appendChild(fragment);
+	}
+};
+
+renderPins();
