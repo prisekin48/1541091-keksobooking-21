@@ -84,7 +84,7 @@ document.querySelector('.map').classList.remove('map--faded');
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 /** Prepares and returns .map__pin element with mocksObject's data
   @param {object} mocksObject - An object with mocks data needed for pin element filling
-  @return {HTMLobject?} pin element
+  @return {object} pin element
 */
 var getPinElement = function (mocksObject) {
   var shiftX = -25;
@@ -112,3 +112,56 @@ var renderPins = function (adds = addsDescriptions) {
 };
 
 renderPins();
+
+/** Recursively removes elements with no textContent or empty src attribute
+  @param {object} object
+*/
+var removeEmptyElements = function (object) {
+  for (var item of object.children) {
+    if (item.textContent === '' && !item.src) {
+      item.remove();
+    }
+    removeEmptyElements(item);
+  }
+};
+
+
+var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
+/** Prepares and renders .map__card element with mocksObject's data
+  @param {object} mocksObject - An object with mocks data needed for card element filling
+*/
+var renderCardElement = function (mocksObject) {
+  var card = cardTemplate.cloneNode(true);
+  card.querySelector('.popup__title').textContent = mocksObject.offer.title;
+  card.querySelector('.popup__text--address').textContent = mocksObject.offer.address;
+  card.querySelector('.popup__text--price').textContent = `${mocksObject.offer.price}₽/ночь`;
+  card.querySelector('.popup__type').textContent = mocksObject.offer.type === 'flat' ? 'Квартира' :
+    mocksObject.offer.type === 'bungalow' ? 'Бунгало' :
+      mocksObject.offer.type === 'house' ? 'Дом' : 'Дворец';
+  card.querySelector('.popup__text--capacity').textContent = `${mocksObject.offer.rooms} комнаты для ${mocksObject.offer.guests} гостей`;
+  card.querySelector('.popup__text--time').textContent = `Заезд после ${mocksObject.offer.checkin}, выезд до ${mocksObject.offer.checkout}`;
+
+  for (var i = 0; i < mocksObject.offer.features.length; i++) {
+    card.querySelector(`.popup__feature--${mocksObject.offer.features[i]}`).textContent = mocksObject.offer.features[i];
+  }
+  card.querySelector('.popup__description').textContent = mocksObject.offer.description;
+
+  var photos = card.querySelector('.popup__photos');
+  for (var j = 0; j < mocksObject.offer.photos.length; j++) {
+
+    if (j === 0) {
+      photos.querySelector('.popup__photo').src = mocksObject.offer.photos[j];
+      continue;
+    }
+
+    var photo = photos.querySelector('.popup__photo').cloneNode(false);
+    photo.src = mocksObject.offer.photos[j];
+    photos.appendChild(photo);
+  }
+
+  card.querySelector('.popup__avatar').src = mocksObject.author.avatar;
+  removeEmptyElements(card);
+  document.querySelector('.map__filters-container').before(card);
+};
+
+renderCardElement(addsDescriptions[0]);
