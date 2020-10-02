@@ -19,6 +19,7 @@ var getRandomNumber = function (min, max) {
 var MocksData = {'TITLES': ['Квартира', 'Дом', 'Апартаменты', 'Помещение свободного назначения'],
   'PRICES_FROM_TO': [10000, 45000000],
   'TYPES': ['palace', 'flat', 'house', 'bungalow'],
+  'TYPES_DESCRIPTION': {'palace': 'Дворец', 'flat': 'Квартира', 'house': 'Дом', 'bungalow': 'Бунгало'},
   'CHECKIN_CHECKOUT_TIMES': ['12:00', '13:00', '14:00'],
   'FEATURES': ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'],
   'DESCRIPTIONS': ['Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
@@ -151,9 +152,7 @@ var renderCardElement = function (mocksObject) {
   card.querySelector('.popup__title').textContent = mocksObject.offer.title;
   card.querySelector('.popup__text--address').textContent = mocksObject.offer.address;
   card.querySelector('.popup__text--price').textContent = `${mocksObject.offer.price}₽/ночь`;
-  card.querySelector('.popup__type').textContent = mocksObject.offer.type === 'flat' ? 'Квартира' :
-    mocksObject.offer.type === 'bungalow' ? 'Бунгало' :
-      mocksObject.offer.type === 'house' ? 'Дом' : 'Дворец';
+  card.querySelector('.popup__type').textContent = MocksData.TYPES_DESCRIPTION[mocksObject.offer.type] ;
   card.querySelector('.popup__text--capacity').textContent = `${mocksObject.offer.rooms} комнаты для ${mocksObject.offer.guests} гостей`;
   card.querySelector('.popup__text--time').textContent = `Заезд после ${mocksObject.offer.checkin}, выезд до ${mocksObject.offer.checkout}`;
 
