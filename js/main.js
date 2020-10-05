@@ -177,17 +177,31 @@ const insertAndCheckTextData = (text, target) => {
 const filterFeatures = (template, features) => {
   let fragment = document.createDocumentFragment();
 
-  for (let child of template.children) {
-    for (let string of features) {
-      if (child.classList.contains(`popup__feature--${string}`)) {
-        child.textContent = string;
-        const element = child.cloneNode(true);
-        fragment.appendChild(element);
-      };
-    };
-  };
-  template.innerHTML = '';
-  template.appendChild(fragment);
+  for (let feature of features) {
+    let element = template.querySelector('.popup__feature').cloneNode();
+    element.classList.value = '';
+    element.classList.value = `popup__feature popup__feature--${feature}`;
+    element.textContent = feature;
+    fragment.appendChild(element);
+  }
+    template.innerHTML = '';
+    template.appendChild(fragment);
+
+
+
+  // let fragment = document.createDocumentFragment();
+
+  // for (let child of template.children) {
+  //   for (let string of features) {
+  //     if (child.classList.contains(`popup__feature--${string}`)) {
+  //       child.textContent = string;
+  //       const element = child.cloneNode(true);
+  //       fragment.appendChild(element);
+  //     };
+  //   };
+  // };
+  // template.innerHTML = '';
+  // template.appendChild(fragment);
 };
 
 
