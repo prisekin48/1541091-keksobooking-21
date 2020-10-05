@@ -12,6 +12,14 @@ const PinShifts = {
   Y: 70
 };
 
+const AdsDataConsts = {
+  ADS_COUNT = 8;
+  ROOMS_MIX = 1;
+  ROOMS_MAX = 5;
+  GUESTS_MIX = 1;
+  GUESTS_MAX = 5;
+};
+
 /**
  *  Returns a random number between the given min and max, both inclusive
  *  @param {int} min - minimum number
@@ -26,9 +34,8 @@ const getRandomNumber = (min, max) => {
 
 const MocksData = {
   TITLES: ['Квартира', 'Дом', 'Апартаменты', 'Помещение свободного назначения'],
-  PRICES_MIX: 10000,
+  PRICES_MIN: 10000,
   PRICES_MAX: 45000000,
-  TYPES: ['palace', 'flat', 'house', 'bungalow'],
   TYPES_DESCRIPTION: {
     palace: 'Дворец',
     flat: 'Квартира',
@@ -77,30 +84,23 @@ const getRandomElementFromArray = (arr) => {
 };
 
 /** Generates an array with adds descriptions from prepared object with needed data.
- *  @param {int} quantity - Quantity of needed objects in descriptions array
- *  !!!!!!!!!!!!!!!!!!!!!!!!!1 return
+ *  @param {int} count - Quantity of needed objects in descriptions array
+ *  @return {array.<Object>} ads - Array of objects
  */
-const generateAdsDescriptions = (quantity) => {
-  const descriptions = [];
+const generateAdsData = (count) => {
+  const ads = [];
 
-  const avatarNumbers = [];
-  for (let i = 1; i <= quantity; i++) {
-    avatarNumbers.push(`0${i}`);
-  }
-
-  // const mapWidth = document.querySelector('.map').clientWidth;
-
-  for (let j = 0; j < quantity; j++) {
+  for (let j = 0; j < count; j++) {
     const ad = {
       author: {
-        avatar: `img/avatars/user${avatarNumbers[j]}.png`
+        avatar: `img/avatars/user${j + 1}.png`
       },
       offer: {
         title: getRandomElementFromArray(MocksData.TITLES),
-        price: getRandomNumber(MocksData.PRICES_FROM_TO[0], MocksData.PRICES_FROM_TO[1]),
-        type: getRandomElementFromArray(MocksData.TYPES),
-        rooms: getRandomNumber(1, 5), // consts
-        guests: getRandomNumber(1, 5),
+        price: getRandomNumber(MocksData.PRICES_MIN, MocksData.PRICES_MAX),
+        type: getRandomElementFromArray(MocksData.TYPES_DESCRIPTION.keys()),
+        rooms: getRandomNumber(AdsDataConsts.ROOMS_MIX, AdsDataConsts.ROOMS_MAX),
+        guests: getRandomNumber(AdsDataConsts.GUESTS_MIX, AdsDataConsts.GUESTS_MAX),
         checkin: getRandomElementFromArray(MocksData.CHECKIN_CHECKOUT_TIMES),
         checkout: getRandomElementFromArray(MocksData.CHECKIN_CHECKOUT_TIMES),
         features: getRandomArray(MocksData.FEATURES),
@@ -108,18 +108,18 @@ const generateAdsDescriptions = (quantity) => {
         photos: getRandomArray(MocksData.PHOTOS)
       },
       location: {
-        x: getRandomNumber(0, mapWidth),
-        y: getRandomNumber(MIN_Y_COORDINATE, MAX_Y_COORDINATE)
+        x: getRandomNumber(PinCoordinates.MIN_X, PinCoordinates.MAX_X),
+        y: getRandomNumber(PinCoordinates.MIN_Y, PinCoordinates.MAX_Y)
       }
     };
-    add.offer.address = `${add.location.x}, ${add.location.y}`;
-    descriptions.push(add);
+    ad.offer.address = `${ad.location.x}, ${ad.location.y}`;
+    descriptions.push(ad);
   }
 
-  return descriptions;
+  return ads;
 };
 
-const addsDescriptions = generateAdsDescriptions(8); // rename to adData; 8 to consts
+const adsData = generateAdsData(AdsDataConsts.ADS_COUNT);
 
 document.querySelector('.map').classList.remove('map--faded');
 
@@ -132,19 +132,18 @@ const pinTemplate = document.querySelector('#pin').content.querySelector('.map__
 const getPinElement = (mocksObject) => {
   const pinElement = pinTemplate.cloneNode(true);
   const pinElementImage = pinElement.querySelector('img');
-  pinElement.style.left = `${mocksObject.location.x - SHIFT_PIN_X}px`;
-  pinElement.style.top = `${mocksObject.location.y - SHIFT_PIN_Y}px`;
+  pinElement.style.left = `${mocksObject.location.x - PinShifts.X}px`;
+  pinElement.style.top = `${mocksObject.location.y - PinShifts.Y}px`;
   pinElementImage.src = `${mocksObject.author.avatar}`;
   pinElementImage.alt = `${mocksObject.offer.title}`;
 
   return pinElement;
 };
 
-
 /** Adds prepared pin elements to an html fragment and render the fragment into .map__pins
- *  @param {Array.<Object>} adds - object with generated mocks data
+ *  @param {Array.<Object>} ads - object with generated mocks data
  */
-const renderPins = (ads = adsDescriptions) => {
+const renderPins = (ads) => {
   const fragment = document.createDocumentFragment();
   const mapPins = document.querySelector('.map__pins');
 
@@ -154,7 +153,7 @@ const renderPins = (ads = adsDescriptions) => {
   mapPins.appendChild(fragment);
 };
 
-renderPins(adsDescriptions);
+renderPins(adsData);
 
 /** Recursively removes elements with no textContent or empty src attribute
  *  @param {object} object
@@ -169,7 +168,7 @@ const removeEmptyElements = (object) => { // use another func for features and p
 };
 
 /**
- * Inserts data into an element if the data exists
+ * Inserts text data into an element if the data exists
  * @param {string} text - taken string
  * @param {object} target - link to the DOM-node
  */
