@@ -155,18 +155,6 @@ const renderPins = (ads) => {
 
 renderPins(adsData);
 
-/** Recursively removes elements with no textContent or empty src attribute
- *  @param {object} object
- */
-const removeEmptyElements = (object) => { // use another func for features and photos
-  for (let item of object.children) {
-    if (item.textContent === '' && !item.src) {
-      item.remove();
-    }
-    removeEmptyElements(item);
-  }
-};
-
 /**
  * Inserts text data into an element if the data exists
  * @param {string} text - taken string
@@ -180,12 +168,36 @@ const insertAndCheckTextData = (text, target) => {
   }
 };
 
+/**
+ * Filters .popup__features according to the given features from array
+ * @param {HTML-Node} template - Html-template with features
+ * @param {array} features - Array of features
+ *
+ */
+const filterFeatures = (template, features) => {
+  let fragment = document.createDocumentFragment();
+
+  for (let child of template.children) {
+    for (let string of features) {
+      if (child.classList.contains(`popup__feature--${string}`)) {
+        child.textContent = string;
+        const element = child.cloneNode(true);
+        fragment.appendChild(element);
+      };
+    };
+  };
+  template.innerHTML = '';
+  template.appendChild(fragment);
+};
+
+
 /** Prepares and renders .map__card element with mocksObject's data
  *  @param {object} mocksObject - An object with mocks data needed for card element filling
  */
 const renderCardElement = (mocksObject) => {
   const cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
   const card = cardTemplate.cloneNode(true);
+
   insertAndCheckTextData(mocksObject.offer.title, card.querySelector('.popup__title'));
   insertAndCheckTextData(mocksObject.offer.address, card.querySelector('.popup__text--address'));
   insertAndCheckTextData(`${mocksObject.offer.price}₽/ночь`, card.querySelector('.popup__text--price'));
@@ -193,9 +205,9 @@ const renderCardElement = (mocksObject) => {
   insertAndCheckTextData(`${mocksObject.offer.rooms} комнаты для ${mocksObject.offer.guests} гостей`, card.querySelector('.popup__text--capacity'));
   insertAndCheckTextData(`Заезд после ${mocksObject.offer.checkin}, выезд до ${mocksObject.offer.checkout}`, card.querySelector('.popup__text--time'));
 
-  for (let i = 0; i < mocksObject.offer.features.length; i++) {
-    card.querySelector(`.popup__feature--${mocksObject.offer.features[i]}`).textContent = mocksObject.offer.features[i];
-  }
+  console.log(`CARD_FEATURES:`,  card.querySelector('.popup__features'));
+
+  filterFeatures(card.querySelector('.popup__features'), mocksObject.offer.features);
 
   card.querySelector('.popup__description').textContent = mocksObject.offer.description;
 
@@ -213,7 +225,6 @@ const renderCardElement = (mocksObject) => {
   }
 
   card.querySelector('.popup__avatar').src = mocksObject.author.avatar;
-  removeEmptyElements(card);
   document.querySelector('.map__filters-container').before(card);
 };
 
