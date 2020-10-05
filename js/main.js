@@ -13,11 +13,11 @@ const PinShifts = {
 };
 
 const AdsDataConsts = {
-  ADS_COUNT = 8;
-  ROOMS_MIX = 1;
-  ROOMS_MAX = 5;
-  GUESTS_MIX = 1;
-  GUESTS_MAX = 5;
+  ADS_COUNT: 8,
+  ROOMS_MIX: 1,
+  ROOMS_MAX: 5,
+  GUESTS_MIX: 1,
+  GUESTS_MAX: 5
 };
 
 /**
@@ -93,12 +93,12 @@ const generateAdsData = (count) => {
   for (let j = 0; j < count; j++) {
     const ad = {
       author: {
-        avatar: `img/avatars/user${j + 1}.png`
+        avatar: `img/avatars/user0${j + 1}.png`
       },
       offer: {
         title: getRandomElementFromArray(MocksData.TITLES),
         price: getRandomNumber(MocksData.PRICES_MIN, MocksData.PRICES_MAX),
-        type: getRandomElementFromArray(MocksData.TYPES_DESCRIPTION.keys()),
+        type: getRandomElementFromArray(Object.keys(MocksData.TYPES_DESCRIPTION)),
         rooms: getRandomNumber(AdsDataConsts.ROOMS_MIX, AdsDataConsts.ROOMS_MAX),
         guests: getRandomNumber(AdsDataConsts.GUESTS_MIX, AdsDataConsts.GUESTS_MAX),
         checkin: getRandomElementFromArray(MocksData.CHECKIN_CHECKOUT_TIMES),
@@ -113,7 +113,7 @@ const generateAdsData = (count) => {
       }
     };
     ad.offer.address = `${ad.location.x}, ${ad.location.y}`;
-    descriptions.push(ad);
+    ads.push(ad);
   }
 
   return ads;
@@ -187,11 +187,11 @@ const renderCardElement = (mocksObject) => {
   const cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
   const card = cardTemplate.cloneNode(true);
   insertAndCheckTextData(mocksObject.offer.title, card.querySelector('.popup__title'));
-  card.querySelector('.popup__text--address').textContent = mocksObject.offer.address;
-  card.querySelector('.popup__text--price').textContent = `${mocksObject.offer.price}₽/ночь`;
-  card.querySelector('.popup__type').textContent = MocksData.TYPES_DESCRIPTION[mocksObject.offer.type];
-  card.querySelector('.popup__text--capacity').textContent = `${mocksObject.offer.rooms} комнаты для ${mocksObject.offer.guests} гостей`;
-  card.querySelector('.popup__text--time').textContent = `Заезд после ${mocksObject.offer.checkin}, выезд до ${mocksObject.offer.checkout}`;
+  insertAndCheckTextData(mocksObject.offer.address, card.querySelector('.popup__text--address'));
+  insertAndCheckTextData(`${mocksObject.offer.price}₽/ночь`, card.querySelector('.popup__text--price'));
+  insertAndCheckTextData(MocksData.TYPES_DESCRIPTION[mocksObject.offer.type], card.querySelector('.popup__type'));
+  insertAndCheckTextData(`${mocksObject.offer.rooms} комнаты для ${mocksObject.offer.guests} гостей`, card.querySelector('.popup__text--capacity'));
+  insertAndCheckTextData(`Заезд после ${mocksObject.offer.checkin}, выезд до ${mocksObject.offer.checkout}`, card.querySelector('.popup__text--time'));
 
   for (let i = 0; i < mocksObject.offer.features.length; i++) {
     card.querySelector(`.popup__feature--${mocksObject.offer.features[i]}`).textContent = mocksObject.offer.features[i];
@@ -217,4 +217,4 @@ const renderCardElement = (mocksObject) => {
   document.querySelector('.map__filters-container').before(card);
 };
 
-renderCardElement(addsDescriptions[0]);
+renderCardElement(adsData[0]);
