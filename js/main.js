@@ -169,24 +169,26 @@ const insertAndCheckTextData = (text, target) => {
 };
 
 /**
- * Filters .popup__features according to the given features from array
- * @param {HTML-Node} template - Html-template with features
+ * Renders .popup__features according to the given features from array
+ * @param {HTML-Node} template - Html-template for features
  * @param {array} features - Array of features
  *
  */
-const filterFeatures = (template, features) => {
-  let fragment = document.createDocumentFragment();
+const renderFeatures = (template, features) => {
+  if (features.length > 0) {
+    let fragment = document.createDocumentFragment();
 
-  for (let feature of features) {
-    let element = template.querySelector('.popup__feature').cloneNode();
-    element.classList.value = '';
-    element.classList.value = `popup__feature popup__feature--${feature}`;
-    element.textContent = feature;
-    fragment.appendChild(element);
-  }
+    for (let feature of features) {
+      let element = template.querySelector('.popup__feature').cloneNode();
+      element.classList.value = `popup__feature popup__feature--${feature}`;
+      element.textContent = feature;
+      fragment.appendChild(element);
+    }
+      template.innerHTML = '';
+      template.appendChild(fragment);
+  } else {
     template.innerHTML = '';
-    template.appendChild(fragment);
-
+  }
 
 
   // let fragment = document.createDocumentFragment();
@@ -205,6 +207,28 @@ const filterFeatures = (template, features) => {
 };
 
 
+/**
+ * Renders photos according the given array of photos' links
+ * @param {HTML-Node} template - Html-template for photos
+ * @param {array} features - Array of links
+ */
+const renderPhotos = (template, photos) => {
+  if (photos.length > 0) {
+    let fragment = document.createDocumentFragment();
+    console.log(template, photos);
+
+    for (let photo of photos) {
+      let element = template.querySelector('.popup__photo').cloneNode();
+      element.src = photo;
+      fragment.appendChild(element);
+    }
+    template.innerHTML = '';
+    template.appendChild(fragment);
+  } else {
+    template.innerHTML = '';
+  }
+};
+
 /** Prepares and renders .map__card element with mocksObject's data
  *  @param {object} mocksObject - An object with mocks data needed for card element filling
  */
@@ -218,26 +242,9 @@ const renderCardElement = (mocksObject) => {
   insertAndCheckTextData(MocksData.TYPES_DESCRIPTION[mocksObject.offer.type], card.querySelector('.popup__type'));
   insertAndCheckTextData(`${mocksObject.offer.rooms} комнаты для ${mocksObject.offer.guests} гостей`, card.querySelector('.popup__text--capacity'));
   insertAndCheckTextData(`Заезд после ${mocksObject.offer.checkin}, выезд до ${mocksObject.offer.checkout}`, card.querySelector('.popup__text--time'));
-
-  console.log(`CARD_FEATURES:`,  card.querySelector('.popup__features'));
-
-  filterFeatures(card.querySelector('.popup__features'), mocksObject.offer.features);
-
-  card.querySelector('.popup__description').textContent = mocksObject.offer.description;
-
-  const photos = card.querySelector('.popup__photos');
-  for (let j = 0; j < mocksObject.offer.photos.length; j++) {
-
-    if (j === 0) {
-      photos.querySelector('.popup__photo').src = mocksObject.offer.photos[j];
-      continue;
-    }
-
-    const photo = photos.querySelector('.popup__photo').cloneNode(false);
-    photo.src = mocksObject.offer.photos[j];
-    photos.appendChild(photo);
-  }
-
+  renderFeatures(card.querySelector('.popup__features'), mocksObject.offer.features);
+  insertAndCheckTextData(mocksObject.offer.description, card.querySelector('.popup__description'));
+  renderPhotos(card.querySelector('.popup__photos'), mocksObject.offer.photos);
   card.querySelector('.popup__avatar').src = mocksObject.author.avatar;
   document.querySelector('.map__filters-container').before(card);
 };
