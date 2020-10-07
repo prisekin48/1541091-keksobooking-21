@@ -252,3 +252,9 @@ const activateMap = () => {
   document.querySelector(`.map`).classList.remove(`map--faded`);
   renderPins(adsData);
 };
+
+const allFieldsets = document.querySelectorAll('fieldset');
+console.log(allFieldsets);
+for (const fieldset of allFieldsets) {
+  fieldset.disabled = true;
+};
