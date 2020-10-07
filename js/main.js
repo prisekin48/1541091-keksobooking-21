@@ -33,26 +33,26 @@ const getRandomNumber = (min, max) => {
 };
 
 const MocksData = {
-  TITLES: ['Квартира', 'Дом', 'Апартаменты', 'Помещение свободного назначения'],
+  TITLES: [`Квартира`, `Дом`, `Апартаменты`, `Помещение свободного назначения`],
   PRICES_MIN: 10000,
   PRICES_MAX: 45000000,
   TYPES_DESCRIPTION: {
-    palace: 'Дворец',
-    flat: 'Квартира',
-    house: 'Дом',
-    bungalow: 'Бунгало'
+    palace: `Дворец`,
+    flat: `Квартира`,
+    house: `Дом`,
+    bungalow: `Бунгало`
   },
-  CHECKIN_CHECKOUT_TIMES: ['12:00', '13:00', '14:00'],
-  FEATURES: ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'],
+  CHECKIN_CHECKOUT_TIMES: [`12:00`, `13:00`, `14:00`],
+  FEATURES: [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`],
   DESCRIPTIONS: [
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.',
-    'Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.'
+    `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`,
+    `At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.`,
+    `Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.`
   ],
   PHOTOS: [
-    'http://o0.github.io/assets/images/tokyo/hotel1.jpg',
-    'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
-    'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
+    `http://o0.github.io/assets/images/tokyo/hotel1.jpg`,
+    `http://o0.github.io/assets/images/tokyo/hotel2.jpg`,
+    `http://o0.github.io/assets/images/tokyo/hotel3.jpg`
   ]
 };
 
@@ -121,17 +121,16 @@ const generateAdsData = (count) => {
 
 const adsData = generateAdsData(AdsDataConsts.ADS_COUNT);
 
-document.querySelector('.map').classList.remove('map--faded');
 
-const pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
 
-/** Prepares and returns .map__pin element with mocksObject's data
+/** Prepares and returns .map__pin element with mocksObject`s data
  *  @param {object} mocksObject - An object with mocks data needed for pin element filling
  *  @return {object} pin element
  */
 const getPinElement = (mocksObject) => {
   const pinElement = pinTemplate.cloneNode(true);
-  const pinElementImage = pinElement.querySelector('img');
+  const pinElementImage = pinElement.querySelector(`img`);
   pinElement.style.left = `${mocksObject.location.x - PinShifts.X}px`;
   pinElement.style.top = `${mocksObject.location.y - PinShifts.Y}px`;
   pinElementImage.src = `${mocksObject.author.avatar}`;
@@ -145,15 +144,13 @@ const getPinElement = (mocksObject) => {
  */
 const renderPins = (ads) => {
   const fragment = document.createDocumentFragment();
-  const mapPins = document.querySelector('.map__pins');
+  const mapPins = document.querySelector(`.map__pins`);
 
   ads.forEach(function (ad) {
     fragment.appendChild(getPinElement(ad));
   });
   mapPins.appendChild(fragment);
 };
-
-renderPins(adsData);
 
 /**
  * Inserts text data into an element if the data exists
@@ -179,15 +176,15 @@ const renderFeatures = (template, features) => {
     let fragment = document.createDocumentFragment();
 
     for (let feature of features) {
-      let element = template.querySelector('.popup__feature').cloneNode();
+      let element = template.querySelector(`.popup__feature`).cloneNode();
       element.classList.value = `popup__feature popup__feature--${feature}`;
       element.textContent = feature;
       fragment.appendChild(element);
     }
-      template.innerHTML = '';
-      template.appendChild(fragment);
+    template.innerHTML = ``;
+    template.appendChild(fragment);
   } else {
-    template.innerHTML = '';
+    template.innerHTML = ``;
   }
 
 
@@ -202,51 +199,56 @@ const renderFeatures = (template, features) => {
   //     };
   //   };
   // };
-  // template.innerHTML = '';
+  // template.innerHTML = ``;
   // template.appendChild(fragment);
 };
 
 
 /**
- * Renders photos according the given array of photos' links
+ * Renders photos according the given array of photos` links
  * @param {HTML-Node} template - Html-template for photos
- * @param {array} features - Array of links
+ * @param {array} photos - Array of links
  */
 const renderPhotos = (template, photos) => {
   if (photos.length > 0) {
     let fragment = document.createDocumentFragment();
-    console.log(template, photos);
 
     for (let photo of photos) {
-      let element = template.querySelector('.popup__photo').cloneNode();
+      let element = template.querySelector(`.popup__photo`).cloneNode();
       element.src = photo;
       fragment.appendChild(element);
     }
-    template.innerHTML = '';
+    template.innerHTML = ``;
     template.appendChild(fragment);
   } else {
-    template.innerHTML = '';
+    template.innerHTML = ``;
   }
 };
 
-/** Prepares and renders .map__card element with mocksObject's data
+/** Prepares and renders .map__card element with mocksObject`s data
  *  @param {object} mocksObject - An object with mocks data needed for card element filling
  */
 const renderCardElement = (mocksObject) => {
-  const cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
+  const cardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
   const card = cardTemplate.cloneNode(true);
 
-  insertAndCheckTextData(mocksObject.offer.title, card.querySelector('.popup__title'));
-  insertAndCheckTextData(mocksObject.offer.address, card.querySelector('.popup__text--address'));
-  insertAndCheckTextData(`${mocksObject.offer.price}₽/ночь`, card.querySelector('.popup__text--price'));
-  insertAndCheckTextData(MocksData.TYPES_DESCRIPTION[mocksObject.offer.type], card.querySelector('.popup__type'));
-  insertAndCheckTextData(`${mocksObject.offer.rooms} комнаты для ${mocksObject.offer.guests} гостей`, card.querySelector('.popup__text--capacity'));
-  insertAndCheckTextData(`Заезд после ${mocksObject.offer.checkin}, выезд до ${mocksObject.offer.checkout}`, card.querySelector('.popup__text--time'));
-  renderFeatures(card.querySelector('.popup__features'), mocksObject.offer.features);
-  insertAndCheckTextData(mocksObject.offer.description, card.querySelector('.popup__description'));
-  renderPhotos(card.querySelector('.popup__photos'), mocksObject.offer.photos);
-  card.querySelector('.popup__avatar').src = mocksObject.author.avatar;
-  document.querySelector('.map__filters-container').before(card);
+  insertAndCheckTextData(mocksObject.offer.title, card.querySelector(`.popup__title`));
+  insertAndCheckTextData(mocksObject.offer.address, card.querySelector(`.popup__text--address`));
+  insertAndCheckTextData(`${mocksObject.offer.price}₽/ночь`, card.querySelector(`.popup__text--price`));
+  insertAndCheckTextData(MocksData.TYPES_DESCRIPTION[mocksObject.offer.type], card.querySelector(`.popup__type`));
+  insertAndCheckTextData(`${mocksObject.offer.rooms} комнаты для ${mocksObject.offer.guests} гостей`, card.querySelector(`.popup__text--capacity`));
+  insertAndCheckTextData(`Заезд после ${mocksObject.offer.checkin}, выезд до ${mocksObject.offer.checkout}`, card.querySelector(`.popup__text--time`));
+  renderFeatures(card.querySelector(`.popup__features`), mocksObject.offer.features);
+  insertAndCheckTextData(mocksObject.offer.description, card.querySelector(`.popup__description`));
+  renderPhotos(card.querySelector(`.popup__photos`), mocksObject.offer.photos);
+  card.querySelector(`.popup__avatar`).src = mocksObject.author.avatar;
+  document.querySelector(`.map__filters-container`).before(card);
 };
 
-renderCardElement(adsData[0]);
+// renderCardElement(adsData[0]);
+
+
+const activateMap = () => {
+  document.querySelector(`.map`).classList.remove(`map--faded`);
+  renderPins(adsData);
+};
