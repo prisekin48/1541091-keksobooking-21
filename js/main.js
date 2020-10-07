@@ -258,6 +258,7 @@ const allFieldsets = form.querySelectorAll('fieldset');
 const mapFilters = map.querySelectorAll('.map__filter');
 const mapFilterFeatures = map.querySelector('.map__features');
 const mainPin = document.querySelector('.map__pin--main');
+const addressField = form.querySelector('#address');
 let isActive = false;
 
 /**
@@ -300,6 +301,10 @@ const enableFilters = () => {
   mapFilterFeatures.disabled = false;
 };
 
+const setPinCoordinatesToAddress = (address) => {
+  addressField.value = address;
+};
+
 /**
  * Initiates activate function if pressed enter on the focused main pin
  * @param  {object} evt - transfered KeyboardEvent from the listener
@@ -316,7 +321,9 @@ const onMainPinPressEnter = (evt) => {
  */
 const onMainPinMouseDown = (evt) => {
   if (evt.button === 0) {
+    addressField.value = `${parseInt(mainPin.style.left) + PinShifts.X}, ${parseInt(mainPin.style.top) + PinShifts.Y}`;
     activate();
+    // setPinCoordinatesToAddress();
   }
 };
 
@@ -354,6 +361,8 @@ const deactivate = () => {
   isActive = false;
 };
 
+addressField.value = `${parseInt(mainPin.style.left)}, ${parseInt(mainPin.style.top)}`;
 disableFilters();
 disableForm();
 addMainPinListeners();
+
