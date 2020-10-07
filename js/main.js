@@ -248,13 +248,112 @@ const renderCardElement = (mocksObject) => {
 // renderCardElement(adsData[0]);
 
 
-const activateMap = () => {
-  document.querySelector(`.map`).classList.remove(`map--faded`);
-  renderPins(adsData);
+
+
+
+
+const map = document.querySelector(`.map`);
+const form = document.querySelector('.ad-form');
+const allFieldsets = form.querySelectorAll('fieldset');
+const mapFilters = map.querySelectorAll('.map__filter');
+const mapFilterFeatures = map.querySelector('.map__features');
+const mainPin = document.querySelector('.map__pin--main');
+let isActive = false;
+
+/**
+ * Disables all the form inputs and the form itself
+ */
+const disableForm = () => {
+  form.classList.add('ad-form--disabled');
+  for (const fieldset of allFieldsets) {
+    fieldset.disabled = true;
+  };
 };
 
-const allFieldsets = document.querySelectorAll('fieldset');
-console.log(allFieldsets);
-for (const fieldset of allFieldsets) {
-  fieldset.disabled = true;
+/**
+ * Enables all the form inputs and the form itself
+ */
+const enableForm = () => {
+  form.classList.remove('ad-form--disabled');
+  for (const fieldset of allFieldsets) {
+    fieldset.disabled = false;
+  };
 };
+
+/**
+ * Disables all the map filters
+ */
+const disableFilters = () => {
+  for (const filter of mapFilters) {
+    filter.disabled = true;
+  }
+  mapFilterFeatures.disabled = true;
+};
+
+/**
+ * Enables all the map filters
+ */
+const enableFilters = () => {
+  for (const filter of mapFilters) {
+    filter.disabled = false;
+  }
+  mapFilterFeatures.disabled = false;
+};
+
+/**
+ * Initiates activate function if pressed enter on the focused main pin
+ * @param  {object} evt - transfered KeyboardEvent from the listener
+ */
+const onMainPinPressEnter = (evt) => {
+  if (evt.key === 'Enter') {
+    activate();
+  }
+};
+
+/**
+ * Initiates activate function if pressed the main mouse button on the main pin
+ * @param  {object} evt - transfered MouseEvent from the listener
+ */
+const onMainPinMouseDown = (evt) => {
+  if (evt.button === 0) {
+    activate();
+  }
+};
+
+/**
+ * Adds mousedown (for main button) and keydown (for enter) event listeners to the main pin
+ */
+const addMainPinListeners = () => {
+  mainPin.addEventListener('mousedown', onMainPinMouseDown);
+  mainPin.addEventListener('keydown', onMainPinPressEnter);
+};
+
+/**
+ * Enables active mode
+ */
+const activate = () => {
+  if (!isActive) {
+    map.classList.remove(`map--faded`);
+    enableFilters();
+    enableForm();
+    renderPins(adsData);
+    isActive = true;
+    mainPin.removeEventListener('mousedown', onMainPinMouseDown);
+    mainPin.removeEventListener('keydown', onMainPinPressEnter);
+  }
+};
+
+/**
+ * Enables inactive mode
+ */
+const deactivate = () => {
+  map.classList.add(`map--faded`);
+  disableFilters();
+  disableForm();
+  addMainPinListeners();
+  isActive = false;
+};
+
+disableFilters();
+disableForm();
+addMainPinListeners();
