@@ -436,3 +436,20 @@ type.addEventListener('change', function () {
   checkPriceValidity();
 });
 
+const setCheckInOutTimes = (evt) => {
+  if (evt.target === adTimein) {
+    adTimeout.options.selectedIndex = evt.target.options.selectedIndex;
+  }
+  if (evt.target === adTimeout) {
+    adTimein.options.selectedIndex = evt.target.options.selectedIndex;
+  }
+};
+
+adTimein.addEventListener('change', function (evt) {
+  setCheckInOutTimes(evt);
+});
+adTimeout.addEventListener('change', function (evt) {
+  setCheckInOutTimes(evt);
+});
+
+activate();
