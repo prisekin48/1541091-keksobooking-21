@@ -386,3 +386,27 @@ const AdConsts = {
     bungalow: 0},
   MAX_PRICE: 1000000,
 };
+
+const showInvalidBorder = (input) => {
+  if (!input.validity.valid) {
+    input.style.border = '2px solid #f00';
+  } else {
+    input.style.border = 'unset';
+  }
+};
+
+title.addEventListener('input', function () {
+  let inValidMessage = `Заголовок объявления должен содержать от
+                            ${AdConsts.MIN_TITLE_LENGHT} до ${AdConsts.MAX_TITLE_LENGHT} символов.
+                            \nВы ввели ${title.value.length}.`
+
+  if (title.value.length < AdConsts.MIN_TITLE_LENGHT) {
+    title.setCustomValidity(inValidMessage);
+  } else if (title.value.length > AdConsts.MAX_TITLE_LENGHT) {
+    title.setCustomValidity(inValidMessage);
+  } else {
+    title.setCustomValidity('');
+  }
+  showInvalidBorder(title);
+  title.reportValidity();
+});
