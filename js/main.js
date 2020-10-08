@@ -379,7 +379,7 @@ const adCapacity = form.querySelector('#capacity');
 const AdConsts = {
   MIN_TITLE_LENGHT: 30,
   MAX_TITLE_LENGHT: 100,
-  MIX_PRICE: {
+  MIN_PRICE: {
     palace: 10000,
     flat: 1000,
     house: 5000,
@@ -396,17 +396,43 @@ const showInvalidBorder = (input) => {
 };
 
 title.addEventListener('input', function () {
-  let inValidMessage = `Заголовок объявления должен содержать от
+  let invalidMessage = `Заголовок объявления должен содержать от
                             ${AdConsts.MIN_TITLE_LENGHT} до ${AdConsts.MAX_TITLE_LENGHT} символов.
                             \nВы ввели ${title.value.length}.`
 
   if (title.value.length < AdConsts.MIN_TITLE_LENGHT) {
-    title.setCustomValidity(inValidMessage);
+    title.setCustomValidity(invalidMessage);
   } else if (title.value.length > AdConsts.MAX_TITLE_LENGHT) {
-    title.setCustomValidity(inValidMessage);
+    title.setCustomValidity(invalidMessage);
   } else {
     title.setCustomValidity('');
   }
+
   showInvalidBorder(title);
   title.reportValidity();
 });
+
+const checkPriceValidity = () => {
+  let invalidMessage = `Диапазон цен для выбранного типа жилья:\n
+                        ${AdConsts.MIN_PRICE[type.value]} - ${AdConsts.MAX_PRICE}`;
+  console.log(AdConsts.MIN_PRICE[type.value]);
+  console.log(type.value);
+
+  if (price.value < AdConsts.MIN_PRICE[type.value]) {
+    price.setCustomValidity(invalidMessage);
+  } else if (price.value > AdConsts.MAX_PRICE) {
+    price.setCustomValidity(invalidMessage);
+  } else {
+    price.setCustomValidity('');
+  }
+
+  showInvalidBorder(price);
+  price.reportValidity();
+};
+
+price.addEventListener('input', checkPriceValidity);
+type.addEventListener('change', function () {
+  price.placeholder = AdConsts.MIN_PRICE[type.value];
+  checkPriceValidity();
+});
+
