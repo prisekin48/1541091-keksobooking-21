@@ -258,7 +258,7 @@ const allFieldsets = form.querySelectorAll('fieldset');
 const mapFilters = map.querySelectorAll('.map__filter');
 const mapFilterFeatures = map.querySelector('.map__features');
 const mainPin = document.querySelector('.map__pin--main');
-const addressField = form.querySelector('#address');
+const adAddress = form.querySelector('#address');
 let isActive = false;
 
 /**
@@ -302,7 +302,7 @@ const enableFilters = () => {
 };
 
 const setPinCoordinatesToAddress = (address) => {
-  addressField.value = address;
+  adAddress.value = address;
 };
 
 /**
@@ -321,7 +321,7 @@ const onMainPinPressEnter = (evt) => {
  */
 const onMainPinMouseDown = (evt) => {
   if (evt.button === 0) {
-    addressField.value = `${parseInt(mainPin.style.left) + PinShifts.X}, ${parseInt(mainPin.style.top) + PinShifts.Y}`;
+    adAddress.value = `${parseInt(mainPin.style.left) + PinShifts.X}, ${parseInt(mainPin.style.top) + PinShifts.Y}`;
     activate();
     // setPinCoordinatesToAddress();
   }
@@ -361,8 +361,28 @@ const deactivate = () => {
   isActive = false;
 };
 
-addressField.value = `${parseInt(mainPin.style.left)}, ${parseInt(mainPin.style.top)}`;
+adAddress.value = `${parseInt(mainPin.style.left)}, ${parseInt(mainPin.style.top)}`;
 disableFilters();
 disableForm();
 addMainPinListeners();
 
+
+
+const adTitle = form.querySelector('#title');
+const adPrice = form.querySelector('#price');
+const adType = form.querySelector('#type');
+const adTimein = form.querySelector('#timein');
+const adTimeout = form.querySelector('#timeout');
+const adRoomNumber = form.querySelector('#room_number');
+const adCapacity = form.querySelector('#capacity');
+
+const AdConsts = {
+  MIN_TITLE_LENGHT: 30,
+  MAX_TITLE_LENGHT: 100,
+  MIX_PRICE: {
+    palace: 10000,
+    flat: 1000,
+    house: 5000,
+    bungalow: 0},
+  MAX_PRICE: 1000000,
+};
