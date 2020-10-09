@@ -260,6 +260,18 @@ const mainPin = document.querySelector('.map__pin--main');
 const adAddress = form.querySelector('#address');
 let isActive = false;
 
+
+/**
+ * Set address according to the map mode
+ */
+const setAddress = () => {
+  if (isActive) {
+    adAddress.setAttribute('value', `${parseInt(mainPin.style.left, 10) + PinShifts.X}, ${parseInt(mainPin.style.top, 10) + PinShifts.Y}`);
+  } else {
+    adAddress.setAttribute('value', `${parseInt(mainPin.style.left, 10)}, ${parseInt(mainPin.style.top, 10)}`);
+  }
+};
+
 /**
  * Disables all the form inputs and the form itself
  */
@@ -316,7 +328,7 @@ const onMainPinPressEnter = (evt) => {
  */
 const onMainPinMouseDown = (evt) => {
   if (evt.button === 0) {
-    adAddress.value = `${parseInt(mainPin.style.left, 10) + PinShifts.X}, ${parseInt(mainPin.style.top, 10) + PinShifts.Y}`;
+
     activate();
   }
 };
@@ -339,6 +351,7 @@ const activate = () => {
     enableForm();
     renderPins(adsData);
     isActive = true;
+    setAddress();
     mainPin.removeEventListener('mousedown', onMainPinMouseDown);
     mainPin.removeEventListener('keydown', onMainPinPressEnter);
   }
@@ -353,6 +366,7 @@ const deactivate = () => {
   disableForm();
   addMainPinListeners();
   isActive = false;
+  setAddress();
 };
 
 /**
@@ -484,7 +498,7 @@ adRoomNumber.addEventListener('change', function () {
   setCapacity();
 });
 
-adAddress.value = `${parseInt(mainPin.style.left, 10)}, ${parseInt(mainPin.style.top, 10)}`;
+setAddress();
 disableFilters();
 disableForm();
 addMainPinListeners();
