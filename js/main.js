@@ -247,10 +247,9 @@ const renderCardElement = (mocksObject) => {
 
 // renderCardElement(adsData[0]);
 
-
-
-
-
+/**
+ * -------------------------MODULE4-TASK1--------------------------------
+ */
 
 const map = document.querySelector(`.map`);
 const form = document.querySelector('.ad-form');
@@ -268,7 +267,7 @@ const disableForm = () => {
   form.classList.add('ad-form--disabled');
   for (const fieldset of allFieldsets) {
     fieldset.disabled = true;
-  };
+  }
 };
 
 /**
@@ -278,7 +277,7 @@ const enableForm = () => {
   form.classList.remove('ad-form--disabled');
   for (const fieldset of allFieldsets) {
     fieldset.disabled = false;
-  };
+  }
 };
 
 /**
@@ -301,10 +300,6 @@ const enableFilters = () => {
   mapFilterFeatures.disabled = false;
 };
 
-const setPinCoordinatesToAddress = (address) => {
-  adAddress.value = address;
-};
-
 /**
  * Initiates activate function if pressed enter on the focused main pin
  * @param  {object} evt - transfered KeyboardEvent from the listener
@@ -321,9 +316,8 @@ const onMainPinPressEnter = (evt) => {
  */
 const onMainPinMouseDown = (evt) => {
   if (evt.button === 0) {
-    adAddress.value = `${parseInt(mainPin.style.left) + PinShifts.X}, ${parseInt(mainPin.style.top) + PinShifts.Y}`;
+    adAddress.value = `${parseInt(mainPin.style.left, 10) + PinShifts.X}, ${parseInt(mainPin.style.top, 10) + PinShifts.Y}`;
     activate();
-    // setPinCoordinatesToAddress();
   }
 };
 
@@ -361,12 +355,9 @@ const deactivate = () => {
   isActive = false;
 };
 
-adAddress.value = `${parseInt(mainPin.style.left)}, ${parseInt(mainPin.style.top)}`;
-disableFilters();
-disableForm();
-addMainPinListeners();
-
-
+/**
+ * -------------------------MODULE4-TASK1_VALIDATION--------------------------------
+ */
 
 const adTitle = form.querySelector('#title');
 const adPrice = form.querySelector('#price');
@@ -387,6 +378,17 @@ const AdConsts = {
   MAX_PRICE: 1000000,
 };
 
+const RoomsToCapacityIndexesCorrelation = {
+  0: {disabled: [0, 1, 3], enabled: [2]},
+  1: {disabled: [0, 3], enabled: [1, 2]},
+  2: {disabled: [3], enabled: [0, 1, 2]},
+  3: {disabled: [0, 1, 2], enabled: [3]}
+};
+
+/**
+ * Shows red border if the given input is invalid
+ * @param {object.<HTML-element>} input Given input element
+ */
 const showInvalidBorder = (input) => {
   if (!input.validity.valid) {
     input.style.border = '2px solid #f00';
@@ -395,47 +397,29 @@ const showInvalidBorder = (input) => {
   }
 };
 
-title.addEventListener('input', function () {
-  let invalidMessage = `Заголовок объявления должен содержать от
-                            ${AdConsts.MIN_TITLE_LENGHT} до ${AdConsts.MAX_TITLE_LENGHT} символов.
-                            \nВы ввели ${title.value.length}.`
-
-  if (title.value.length < AdConsts.MIN_TITLE_LENGHT) {
-    title.setCustomValidity(invalidMessage);
-  } else if (title.value.length > AdConsts.MAX_TITLE_LENGHT) {
-    title.setCustomValidity(invalidMessage);
-  } else {
-    title.setCustomValidity('');
-  }
-
-  showInvalidBorder(title);
-  title.reportValidity();
-});
-
+/**
+ * Checks if the price is valid or not.
+ */
 const checkPriceValidity = () => {
   let invalidMessage = `Диапазон цен для выбранного типа жилья:\n
-                        ${AdConsts.MIN_PRICE[type.value]} - ${AdConsts.MAX_PRICE}`;
-  console.log(AdConsts.MIN_PRICE[type.value]);
-  console.log(type.value);
+                        ${AdConsts.MIN_PRICE[adType.value]} - ${AdConsts.MAX_PRICE}`;
 
-  if (price.value < AdConsts.MIN_PRICE[type.value]) {
-    price.setCustomValidity(invalidMessage);
-  } else if (price.value > AdConsts.MAX_PRICE) {
-    price.setCustomValidity(invalidMessage);
+  if (adPrice.value < AdConsts.MIN_PRICE[adType.value]) {
+    adPrice.setCustomValidity(invalidMessage);
+  } else if (adPrice.value > AdConsts.MAX_PRICE) {
+    adPrice.setCustomValidity(invalidMessage);
   } else {
-    price.setCustomValidity('');
+    adPrice.setCustomValidity('');
   }
 
-  showInvalidBorder(price);
-  price.reportValidity();
+  showInvalidBorder(adPrice);
+  adPrice.reportValidity();
 };
 
-price.addEventListener('input', checkPriceValidity);
-type.addEventListener('change', function () {
-  price.placeholder = AdConsts.MIN_PRICE[type.value];
-  checkPriceValidity();
-});
-
+/**
+ * Sets the correlation between Checkin and Checkout times
+ * @param  {object.event} evt Given event
+ */
 const setCheckInOutTimes = (evt) => {
   if (evt.target === adTimein) {
     adTimeout.options.selectedIndex = evt.target.options.selectedIndex;
@@ -445,52 +429,63 @@ const setCheckInOutTimes = (evt) => {
   }
 };
 
+/**
+ * Sets correct capacity according to RoomsToCapacityIndexesCorrelation
+ */
+const setCapacity = () => {
+  const adRoomNumberIndex = adRoomNumber.options.selectedIndex;
+
+  for (const index of RoomsToCapacityIndexesCorrelation[adRoomNumberIndex].disabled) {
+    adCapacity.options[index].disabled = true;
+  }
+
+  for (const index of RoomsToCapacityIndexesCorrelation[adRoomNumberIndex].enabled) {
+    adCapacity.options[index].disabled = false;
+  }
+};
+
+adTitle.addEventListener('input', function () {
+  let invalidMessage = `Заголовок объявления должен содержать от
+                            ${AdConsts.MIN_TITLE_LENGHT} до ${AdConsts.MAX_TITLE_LENGHT} символов.
+                            \nВы ввели ${adTitle.value.length}.`;
+
+  if (adTitle.value.length < AdConsts.MIN_TITLE_LENGHT) {
+    adTitle.setCustomValidity(invalidMessage);
+  } else if (adTitle.value.length > AdConsts.MAX_TITLE_LENGHT) {
+    adTitle.setCustomValidity(invalidMessage);
+  } else {
+    adTitle.setCustomValidity('');
+  }
+
+  showInvalidBorder(adTitle);
+  adTitle.reportValidity();
+});
+
+adPrice.addEventListener('input', checkPriceValidity);
+
 adTimein.addEventListener('change', function (evt) {
   setCheckInOutTimes(evt);
 });
+
 adTimeout.addEventListener('change', function (evt) {
   setCheckInOutTimes(evt);
 });
 
-
-const RoomsToCapacityIndexesCorrelation = {
-  0: {disabled: [0, 1, 3], enabled: [2]},
-  1: {disabled: [0, 3], enabled: [1, 2]},
-  2: {disabled: [3], enabled: [0, 1, 2]},
-  3: {disabled: [0, 1, 2], enabled: [3]}
-};
-
-const setCapacity = () => {
-  const adRoomNumberIndex = adRoomNumber.options.selectedIndex;
-
-
-  console.log(adRoomNumberIndex);
-  console.log(RoomsToCapacityIndexesCorrelation[adRoomNumberIndex].disabled);
-
-  for (const index of RoomsToCapacityIndexesCorrelation[adRoomNumberIndex].disabled) {
-    console.log(index);
-    capacity.options[index].disabled = true;
-  }
-
-  for (const index of RoomsToCapacityIndexesCorrelation[adRoomNumberIndex].enabled) {
-    console.log(index);
-    capacity.options[index].disabled = false;
-  }
-};
-
-setCapacity();
+adType.addEventListener('change', function () {
+  adPrice.placeholder = AdConsts.MIN_PRICE[adType.value];
+  checkPriceValidity();
+});
 
 adRoomNumber.addEventListener('change', function () {
   const anyEnabledIndex = 0;
   const adRoomNumberIndex = adRoomNumber.options.selectedIndex;
-  capacity.options.selectedIndex = RoomsToCapacityIndexesCorrelation[adRoomNumberIndex].enabled[anyEnabledIndex];
+  adCapacity.options.selectedIndex = RoomsToCapacityIndexesCorrelation[adRoomNumberIndex].enabled[anyEnabledIndex];
 
   setCapacity();
 });
 
-
-
-
-
-
-
+adAddress.value = `${parseInt(mainPin.style.left, 10)}, ${parseInt(mainPin.style.top, 10)}`;
+disableFilters();
+disableForm();
+addMainPinListeners();
+setCapacity();
