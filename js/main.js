@@ -452,4 +452,45 @@ adTimeout.addEventListener('change', function (evt) {
   setCheckInOutTimes(evt);
 });
 
-activate();
+
+const RoomsToCapacityIndexesCorrelation = {
+  0: {disabled: [0, 1, 3], enabled: [2]},
+  1: {disabled: [0, 3], enabled: [1, 2]},
+  2: {disabled: [3], enabled: [0, 1, 2]},
+  3: {disabled: [0, 1, 2], enabled: [3]}
+};
+
+const setCapacity = () => {
+  const adRoomNumberIndex = adRoomNumber.options.selectedIndex;
+
+
+  console.log(adRoomNumberIndex);
+  console.log(RoomsToCapacityIndexesCorrelation[adRoomNumberIndex].disabled);
+
+  for (const index of RoomsToCapacityIndexesCorrelation[adRoomNumberIndex].disabled) {
+    console.log(index);
+    capacity.options[index].disabled = true;
+  }
+
+  for (const index of RoomsToCapacityIndexesCorrelation[adRoomNumberIndex].enabled) {
+    console.log(index);
+    capacity.options[index].disabled = false;
+  }
+};
+
+setCapacity();
+
+adRoomNumber.addEventListener('change', function () {
+  const anyEnabledIndex = 0;
+  const adRoomNumberIndex = adRoomNumber.options.selectedIndex;
+  capacity.options.selectedIndex = RoomsToCapacityIndexesCorrelation[adRoomNumberIndex].enabled[anyEnabledIndex];
+
+  setCapacity();
+});
+
+
+
+
+
+
+
