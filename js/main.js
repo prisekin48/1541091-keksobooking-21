@@ -1,5 +1,7 @@
 'use strict';
 
+const map = document.querySelector(`.map`);
+
 const PinCoordinates = {
   MIN_Y: 130,
   MAX_Y: 630,
@@ -137,17 +139,91 @@ const getPinElement = (mocksObject) => {
   return pinElement;
 };
 
+/**
+ * Removes all pins except the main one;
+ */
+const removePins = () => {
+  const pins = map.querySelectorAll('.map__pin:not(.map__pin--main)');
+  for (const pin of pins) {
+    pin.remove();
+  };
+};
+
+/**
+ * Unsets active pin state
+ */
+const unSetActivePin = () => {
+  const activePin = map.querySelector('.map__pin--active');
+  if (activePin) {
+    activePin.classList.remove('map__pin--active');
+  };
+};
+
+/**
+ * Sets given pin as active
+ * @param  {object.HTML-node} pin Currently active pin
+ */
+const setActivePin = (pin) => {
+  pin.classList.add('map__pin--active');
+};
+
 /** Adds prepared pin elements to an html fragment and render the fragment into .map__pins
  *  @param {Array.<Object>} ads - object with generated mocks data
  */
 const renderPins = (ads) => {
   const fragment = document.createDocumentFragment();
-  const mapPins = document.querySelector(`.map__pins`);
+  const mapPins = map.querySelector(`.map__pins`);
 
-  ads.forEach(function (ad) {
-    fragment.appendChild(getPinElement(ad));
-  });
+  for (let i = 0; i < ads.length; i++) {
+    const element = getPinElement(ads[i]);
+
+    element.addEventListener('keydown', (evt) => {
+      onPinPressEnter(evt, ads[i], element);
+    });
+
+    element.addEventListener('click', () => {
+      onPinClickHandler(ads[i], element);
+    });
+
+    fragment.appendChild(element);
+  }
   mapPins.appendChild(fragment);
+};
+
+/**
+ * Removes currently opened card;
+ */
+const removeCurrentCard = () => {
+  const card = map.querySelector('.map__card');
+  if (card) {
+    card.remove();
+  }
+
+  unSetActivePin();
+  document.removeEventListener('keydown', onDocumentEscPressHandler);
+};
+
+/**
+ * Handles Enter press on a pin
+ * @param  {object.event} evt Given event
+ * @param  {object} ad  Given ad object
+ */
+const onPinPressEnter = (evt, ad, pin) => {
+  if (evt.key === 'Enter') {
+    removeCurrentCard();
+    setActivePin(pin);
+    renderCard(ad);
+  }
+};
+
+/**
+ * Handles a click on a pin
+ * @param  {object} ad  Given ad object
+ */
+const onPinClickHandler = (ad, pin) => {
+  removeCurrentCard();
+  setActivePin(pin);
+  renderCard(ad);
 };
 
 /**
@@ -184,23 +260,7 @@ const renderFeatures = (template, features) => {
   } else {
     template.innerHTML = ``;
   }
-
-
-  // let fragment = document.createDocumentFragment();
-
-  // for (let child of template.children) {
-  //   for (let string of features) {
-  //     if (child.classList.contains(`popup__feature--${string}`)) {
-  //       child.textContent = string;
-  //       const element = child.cloneNode(true);
-  //       fragment.appendChild(element);
-  //     };
-  //   };
-  // };
-  // template.innerHTML = ``;
-  // template.appendChild(fragment);
 };
-
 
 /**
  * Renders photos according the given array of photos` links
@@ -223,33 +283,51 @@ const renderPhotos = (template, photos) => {
   }
 };
 
-/** Prepares and renders .map__card element with mocksObject`s data
- *  @param {object} mocksObject - An object with mocks data needed for card element filling
+/**
+ * Removes currently opened card if Escape is pressed
+ * @param  {object} evt Given event
  */
-const renderCardElement = (mocksObject) => {
-  const cardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
-  const card = cardTemplate.cloneNode(true);
-
-  insertAndCheckTextData(mocksObject.offer.title, card.querySelector(`.popup__title`));
-  insertAndCheckTextData(mocksObject.offer.address, card.querySelector(`.popup__text--address`));
-  insertAndCheckTextData(`${mocksObject.offer.price}₽/ночь`, card.querySelector(`.popup__text--price`));
-  insertAndCheckTextData(adData.TYPES_DESCRIPTION[mocksObject.offer.type], card.querySelector(`.popup__type`));
-  insertAndCheckTextData(`${mocksObject.offer.rooms} комнаты для ${mocksObject.offer.guests} гостей`, card.querySelector(`.popup__text--capacity`));
-  insertAndCheckTextData(`Заезд после ${mocksObject.offer.checkin}, выезд до ${mocksObject.offer.checkout}`, card.querySelector(`.popup__text--time`));
-  renderFeatures(card.querySelector(`.popup__features`), mocksObject.offer.features);
-  insertAndCheckTextData(mocksObject.offer.description, card.querySelector(`.popup__description`));
-  renderPhotos(card.querySelector(`.popup__photos`), mocksObject.offer.photos);
-  card.querySelector(`.popup__avatar`).src = mocksObject.author.avatar;
-  document.querySelector(`.map__filters-container`).before(card);
+const onDocumentEscPressHandler = (evt) => {
+  if (evt.key === 'Escape') {
+    removeCurrentCard();
+  };
 };
 
-// renderCardElement(ads[0]);
+/** Prepares and renders .map__card element with ad`s data
+ *  @param {object} ad - An object with mocks data needed for cardElement filling
+ */
+const renderCard = (ad) => {
+  const cardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
+  const cardElement = cardTemplate.cloneNode(true);
+  const closeButton = cardElement.querySelector('.popup__close');
+
+  insertAndCheckTextData(ad.offer.title, cardElement.querySelector(`.popup__title`));
+  insertAndCheckTextData(ad.offer.address, cardElement.querySelector(`.popup__text--address`));
+  insertAndCheckTextData(`${ad.offer.price}₽/ночь`, cardElement.querySelector(`.popup__text--price`));
+  insertAndCheckTextData(adData.TYPES_DESCRIPTION[ad.offer.type], cardElement.querySelector(`.popup__type`));
+  insertAndCheckTextData(`${ad.offer.rooms} комнаты для ${ad.offer.guests} гостей`, cardElement.querySelector(`.popup__text--capacity`));
+  insertAndCheckTextData(`Заезд после ${ad.offer.checkin}, выезд до ${ad.offer.checkout}`, cardElement.querySelector(`.popup__text--time`));
+  renderFeatures(cardElement.querySelector(`.popup__features`), ad.offer.features);
+  insertAndCheckTextData(ad.offer.description, cardElement.querySelector(`.popup__description`));
+  renderPhotos(cardElement.querySelector(`.popup__photos`), ad.offer.photos);
+  cardElement.querySelector(`.popup__avatar`).src = ad.author.avatar;
+
+  closeButton.addEventListener('click', removeCurrentCard);
+  closeButton.addEventListener('keydown', (evt) => {
+    if (evt.key === 'Enter') {
+      removeCurrentCard();
+    };
+  });
+
+  document.addEventListener('keydown', onDocumentEscPressHandler);
+
+  document.querySelector(`.map__filters-container`).before(cardElement);
+};
 
 /**
  * -------------------------MODULE4-TASK1--------------------------------
  */
 
-const map = document.querySelector(`.map`);
 const form = document.querySelector('.ad-form');
 const allFieldsets = form.querySelectorAll('fieldset');
 const mapFilters = map.querySelectorAll('.map__filter');
@@ -257,7 +335,6 @@ const mapFilterFeatures = map.querySelector('.map__features');
 const mainPin = document.querySelector('.map__pin--main');
 const adAddress = form.querySelector('#address');
 let isActive = false;
-
 
 /**
  * Set address according to the map mode
@@ -350,6 +427,7 @@ const activate = () => {
  */
 const deactivate = () => {
   isActive = false;
+  removePins();
   map.classList.add(`map--faded`);
   switchFiltersState(isActive);
   disableForm();
