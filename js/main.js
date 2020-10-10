@@ -146,7 +146,7 @@ const removePins = () => {
   const pins = map.querySelectorAll('.map__pin:not(.map__pin--main)');
   for (const pin of pins) {
     pin.remove();
-  };
+  }
 };
 
 /**
@@ -156,7 +156,7 @@ const unSetActivePin = () => {
   const activePin = map.querySelector('.map__pin--active');
   if (activePin) {
     activePin.classList.remove('map__pin--active');
-  };
+  }
 };
 
 /**
@@ -207,6 +207,7 @@ const removeCurrentCard = () => {
  * Handles Enter press on a pin
  * @param  {object.event} evt Given event
  * @param  {object} ad  Given ad object
+ * @param {object.HTML-node} pin Pressed pin
  */
 const onPinPressEnter = (evt, ad, pin) => {
   if (evt.key === 'Enter') {
@@ -219,6 +220,7 @@ const onPinPressEnter = (evt, ad, pin) => {
 /**
  * Handles a click on a pin
  * @param  {object} ad  Given ad object
+ * @param {object.HTML-node} pin Clicked pin
  */
 const onPinClickHandler = (ad, pin) => {
   removeCurrentCard();
@@ -290,7 +292,7 @@ const renderPhotos = (template, photos) => {
 const onDocumentEscPressHandler = (evt) => {
   if (evt.key === 'Escape') {
     removeCurrentCard();
-  };
+  }
 };
 
 /** Prepares and renders .map__card element with ad`s data
@@ -316,7 +318,7 @@ const renderCard = (ad) => {
   closeButton.addEventListener('keydown', (evt) => {
     if (evt.key === 'Enter') {
       removeCurrentCard();
-    };
+    }
   });
 
   document.addEventListener('keydown', onDocumentEscPressHandler);
@@ -369,6 +371,7 @@ const enableForm = () => {
 
 /**
  * Switches filters state according to the map mode
+ * @param {boolean} flag Is-map-active flag
  */
 const switchFiltersState = (flag) => {
   for (const filter of mapFilters) {
