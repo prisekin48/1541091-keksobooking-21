@@ -32,7 +32,7 @@ const getRandomNumber = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-const MocksData = {
+const adData = {
   TITLES: [`Квартира`, `Дом`, `Апартаменты`, `Помещение свободного назначения`],
   PRICES_MIN: 10000,
   PRICES_MAX: 45000000,
@@ -78,16 +78,14 @@ const getRandomArray = (source) => {
  *  @return {element} returns a random element of the give array
  */
 const getRandomElementFromArray = (arr) => {
-  const element = arr[getRandomNumber(0, arr.length - 1)];
-
-  return element;
+  return arr[getRandomNumber(0, arr.length - 1)];
 };
 
 /** Generates an array with adds descriptions from prepared object with needed data.
  *  @param {int} count - Quantity of needed objects in descriptions array
  *  @return {array.<Object>} ads - Array of objects
  */
-const generateAdsData = (count) => {
+const generateAds = (count) => {
   const ads = [];
 
   for (let j = 0; j < count; j++) {
@@ -96,16 +94,16 @@ const generateAdsData = (count) => {
         avatar: `img/avatars/user0${j + 1}.png`
       },
       offer: {
-        title: getRandomElementFromArray(MocksData.TITLES),
-        price: getRandomNumber(MocksData.PRICES_MIN, MocksData.PRICES_MAX),
-        type: getRandomElementFromArray(Object.keys(MocksData.TYPES_DESCRIPTION)),
+        title: getRandomElementFromArray(adData.TITLES),
+        price: getRandomNumber(adData.PRICES_MIN, adData.PRICES_MAX),
+        type: getRandomElementFromArray(Object.keys(adData.TYPES_DESCRIPTION)),
         rooms: getRandomNumber(AdsDataConsts.ROOMS_MIX, AdsDataConsts.ROOMS_MAX),
         guests: getRandomNumber(AdsDataConsts.GUESTS_MIX, AdsDataConsts.GUESTS_MAX),
-        checkin: getRandomElementFromArray(MocksData.CHECKIN_CHECKOUT_TIMES),
-        checkout: getRandomElementFromArray(MocksData.CHECKIN_CHECKOUT_TIMES),
-        features: getRandomArray(MocksData.FEATURES),
-        description: getRandomElementFromArray(MocksData.DESCRIPTIONS),
-        photos: getRandomArray(MocksData.PHOTOS)
+        checkin: getRandomElementFromArray(adData.CHECKIN_CHECKOUT_TIMES),
+        checkout: getRandomElementFromArray(adData.CHECKIN_CHECKOUT_TIMES),
+        features: getRandomArray(adData.FEATURES),
+        description: getRandomElementFromArray(adData.DESCRIPTIONS),
+        photos: getRandomArray(adData.PHOTOS)
       },
       location: {
         x: getRandomNumber(PinCoordinates.MIN_X, PinCoordinates.MAX_X),
@@ -119,7 +117,7 @@ const generateAdsData = (count) => {
   return ads;
 };
 
-const adsData = generateAdsData(AdsDataConsts.ADS_COUNT);
+const ads = generateAds(AdsDataConsts.ADS_COUNT);
 
 
 const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
@@ -235,7 +233,7 @@ const renderCardElement = (mocksObject) => {
   insertAndCheckTextData(mocksObject.offer.title, card.querySelector(`.popup__title`));
   insertAndCheckTextData(mocksObject.offer.address, card.querySelector(`.popup__text--address`));
   insertAndCheckTextData(`${mocksObject.offer.price}₽/ночь`, card.querySelector(`.popup__text--price`));
-  insertAndCheckTextData(MocksData.TYPES_DESCRIPTION[mocksObject.offer.type], card.querySelector(`.popup__type`));
+  insertAndCheckTextData(adData.TYPES_DESCRIPTION[mocksObject.offer.type], card.querySelector(`.popup__type`));
   insertAndCheckTextData(`${mocksObject.offer.rooms} комнаты для ${mocksObject.offer.guests} гостей`, card.querySelector(`.popup__text--capacity`));
   insertAndCheckTextData(`Заезд после ${mocksObject.offer.checkin}, выезд до ${mocksObject.offer.checkout}`, card.querySelector(`.popup__text--time`));
   renderFeatures(card.querySelector(`.popup__features`), mocksObject.offer.features);
@@ -245,7 +243,7 @@ const renderCardElement = (mocksObject) => {
   document.querySelector(`.map__filters-container`).before(card);
 };
 
-// renderCardElement(adsData[0]);
+// renderCardElement(ads[0]);
 
 /**
  * -------------------------MODULE4-TASK1--------------------------------
@@ -293,23 +291,13 @@ const enableForm = () => {
 };
 
 /**
- * Disables all the map filters
+ * Switches filters state according to the map mode
  */
-const disableFilters = () => {
+const switchFiltersState = (flag) => {
   for (const filter of mapFilters) {
-    filter.disabled = true;
+    filter.disabled = !flag;
   }
-  mapFilterFeatures.disabled = true;
-};
-
-/**
- * Enables all the map filters
- */
-const enableFilters = () => {
-  for (const filter of mapFilters) {
-    filter.disabled = false;
-  }
-  mapFilterFeatures.disabled = false;
+  mapFilterFeatures.disabled = !flag;
 };
 
 /**
@@ -346,11 +334,11 @@ const addMainPinListeners = () => {
  */
 const activate = () => {
   if (!isActive) {
-    map.classList.remove(`map--faded`);
-    enableFilters();
-    enableForm();
-    renderPins(adsData);
     isActive = true;
+    map.classList.remove(`map--faded`);
+    switchFiltersState(isActive);
+    enableForm();
+    renderPins(ads);
     setAddress();
     mainPin.removeEventListener('mousedown', onMainPinMouseDown);
     mainPin.removeEventListener('keydown', onMainPinPressEnter);
@@ -361,11 +349,11 @@ const activate = () => {
  * Enables inactive mode
  */
 const deactivate = () => {
+  isActive = false;
   map.classList.add(`map--faded`);
-  disableFilters();
+  switchFiltersState(isActive);
   disableForm();
   addMainPinListeners();
-  isActive = false;
   setAddress();
 };
 
@@ -499,7 +487,7 @@ adRoomNumber.addEventListener('change', function () {
 });
 
 setAddress();
-disableFilters();
+switchFiltersState(isActive);
 disableForm();
 addMainPinListeners();
 setCapacity();
