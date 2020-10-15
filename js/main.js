@@ -124,17 +124,25 @@ const ads = generateAds(AdsDataConsts.ADS_COUNT);
 
 const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
 
-/** Prepares and returns .map__pin element with mocksObject`s data
- *  @param {object} mocksObject - An object with mocks data needed for pin element filling
+/** Prepares and returns .map__pin element with adData
+ *  @param {object} adData - An object with the data needed for pin element filling
  *  @return {object} pin element
  */
-const getPinElement = (mocksObject) => {
+const createPin = (adData) => {
   const pinElement = pinTemplate.cloneNode(true);
   const pinElementImage = pinElement.querySelector(`img`);
-  pinElement.style.left = `${mocksObject.location.x - PinShifts.X}px`;
-  pinElement.style.top = `${mocksObject.location.y - PinShifts.Y}px`;
-  pinElementImage.src = `${mocksObject.author.avatar}`;
-  pinElementImage.alt = `${mocksObject.offer.title}`;
+  pinElement.style.left = `${adData.location.x - PinShifts.X}px`;
+  pinElement.style.top = `${adData.location.y - PinShifts.Y}px`;
+  pinElementImage.src = `${adData.author.avatar}`;
+  pinElementImage.alt = `${adData.offer.title}`;
+
+  pinElement.addEventListener('keydown', (evt) => {
+    onPinPressEnter(evt, adData, pinElement);
+  });
+
+  pinElement.addEventListener('click', () => {
+    onPinClick(adData, pinElement);
+  });
 
   return pinElement;
 };
@@ -174,19 +182,10 @@ const renderPins = (ads) => {
   const fragment = document.createDocumentFragment();
   const mapPins = map.querySelector(`.map__pins`);
 
-  for (let i = 0; i < ads.length; i++) {
-    const element = getPinElement(ads[i]);
-
-    element.addEventListener('keydown', (evt) => {
-      onPinPressEnter(evt, ads[i], element);
-    });
-
-    element.addEventListener('click', () => {
-      onPinClickHandler(ads[i], element);
-    });
-
+  ads.forEach(ad => {
+    const element = createPin(ad);
     fragment.appendChild(element);
-  }
+  });
   mapPins.appendChild(fragment);
 };
 
@@ -200,11 +199,11 @@ const removeCurrentCard = () => {
   }
 
   unSetActivePin();
-  document.removeEventListener('keydown', onDocumentEscPressHandler);
+  document.removeEventListener('keydown', onDocumentEscPress);
 };
 
 /**
- * Handles Enter press on a pin
+ * Invokes when Enter is pressed on a pin
  * @param  {object.event} evt Given event
  * @param  {object} ad  Given ad object
  * @param {object.HTML-node} pin Pressed pin
@@ -218,11 +217,11 @@ const onPinPressEnter = (evt, ad, pin) => {
 };
 
 /**
- * Handles a click on a pin
+ * Invokes when a click was made on a pin
  * @param  {object} ad  Given ad object
  * @param {object.HTML-node} pin Clicked pin
  */
-const onPinClickHandler = (ad, pin) => {
+const onPinClick = (ad, pin) => {
   removeCurrentCard();
   setActivePin(pin);
   renderCard(ad);
@@ -289,7 +288,7 @@ const renderPhotos = (template, photos) => {
  * Removes currently opened card if Escape is pressed
  * @param  {object} evt Given event
  */
-const onDocumentEscPressHandler = (evt) => {
+const onDocumentEscPress = (evt) => {
   if (evt.key === 'Escape') {
     removeCurrentCard();
   }
@@ -314,14 +313,16 @@ const renderCard = (ad) => {
   renderPhotos(cardElement.querySelector(`.popup__photos`), ad.offer.photos);
   cardElement.querySelector(`.popup__avatar`).src = ad.author.avatar;
 
-  closeButton.addEventListener('click', removeCurrentCard);
+  closeButton.addEventListener('click', () => {
+    removeCurrentCard();
+  });
   closeButton.addEventListener('keydown', (evt) => {
     if (evt.key === 'Enter') {
       removeCurrentCard();
     }
   });
 
-  document.addEventListener('keydown', onDocumentEscPressHandler);
+  document.addEventListener('keydown', onDocumentEscPress);
 
   document.querySelector(`.map__filters-container`).before(cardElement);
 };
