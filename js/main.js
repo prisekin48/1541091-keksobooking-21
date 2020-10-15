@@ -121,7 +121,7 @@ let isActive = false;
  */
 const setAddress = () => {
   if (isActive) {
-    adAddress.setAttribute('value', `${parseInt(mainPin.style.left, 10) + PinShifts.X}, ${parseInt(mainPin.style.top, 10) + PinShifts.Y}`);
+    adAddress.setAttribute('value', `${parseInt(mainPin.style.left, 10) + window.pin.PinShifts.X}, ${parseInt(mainPin.style.top, 10) + window.pin.PinShifts.Y}`);
   } else {
     adAddress.setAttribute('value', `${parseInt(mainPin.style.left, 10)}, ${parseInt(mainPin.style.top, 10)}`);
   }

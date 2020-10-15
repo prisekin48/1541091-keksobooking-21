@@ -1,11 +1,6 @@
 'use strict';
 
 (() => {
-  const PinShifts = {
-    X: 25,
-    Y: 70
-  };
-
   const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
 
   /** Prepares and returns .map__pin element with adData
@@ -13,11 +8,15 @@
    *  @return {object} pin element
    */
   window.pin = {
+    PinShifts: {
+      X: 25,
+      Y: 70
+    },
     createPin: (adData) => {
       const pinElement = pinTemplate.cloneNode(true);
       const pinElementImage = pinElement.querySelector(`img`);
-      pinElement.style.left = `${adData.location.x - PinShifts.X}px`;
-      pinElement.style.top = `${adData.location.y - PinShifts.Y}px`;
+      pinElement.style.left = `${adData.location.x - window.pin.PinShifts.X}px`;
+      pinElement.style.top = `${adData.location.y - window.pin.PinShifts.Y}px`;
       pinElementImage.src = `${adData.author.avatar}`;
       pinElementImage.alt = `${adData.offer.title}`;
 
