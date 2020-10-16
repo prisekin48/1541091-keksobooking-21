@@ -5,8 +5,18 @@
   const mapFilters = map.querySelectorAll('.map__filter');
   const mapFilterFeatures = map.querySelector('.map__features');
 
+
   window.map = {
     map: map,
+      /**
+       * Removes currently opened card if Escape is pressed
+       * @param  {object} evt Given event
+       */
+      onDocumentEscPress: (evt) => {
+        if (evt.key === 'Escape') {
+          window.map.removeCurrentCard();
+        }
+      },
 
     /**
      * Removes all pins except the main one;
@@ -60,7 +70,7 @@
       }
 
       window.map.unsetActivePin();
-      document.removeEventListener('keydown', onDocumentEscPress);
+      document.removeEventListener('keydown', window.map.onDocumentEscPress);
     },
 
     /**

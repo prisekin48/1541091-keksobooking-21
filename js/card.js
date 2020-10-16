@@ -1,6 +1,5 @@
 'use strict';
 
-
 (() => {
   /**
    * Inserts text data into an element if the data exists
@@ -71,7 +70,7 @@
       insertAndCheckTextData(ad.offer.title, cardElement.querySelector(`.popup__title`));
       insertAndCheckTextData(ad.offer.address, cardElement.querySelector(`.popup__text--address`));
       insertAndCheckTextData(`${ad.offer.price}₽/ночь`, cardElement.querySelector(`.popup__text--price`));
-      insertAndCheckTextData(adMocksData.TYPES_DESCRIPTION[ad.offer.type], cardElement.querySelector(`.popup__type`));
+      insertAndCheckTextData(window.data.adMocksData.TYPES_DESCRIPTION[ad.offer.type], cardElement.querySelector(`.popup__type`));
       insertAndCheckTextData(`${ad.offer.rooms} комнаты для ${ad.offer.guests} гостей`, cardElement.querySelector(`.popup__text--capacity`));
       insertAndCheckTextData(`Заезд после ${ad.offer.checkin}, выезд до ${ad.offer.checkout}`, cardElement.querySelector(`.popup__text--time`));
       renderFeatures(cardElement.querySelector(`.popup__features`), ad.offer.features);
@@ -80,15 +79,16 @@
       cardElement.querySelector(`.popup__avatar`).src = ad.author.avatar;
 
       closeButton.addEventListener('click', () => {
-        removeCurrentCard();
+        window.map.removeCurrentCard();
       });
+
       closeButton.addEventListener('keydown', (evt) => {
         if (evt.key === 'Enter') {
-          removeCurrentCard();
+          window.map.removeCurrentCard();
         }
       });
 
-      document.addEventListener('keydown', onDocumentEscPress);
+      document.addEventListener('keydown', window.map.onDocumentEscPress);
 
       document.querySelector(`.map__filters-container`).before(cardElement);
     }
