@@ -1,66 +1,5 @@
 'use strict';
 
-const map = document.querySelector(`.map`);
-
-
-
-
-
-/**
- * Removes all pins except the main one;
- */
-const removePins = () => {
-  const pins = map.querySelectorAll('.map__pin:not(.map__pin--main)');
-  for (const pin of pins) {
-    pin.remove();
-  }
-};
-
-/**
- * Unsets active pin state
- */
-const unsetActivePin = () => {
-  const activePin = map.querySelector('.map__pin--active');
-  if (activePin) {
-    activePin.classList.remove('map__pin--active');
-  }
-};
-
-/**
- * Sets given pin as active
- * @param  {object.HTML-node} pin Currently active pin
- */
-const setActivePin = (pin) => {
-  pin.classList.add('map__pin--active');
-};
-
-/** Adds prepared pin elements to an html fragment and render the fragment into .map__pins
- *  @param {Array.<Object>} ads - An array with ad's data
- */
-const renderPins = (ads) => {
-  const fragment = document.createDocumentFragment();
-  const mapPins = map.querySelector(`.map__pins`);
-
-  ads.forEach(ad => {
-    const element = window.pin.createPin(ad);
-    fragment.appendChild(element);
-  });
-  mapPins.appendChild(fragment);
-};
-
-/**
- * Removes currently opened card;
- */
-const removeCurrentCard = () => {
-  const card = map.querySelector('.map__card');
-  if (card) {
-    card.remove();
-  }
-
-  unsetActivePin();
-  document.removeEventListener('keydown', onDocumentEscPress);
-};
-
 /**
  * Invokes when Enter is pressed on a pin
  * @param  {object.event} evt Given event
@@ -69,8 +8,8 @@ const removeCurrentCard = () => {
  */
 const onPinPressEnter = (evt, ad, pin) => {
   if (evt.key === 'Enter') {
-    removeCurrentCard();
-    setActivePin(pin);
+    window.map.removeCurrentCard();
+    window.map.setActivePin(pin);
     renderCard(ad);
   }
 };
@@ -81,8 +20,8 @@ const onPinPressEnter = (evt, ad, pin) => {
  * @param {object.HTML-node} pin Clicked pin
  */
 const onPinClick = (ad, pin) => {
-  removeCurrentCard();
-  setActivePin(pin);
+  window.map.removeCurrentCard();
+  window.map.setActivePin(pin);
   window.card.renderCard(ad);
 };
 
@@ -98,7 +37,7 @@ const onPinClick = (ad, pin) => {
  */
 const onDocumentEscPress = (evt) => {
   if (evt.key === 'Escape') {
-    removeCurrentCard();
+    window.map.removeCurrentCard();
   }
 };
 
@@ -109,10 +48,8 @@ const onDocumentEscPress = (evt) => {
  */
 
 const form = document.querySelector('.ad-form');
-const allFieldsets = form.querySelectorAll('fieldset');
-const mapFilters = map.querySelectorAll('.map__filter');
-const mapFilterFeatures = map.querySelector('.map__features');
 const mainPin = document.querySelector('.map__pin--main');
+const allFieldsets = form.querySelectorAll('fieldset');
 const adAddress = form.querySelector('#address');
 let isActive = false;
 
@@ -147,16 +84,7 @@ const enableForm = () => {
   }
 };
 
-/**
- * Switches filters state according to the map mode
- * @param {boolean} flag Is-map-active flag
- */
-const switchFiltersState = (flag) => {
-  for (const filter of mapFilters) {
-    filter.disabled = !flag;
-  }
-  mapFilterFeatures.disabled = !flag;
-};
+
 
 /**
  * Initiates activate function if pressed enter on the focused main pin
@@ -193,10 +121,10 @@ const addMainPinListeners = () => {
 const activate = () => {
   if (!isActive) {
     isActive = true;
-    map.classList.remove(`map--faded`);
-    switchFiltersState(isActive);
+    window.map.map.classList.remove(`map--faded`);
+    window.map.switchFiltersState(isActive);
     enableForm();
-    renderPins(window.data.ads);
+    window.map.renderPins(window.data.ads);
     setAddress();
     mainPin.removeEventListener('mousedown', onMainPinMouseDown);
     mainPin.removeEventListener('keydown', onMainPinPressEnter);
@@ -208,9 +136,9 @@ const activate = () => {
  */
 const deactivate = () => {
   isActive = false;
-  removePins();
+  window.map.removePins();
   map.classList.add(`map--faded`);
-  switchFiltersState(isActive);
+  window.map.switchFiltersState(isActive);
   disableForm();
   addMainPinListeners();
   setAddress();
@@ -346,7 +274,7 @@ adRoomNumber.addEventListener('change', function () {
 });
 
 setAddress();
-switchFiltersState(isActive);
+window.map.switchFiltersState(isActive);
 disableForm();
 addMainPinListeners();
 setCapacity();
