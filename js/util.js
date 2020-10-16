@@ -1,4 +1,5 @@
 'use strict';
+
 (() => {
   window.util = {
     /** Returns a random element of the given array

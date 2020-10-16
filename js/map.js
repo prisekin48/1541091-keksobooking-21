@@ -2,27 +2,28 @@
 
 (() => {
   const map = document.querySelector(`.map`);
-  const mapFilters = map.querySelectorAll('.map__filter');
-  const mapFilterFeatures = map.querySelector('.map__features');
+  const mapFilters = map.querySelectorAll(`.map__filter`);
+  const mapFilterFeatures = map.querySelector(`.map__features`);
 
 
   window.map = {
     map: map,
-      /**
-       * Removes currently opened card if Escape is pressed
-       * @param  {object} evt Given event
-       */
-      onDocumentEscPress: (evt) => {
-        if (evt.key === 'Escape') {
-          window.map.removeCurrentCard();
-        }
-      },
+
+    /**
+     * Removes currently opened card if Escape is pressed
+     * @param  {object} evt Given event
+     */
+    onDocumentEscPress: (evt) => {
+      if (evt.key === `Escape`) {
+        window.map.removeCurrentCard();
+      }
+    },
 
     /**
      * Removes all pins except the main one;
      */
     removePins: () => {
-      const pins = map.querySelectorAll('.map__pin:not(.map__pin--main)');
+      const pins = map.querySelectorAll(`.map__pin:not(.map__pin--main)`);
       for (const pin of pins) {
         pin.remove();
       }
@@ -32,9 +33,9 @@
      * Unsets active pin state
      */
     unsetActivePin: () => {
-      const activePin = map.querySelector('.map__pin--active');
+      const activePin = map.querySelector(`.map__pin--active`);
       if (activePin) {
-        activePin.classList.remove('map__pin--active');
+        activePin.classList.remove(`map__pin--active`);
       }
     },
 
@@ -43,7 +44,7 @@
      * @param  {object.HTML-node} pin Currently active pin
      */
     setActivePin: (pin) => {
-      pin.classList.add('map__pin--active');
+      pin.classList.add(`map__pin--active`);
     },
 
     /** Adds prepared pin elements to an html fragment and render the fragment into .map__pins
@@ -53,7 +54,7 @@
       const fragment = document.createDocumentFragment();
       const mapPins = map.querySelector(`.map__pins`);
 
-      ads.forEach(ad => {
+      ads.forEach((ad) => {
         const element = window.pin.createPin(ad);
         fragment.appendChild(element);
       });
@@ -64,13 +65,13 @@
      * Removes currently opened card;
      */
     removeCurrentCard: () => {
-      const card = map.querySelector('.map__card');
+      const card = map.querySelector(`.map__card`);
       if (card) {
         card.remove();
       }
 
       window.map.unsetActivePin();
-      document.removeEventListener('keydown', window.map.onDocumentEscPress);
+      document.removeEventListener(`keydown`, window.map.onDocumentEscPress);
     },
 
     /**

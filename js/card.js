@@ -65,7 +65,7 @@
     renderCard: (ad) => {
       const cardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
       const cardElement = cardTemplate.cloneNode(true);
-      const closeButton = cardElement.querySelector('.popup__close');
+      const closeButton = cardElement.querySelector(`.popup__close`);
 
       insertAndCheckTextData(ad.offer.title, cardElement.querySelector(`.popup__title`));
       insertAndCheckTextData(ad.offer.address, cardElement.querySelector(`.popup__text--address`));
@@ -78,17 +78,17 @@
       renderPhotos(cardElement.querySelector(`.popup__photos`), ad.offer.photos);
       cardElement.querySelector(`.popup__avatar`).src = ad.author.avatar;
 
-      closeButton.addEventListener('click', () => {
+      closeButton.addEventListener(`click`, () => {
         window.map.removeCurrentCard();
       });
 
-      closeButton.addEventListener('keydown', (evt) => {
-        if (evt.key === 'Enter') {
+      closeButton.addEventListener(`keydown`, (evt) => {
+        if (evt.key === `Enter`) {
           window.map.removeCurrentCard();
         }
       });
 
-      document.addEventListener('keydown', window.map.onDocumentEscPress);
+      document.addEventListener(`keydown`, window.map.onDocumentEscPress);
 
       document.querySelector(`.map__filters-container`).before(cardElement);
     }

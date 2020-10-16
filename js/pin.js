@@ -10,7 +10,7 @@
    * @param {object.HTML-node} pin Pressed pin
    */
   const onPinPressEnter = (evt, ad, pin) => {
-    if (evt.key === 'Enter') {
+    if (evt.key === `Enter`) {
       window.map.removeCurrentCard();
       window.map.setActivePin(pin);
       window.card.renderCard(ad);
@@ -45,11 +45,11 @@
       pinElementImage.src = `${adData.author.avatar}`;
       pinElementImage.alt = `${adData.offer.title}`;
 
-      pinElement.addEventListener('keydown', (evt) => {
+      pinElement.addEventListener(`keydown`, (evt) => {
         onPinPressEnter(evt, adData, pinElement);
       });
 
-      pinElement.addEventListener('click', () => {
+      pinElement.addEventListener(`click`, () => {
         onPinClick(adData, pinElement);
       });
 

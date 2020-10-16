@@ -34,12 +34,12 @@
   };
 
   const AdsDataConsts = {
-      ADS_COUNT: 8,
-      ROOMS_MIN: 1,
-      ROOMS_MAX: 5,
-      GUESTS_MIN: 1,
-      GUESTS_MAX: 5
-    };
+    ADS_COUNT: 8,
+    ROOMS_MIN: 1,
+    ROOMS_MAX: 5,
+    GUESTS_MIN: 1,
+    GUESTS_MAX: 5
+  };
 
   window.data = {
     adMocksData: adMocksData,

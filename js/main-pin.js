@@ -1,6 +1,7 @@
 'use strict';
+
 (() => {
-  const mainPin = document.querySelector('.map__pin--main');
+  const mainPin = document.querySelector(`.map__pin--main`);
 
   window.mainPin = {
     mainPin: mainPin,
@@ -9,7 +10,7 @@
      * @param  {object} evt - transfered KeyboardEvent from the listener
      */
     onMainPinPressEnter: (evt) => {
-      if (evt.key === 'Enter') {
+      if (evt.key === `Enter`) {
         window.main.activate();
       }
     },
@@ -28,8 +29,8 @@
      * Adds mousedown (for main button) and keydown (for enter) event listeners to the main pin
      */
     addMainPinListeners: () => {
-      mainPin.addEventListener('mousedown', window.mainPin.onMainPinMouseDown);
-      mainPin.addEventListener('keydown', window.mainPin.onMainPinPressEnter);
+      mainPin.addEventListener(`mousedown`, window.mainPin.onMainPinMouseDown);
+      mainPin.addEventListener(`keydown`, window.mainPin.onMainPinPressEnter);
     }
   };
 })();

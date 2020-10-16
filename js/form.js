@@ -1,16 +1,17 @@
 'use strict';
+
 (() => {
 
-  const form = document.querySelector('.ad-form');
-  const allFieldsets = form.querySelectorAll('fieldset');
-  const adAddress = form.querySelector('#address');
-  const adTitle = form.querySelector('#title');
-  const adPrice = form.querySelector('#price');
-  const adType = form.querySelector('#type');
-  const adTimein = form.querySelector('#timein');
-  const adTimeout = form.querySelector('#timeout');
-  const adRoomNumber = form.querySelector('#room_number');
-  const adCapacity = form.querySelector('#capacity');
+  const form = document.querySelector(`.ad-form`);
+  const allFieldsets = form.querySelectorAll(`fieldset`);
+  const adAddress = form.querySelector(`#address`);
+  const adTitle = form.querySelector(`#title`);
+  const adPrice = form.querySelector(`#price`);
+  const adType = form.querySelector(`#type`);
+  const adTimein = form.querySelector(`#timein`);
+  const adTimeout = form.querySelector(`#timeout`);
+  const adRoomNumber = form.querySelector(`#room_number`);
+  const adCapacity = form.querySelector(`#capacity`);
 
   const AdConsts = {
     MIN_TITLE_LENGHT: 30,
@@ -36,9 +37,9 @@
    */
   const showInvalidBorder = (input) => {
     if (!input.validity.valid) {
-      input.style.border = '2px solid #f00';
+      input.style.border = `2px solid #f00`;
     } else {
-      input.style.border = 'unset';
+      input.style.border = `unset`;
     }
   };
 
@@ -67,7 +68,7 @@
     } else if (adPrice.value > AdConsts.MAX_PRICE) {
       adPrice.setCustomValidity(invalidMessage);
     } else {
-      adPrice.setCustomValidity('');
+      adPrice.setCustomValidity(``);
     }
 
     showInvalidBorder(adPrice);
@@ -80,7 +81,7 @@
      * Disables all the form inputs and the form itself
      */
     disableForm: () => {
-      form.classList.add('ad-form--disabled');
+      form.classList.add(`ad-form--disabled`);
       for (const fieldset of allFieldsets) {
         fieldset.disabled = true;
       }
@@ -90,7 +91,7 @@
      * Enables all the form inputs and the form itself
      */
     enableForm: () => {
-      form.classList.remove('ad-form--disabled');
+      form.classList.remove(`ad-form--disabled`);
       for (const fieldset of allFieldsets) {
         fieldset.disabled = false;
       }
@@ -112,7 +113,7 @@
     }
   };
 
-  adTitle.addEventListener('input', function () {
+  adTitle.addEventListener(`input`, function () {
     let invalidMessage = `Заголовок объявления должен содержать от
                               ${AdConsts.MIN_TITLE_LENGHT} до ${AdConsts.MAX_TITLE_LENGHT} символов.
                               \nВы ввели ${adTitle.value.length}.`;
@@ -122,29 +123,29 @@
     } else if (adTitle.value.length > AdConsts.MAX_TITLE_LENGHT) {
       adTitle.setCustomValidity(invalidMessage);
     } else {
-      adTitle.setCustomValidity('');
+      adTitle.setCustomValidity(``);
     }
 
     showInvalidBorder(adTitle);
     adTitle.reportValidity();
   });
 
-  adPrice.addEventListener('input', checkPriceValidity);
+  adPrice.addEventListener(`input`, checkPriceValidity);
 
-  adTimein.addEventListener('change', function (evt) {
+  adTimein.addEventListener(`change`, function (evt) {
     setCheckInOutTimes(evt);
   });
 
-  adTimeout.addEventListener('change', function (evt) {
+  adTimeout.addEventListener(`change`, function (evt) {
     setCheckInOutTimes(evt);
   });
 
-  adType.addEventListener('change', function () {
+  adType.addEventListener(`change`, function () {
     adPrice.placeholder = AdConsts.MIN_PRICE[adType.value];
     checkPriceValidity();
   });
 
-  adRoomNumber.addEventListener('change', function () {
+  adRoomNumber.addEventListener(`change`, function () {
     const anyEnabledIndex = 0;
     const adRoomNumberIndex = adRoomNumber.options.selectedIndex;
     adCapacity.options.selectedIndex = RoomsToCapacityIndexesCorrelation[adRoomNumberIndex].enabled[anyEnabledIndex];

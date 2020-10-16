@@ -8,9 +8,9 @@
    */
   const setAddress = () => {
     if (isActive) {
-      window.form.adAddress.setAttribute('value', `${parseInt(window.mainPin.mainPin.style.left, 10) + window.pin.PinShifts.X}, ${parseInt(window.mainPin.mainPin.style.top, 10) + window.pin.PinShifts.Y}`);
+      window.form.adAddress.setAttribute(`value`, `${parseInt(window.mainPin.mainPin.style.left, 10) + window.pin.PinShifts.X}, ${parseInt(window.mainPin.mainPin.style.top, 10) + window.pin.PinShifts.Y}`);
     } else {
-      window.form.adAddress.setAttribute('value', `${parseInt(window.mainPin.mainPin.style.left, 10)}, ${parseInt(window.mainPin.mainPin.style.top, 10)}`);
+      window.form.adAddress.setAttribute(`value`, `${parseInt(window.mainPin.mainPin.style.left, 10)}, ${parseInt(window.mainPin.mainPin.style.top, 10)}`);
     }
   };
 
@@ -26,8 +26,8 @@
         window.form.enableForm();
         window.map.renderPins(window.data.ads);
         setAddress();
-        window.mainPin.mainPin.removeEventListener('mousedown', window.mainPin.onMainPinMouseDown);
-        window.mainPin.mainPin.removeEventListener('keydown', window.mainPin.onMainPinPressEnter);
+        window.mainPin.mainPin.removeEventListener(`mousedown`, window.mainPin.onMainPinMouseDown);
+        window.mainPin.mainPin.removeEventListener(`keydown`, window.mainPin.onMainPinPressEnter);
       }
     },
 
