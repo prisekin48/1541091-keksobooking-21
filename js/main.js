@@ -26,7 +26,7 @@
         window.form.enableForm();
         window.map.renderPins(window.data.ads);
         setAddress();
-        window.mainPin.mainPin.removeEventListener(`mousedown`, window.mainPin.onMainPinMouseDown);
+        // window.mainPin.mainPin.removeEventListener(`mousedown`, window.mainPin.onMainPinMouseDown);
         window.mainPin.mainPin.removeEventListener(`keydown`, window.mainPin.onMainPinPressEnter);
       }
     },

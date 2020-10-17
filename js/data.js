@@ -2,12 +2,21 @@
 
 (() => {
 
+
   const PinCoordinates = {
     MIN_Y: 130,
     MAX_Y: 630,
     MIN_X: 0,
     MAX_X: 1200
   };
+  console.log(PinCoordinates);
+
+  // const PinCoordinates = {
+  //   MIN_Y: 130,
+  //   MAX_Y: 630,
+  //   MIN_X: 0,
+  //   MAX_X: 1200
+  // };
 
   const adMocksData = {
     TITLES: [`Квартира`, `Дом`, `Апартаменты`, `Помещение свободного назначения`],
@@ -42,6 +51,7 @@
   };
 
   window.data = {
+    PinCoordinates: PinCoordinates,
     adMocksData: adMocksData,
     /** Generates an array with adds descriptions from prepared object with needed data.
      *  @param {int} count - Quantity of needed objects in descriptions array
