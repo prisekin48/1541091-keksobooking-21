@@ -3,18 +3,20 @@
 (() => {
   let isActive = false;
 
-  /**
-   * Set address according to the map mode
-   */
-  const setAddress = () => {
-    if (isActive) {
-      window.form.adAddress.setAttribute(`value`, `${parseInt(window.mainPin.mainPin.style.left, 10) + window.pin.PinShifts.X}, ${parseInt(window.mainPin.mainPin.style.top, 10) + window.pin.PinShifts.Y}`);
-    } else {
-      window.form.adAddress.setAttribute(`value`, `${parseInt(window.mainPin.mainPin.style.left, 10)}, ${parseInt(window.mainPin.mainPin.style.top, 10)}`);
-    }
-  };
+
 
   window.main = {
+    /**
+     * Set address according to the map mode
+     */
+    setAddress: () => {
+      if (isActive) {
+        window.form.adAddress.setAttribute(`value`, `${window.mainPin.mainPin.offsetLeft + window.mainPin.mainPinShifts.x}, ${window.mainPin.mainPin.offsetTop + window.mainPin.mainPinShifts.y}`);
+      } else {
+        window.form.adAddress.setAttribute(`value`, `${parseInt(window.mainPin.mainPin.style.left, 10)}, ${parseInt(window.mainPin.mainPin.style.top, 10)}`);
+      }
+    },
+
     /**
      * Enables active mode
      */
@@ -25,8 +27,7 @@
         window.map.switchFiltersState(isActive);
         window.form.enableForm();
         window.map.renderPins(window.data.ads);
-        setAddress();
-        // window.mainPin.mainPin.removeEventListener(`mousedown`, window.mainPin.onMainPinMouseDown);
+        window.main.setAddress();
         window.mainPin.mainPin.removeEventListener(`keydown`, window.mainPin.onMainPinPressEnter);
       }
     },
@@ -41,11 +42,11 @@
       window.map.switchFiltersState(isActive);
       window.form.disableForm();
       window.mainPin.addMainPinListeners();
-      setAddress();
+      window.main.setAddress();
     }
   };
 
-  setAddress();
+  window.main.setAddress();
   window.map.switchFiltersState(isActive);
   window.form.disableForm();
   window.mainPin.addMainPinListeners();

@@ -2,26 +2,29 @@
 
 (() => {
   const mainPin = document.querySelector(`.map__pin--main`);
-  const mainPinXShift = 31;
-  const mainPinYShift = 84;
   const mainPinWidth = 62;
+
+  const mainPinShifts = {
+    x: 31,
+    y: 84
+  };
 
   let startCoords = {};
 
   const calcCoords = (shift, moveEvt) => {
 
-    if (mainPin.offsetTop < window.data.PinCoordinates.MIN_Y - mainPinYShift) {
-      mainPin.style.top = (window.data.PinCoordinates.MIN_Y - mainPinYShift) + `px`;
-    } else if (mainPin.offsetTop > window.data.PinCoordinates.MAX_Y - mainPinYShift) {
-      mainPin.style.top = (window.data.PinCoordinates.MAX_Y - mainPinYShift) + `px`;
+    if (mainPin.offsetTop < window.data.PinCoordinates.MIN_Y - mainPinShifts.y) {
+      mainPin.style.top = (window.data.PinCoordinates.MIN_Y - mainPinShifts.y) + `px`;
+    } else if (mainPin.offsetTop > window.data.PinCoordinates.MAX_Y - mainPinShifts.y) {
+      mainPin.style.top = (window.data.PinCoordinates.MAX_Y - mainPinShifts.y) + `px`;
     } else {
       mainPin.style.top = (mainPin.offsetTop - shift.y) + `px`;
     }
 
-    if (mainPin.offsetLeft < window.data.PinCoordinates.MIN_X - mainPinXShift) {
-      mainPin.style.left = (window.data.PinCoordinates.MIN_X - mainPinXShift) + `px`;
-    } else if (mainPin.offsetLeft > window.data.PinCoordinates.MAX_X - mainPinXShift) {
-      mainPin.style.left = (window.data.PinCoordinates.MAX_X - mainPinXShift) + `px`;
+    if (mainPin.offsetLeft < window.data.PinCoordinates.MIN_X - mainPinShifts.x) {
+      mainPin.style.left = (window.data.PinCoordinates.MIN_X - mainPinShifts.x) + `px`;
+    } else if (mainPin.offsetLeft > window.data.PinCoordinates.MAX_X - mainPinShifts.x) {
+      mainPin.style.left = (window.data.PinCoordinates.MAX_X - mainPinShifts.x) + `px`;
     } else {
       mainPin.style.left = (mainPin.offsetLeft - shift.x) + `px`;
     }
@@ -44,6 +47,7 @@
 
   const onMainPinMouseUp = (upEvt) => {
     console.log('mouseup');
+    window.main.setAddress();
     document.removeEventListener('mousemove', onMainPinMouseMove);
     document.removeEventListener('mouseup', onMainPinMouseUp);
   };
@@ -51,6 +55,7 @@
 
   window.mainPin = {
     mainPin: mainPin,
+    mainPinShifts: mainPinShifts,
     /**
      * Initiates activate function if pressed enter on the focused main pin
      * @param  {object} evt - transfered KeyboardEvent from the listener
