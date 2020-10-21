@@ -70,7 +70,6 @@
   };
 
   const onMainPinMouseUp = (upEvt) => {
-
     document.removeEventListener('mousemove', onMainPinMouseMove);
     document.removeEventListener('mouseup', onMainPinMouseUp);
   };
