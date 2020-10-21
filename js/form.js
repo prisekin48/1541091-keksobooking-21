@@ -110,6 +110,13 @@
     }
   };
 
+  /**Sets min and max attributes for #price input
+   */
+  const setMinMaxPrice = () => {
+    adPrice.min = AdConsts.MIN_PRICE[adType.value];
+    adPrice.max = AdConsts.MAX_PRICE;
+  };
+
 
   adTitle.addEventListener(`input`, function () {
     let invalidMessage = `Заголовок объявления должен содержать от
@@ -140,6 +147,7 @@
 
   adType.addEventListener(`change`, function () {
     adPrice.placeholder = AdConsts.MIN_PRICE[adType.value];
+    setMinMaxPrice();
     checkPriceValidity();
   });
 
@@ -150,6 +158,8 @@
 
     setCapacity();
   });
+
+  setMinMaxPrice();
 
   window.form = {
     adAddress: adAddress,
