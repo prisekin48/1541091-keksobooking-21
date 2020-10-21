@@ -76,26 +76,6 @@
   };
 
   /**
-   * Disables all the form inputs and the form itself
-   */
-  const disableForm = () => {
-    form.classList.add(`ad-form--disabled`);
-    for (const fieldset of allFieldsets) {
-      fieldset.disabled = true;
-    }
-  };
-
-  /**
-   * Enables all the form inputs and the form itself
-   */
-  const enableForm = () => {
-    form.classList.remove(`ad-form--disabled`);
-    for (const fieldset of allFieldsets) {
-      fieldset.disabled = false;
-    }
-  };
-
-  /**
    * Sets correct capacity according to RoomsToCapacityIndexesCorrelation
    */
   const setCapacity = () => {
@@ -109,6 +89,28 @@
       adCapacity.options[index].disabled = false;
     }
   };
+
+  /**
+   * Disables all the form inputs and the form itself
+   */
+  const disableForm = () => {
+    form.classList.add(`ad-form--disabled`);
+    for (const fieldset of allFieldsets) {
+      fieldset.disabled = true;
+    }
+    setCapacity();
+  };
+
+  /**
+   * Enables all the form inputs and the form itself
+   */
+  const enableForm = () => {
+    form.classList.remove(`ad-form--disabled`);
+    for (const fieldset of allFieldsets) {
+      fieldset.disabled = false;
+    }
+  };
+
 
   /**Sets min and max attributes for #price input
    */

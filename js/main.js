@@ -10,9 +10,7 @@
     window.main.isActive = true;
     window.map.switchState(window.main.isActive);
     window.form.enable();
-    window.mainPin.setAddress(window.main.isActive, window.mainPin.htmlNode.offsetLeft, window.mainPin.htmlNode.offsetTop);
-    window.mainPin.htmlNode.removeEventListener(`keydown`, window.mainPin.onMainPinPressEnter);
-    window.mainPin.htmlNode.removeEventListener(`click`, window.mainPin.onMainPinClick);
+
   };
 
   /**
@@ -24,7 +22,6 @@
     window.form.disable();
     window.mainPin.addMainPinListeners();
     window.mainPin.setAddress(window.main.isActive, window.mainPin.htmlNode.offsetLeft, window.mainPin.htmlNode.offsetTop);
-    window.form.setCapacity();
   };
 
 

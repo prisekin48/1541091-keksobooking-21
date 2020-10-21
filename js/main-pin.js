@@ -36,6 +36,11 @@
     }
   };
 
+  /**
+   * Sets mainPin coordinates if it's been moving into certain area
+   * @param  {object} shift   Given object with shifts
+   * @param  {[type]} moveEvt `mousemove` event
+   */
   const setCoords = (shift, moveEvt) => {
 
     if (mainPin.offsetTop < window.map.pinCoordinates.MIN_Y - MainPinConsts.ACTIVE_SHIFT_Y) {
@@ -59,6 +64,10 @@
 
   };
 
+  /**
+   * Manages `mousemove` event calculating mainPin coords
+   * @param  {object.event} moveEvt Mousemove event
+   */
   const onMainPinMouseMove = (moveEvt) => {
     let shift = {
       x: currentCoords.x - moveEvt.clientX,
@@ -71,6 +80,10 @@
     setCoords(shift, moveEvt);
   };
 
+  /**
+   * Removes `mousemove` and `mouseup` listeners on `mouseup` event
+   * @return {object.event} upEvt Up event
+   */
   const onMainPinMouseUp = (upEvt) => {
     document.removeEventListener('mousemove', onMainPinMouseMove);
     document.removeEventListener('mouseup', onMainPinMouseUp);
@@ -87,21 +100,27 @@
   };
 
   /**
-   * Initiates activate function if pressed the main mouse button on the main pin
+   * Adds `mousemove` and `mouseup` listeners on main pin mouse down, and rewrites currentCoords
    * @param  {object} evt - transfered MouseEvent from the listener
    */
   const onMainPinMouseDown = (evt) => {
     if (evt.button === 0) {
       currentCoords.x = evt.clientX;
       currentCoords.y = evt.clientY;
-      console.log('mousedown');
       document.addEventListener(`mousemove`, onMainPinMouseMove);
       document.addEventListener(`mouseup`, onMainPinMouseUp);
     }
   };
 
+  /**
+   * Initiates page activation, removes main pin `keydown` and `click` listeners
+   * @param  {object} evt - transfered event object from the listener
+   */
   const onMainPinClick = (evt) => {
     window.main.activate();
+    window.mainPin.setAddress(window.main.isActive, mainPin.offsetLeft, mainPin.offsetTop);
+    window.mainPin.htmlNode.removeEventListener(`keydown`, onMainPinPressEnter);
+    window.mainPin.htmlNode.removeEventListener(`click`, onMainPinClick);
   };
 
   /**
