@@ -13,8 +13,9 @@
       window.map.switchFiltersState(isActive);
       window.form.enable();
       window.map.renderPins(window.data.ads);
-      window.mainPin.setAddress(window.main.isActive, window.mainPin.htmlNode.offsetLeft + window.mainPin.consts.ACTIVE_SHIFT_X, window.mainPin.htmlNode.offsetTop + window.mainPin.consts.ACTIVE_SHIFT_Y);
+      window.mainPin.setAddress(window.main.isActive, window.mainPin.htmlNode.offsetLeft, window.mainPin.htmlNode.offsetTop);
       window.mainPin.htmlNode.removeEventListener(`keydown`, window.mainPin.onMainPinPressEnter);
+      window.mainPin.htmlNode.removeEventListener(`click`, window.mainPin.onMainPinClick);
     }
   };
 
@@ -28,7 +29,7 @@
     window.map.switchFiltersState(isActive);
     window.form.disable();
     window.mainPin.addMainPinListeners();
-    window.mainPin.setAddress(isActive, window.mainPin.htmlNode.offsetLeft + window.mainPin.consts.INACTIVE_SHIFT_X, window.mainPin.htmlNode.offsetTop + window.mainPin.consts.INACTIVE_SHIFT_Y);
+    window.mainPin.setAddress(isActive, window.mainPin.htmlNode.offsetLeft, window.mainPin.htmlNode.offsetTop);
     window.form.setCapacity();
   };
 

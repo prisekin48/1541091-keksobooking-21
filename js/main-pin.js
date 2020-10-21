@@ -12,13 +12,14 @@
     START_Y: 375
   };
 
-  console.log(MainPinConsts);
-
   let currentCoords = {
     x: MainPinConsts.START_X,
     y: MainPinConsts.START_Y
   };
 
+  /**
+   * Resets the main pin to its initial position
+   */
   const resetMainPin = () => {
     mainPin.style.left = MainPinConsts.START_X;
     mainPin.style.top = MainPinConsts.START_Y;
@@ -29,9 +30,9 @@
    */
   const setAddress = (flag, x, y) => {
     if (flag) {
-      window.form.adAddress.setAttribute(`value`, `${mainPin.offsetLeft + MainPinConsts.ACTIVE_SHIFT_X}, ${mainPin.offsetTop + MainPinConsts.ACTIVE_SHIFT_Y}`);
+      window.form.adAddress.setAttribute(`value`, `${x + MainPinConsts.ACTIVE_SHIFT_X}, ${y + MainPinConsts.ACTIVE_SHIFT_Y}`);
     } else {
-      window.form.adAddress.setAttribute(`value`, `${MainPinConsts.START_X}, ${MainPinConsts.START_Y}`);
+      window.form.adAddress.setAttribute(`value`, `${x + MainPinConsts.INACTIVE_SHIFT_X}, ${y + MainPinConsts.INACTIVE_SHIFT_Y}`);
     }
   };
 
@@ -52,9 +53,10 @@
     } else {
       mainPin.style.left = (mainPin.offsetLeft - shift.x) + `px`;
     }
-    setAddress(window.main.isActive, mainPin.offsetLeft, mainPin.offsetTop);
 
+    setAddress(window.main.isActive, mainPin.offsetLeft, mainPin.offsetTop);
     console.log(mainPin.offsetLeft, mainPin.offsetTop, window.main.isActive);
+
   };
 
   const onMainPinMouseMove = (moveEvt) => {
@@ -95,14 +97,18 @@
       console.log('mousedown');
       document.addEventListener(`mousemove`, onMainPinMouseMove);
       document.addEventListener(`mouseup`, onMainPinMouseUp);
-      window.main.activate();
     }
+  };
+
+  const onMainPinClick = (evt) => {
+    window.main.activate();
   };
 
   /**
    * Adds mousedown (for main button) and keydown (for enter) event listeners to the main pin
    */
   const addMainPinListeners = () => {
+    mainPin.addEventListener(`click`, window.mainPin.onMainPinClick);
     mainPin.addEventListener(`mousedown`, window.mainPin.onMainPinMouseDown);
     mainPin.addEventListener(`keydown`, window.mainPin.onMainPinPressEnter);
   };
@@ -113,6 +119,7 @@
     consts: MainPinConsts,
     onMainPinPressEnter: onMainPinPressEnter,
     onMainPinMouseDown: onMainPinMouseDown,
+    onMainPinClick: onMainPinClick,
     addMainPinListeners: addMainPinListeners
   };
 })();
