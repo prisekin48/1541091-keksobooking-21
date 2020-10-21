@@ -89,7 +89,25 @@
     mapFilterFeatures.disabled = !flag;
   };
 
+
+  /**
+   * Switches state of the map depending on the given flag
+   */
+  const switchState = (flag) => {
+
+    switchFiltersState(flag);
+
+    if (flag) {
+      map.classList.remove(`map--faded`);
+      renderPins(window.data.ads);
+    } else {
+      map.classList.add(`map--faded`);
+      removePins();
+    }
+  };
+
   window.map = {
+    switchState: switchState,
     pinCoordinates: PinCoordinates,
     htmlNode: map,
     onDocumentEscPress: onDocumentEscPress,
