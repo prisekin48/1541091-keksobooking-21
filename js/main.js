@@ -3,52 +3,41 @@
 (() => {
   let isActive = false;
 
-
-
-  window.main = {
-    /**
-     * Set address according to the map mode
-     */
-    setAddress: () => {
-      if (isActive) {
-        window.form.adAddress.setAttribute(`value`, `${window.mainPin.mainPin.offsetLeft + window.mainPin.mainPinShifts.x}, ${window.mainPin.mainPin.offsetTop + window.mainPin.mainPinShifts.y}`);
-      } else {
-        window.form.adAddress.setAttribute(`value`, `${parseInt(window.mainPin.mainPin.style.left, 10)}, ${parseInt(window.mainPin.mainPin.style.top, 10)}`);
-      }
-    },
-
-    /**
-     * Enables active mode
-     */
-    activate: () => {
-      if (!isActive) {
-        isActive = true;
-        window.map.map.classList.remove(`map--faded`);
-        window.map.switchFiltersState(isActive);
-        window.form.enableForm();
-        window.map.renderPins(window.data.ads);
-        window.main.setAddress();
-        window.mainPin.mainPin.removeEventListener(`keydown`, window.mainPin.onMainPinPressEnter);
-      }
-    },
-
-    /**
-     * Enables inactive mode
-     */
-    deactivate: () => {
-      isActive = false;
-      window.map.removePins();
-      window.map.map.classList.add(`map--faded`);
+  /**
+   * Enables active mode
+   */
+  const activate = () => {
+    if (!isActive) {
+      window.main.isActive = true;
+      window.map.map.classList.remove(`map--faded`);
       window.map.switchFiltersState(isActive);
-      window.form.disableForm();
-      window.mainPin.addMainPinListeners();
-      window.main.setAddress();
+      window.form.enableForm();
+      window.map.renderPins(window.data.ads);
+      window.mainPin.setAddress(window.main.isActive, window.mainPin.htmlNode.offsetLeft + window.mainPin.consts.ACTIVE_SHIFT_X, window.mainPin.htmlNode.offsetTop + window.mainPin.consts.ACTIVE_SHIFT_Y);
+      window.mainPin.htmlNode.removeEventListener(`keydown`, window.mainPin.onMainPinPressEnter);
     }
   };
 
-  window.main.setAddress();
-  window.map.switchFiltersState(isActive);
-  window.form.disableForm();
-  window.mainPin.addMainPinListeners();
-  window.form.setCapacity();
+  /**
+   * Enables inactive mode
+   */
+  const deactivate = () => {
+    isActive = false;
+    window.map.removePins();
+    window.map.map.classList.add(`map--faded`);
+    window.map.switchFiltersState(isActive);
+    window.form.disableForm();
+    window.mainPin.addMainPinListeners();
+    window.mainPin.setAddress(window.main.isActive, window.mainPin.htmlNode.offsetLeft + window.mainPin.consts.INACTIVE_SHIFT_X, window.mainPin.htmlNode.offsetTop + window.mainPin.consts.INACTIVE_SHIFT_Y);
+    window.form.setCapacity();
+  };
+
+
+  window.main = {
+    isActive: isActive,
+    activate: activate,
+    deactivate: deactivate
+  };
+
+  deactivate();
 })();
