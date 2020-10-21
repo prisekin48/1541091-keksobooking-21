@@ -37,18 +37,18 @@
 
   const setCoords = (shift, moveEvt) => {
 
-    if (mainPin.offsetTop < window.data.PinCoordinates.MIN_Y - MainPinConsts.ACTIVE_SHIFT_Y) {
-      mainPin.style.top = (window.data.PinCoordinates.MIN_Y - MainPinConsts.ACTIVE_SHIFT_Y) + `px`;
-    } else if (mainPin.offsetTop > window.data.PinCoordinates.MAX_Y - MainPinConsts.ACTIVE_SHIFT_Y) {
-      mainPin.style.top = (window.data.PinCoordinates.MAX_Y - MainPinConsts.ACTIVE_SHIFT_Y) + `px`;
+    if (mainPin.offsetTop < window.map.pinCoordinates.MIN_Y - MainPinConsts.ACTIVE_SHIFT_Y) {
+      mainPin.style.top = (window.map.pinCoordinates.MIN_Y - MainPinConsts.ACTIVE_SHIFT_Y) + `px`;
+    } else if (mainPin.offsetTop > window.map.pinCoordinates.MAX_Y - MainPinConsts.ACTIVE_SHIFT_Y) {
+      mainPin.style.top = (window.map.pinCoordinates.MAX_Y - MainPinConsts.ACTIVE_SHIFT_Y) + `px`;
     } else {
       mainPin.style.top = (mainPin.offsetTop - shift.y) + `px`;
     }
 
-    if (mainPin.offsetLeft < window.data.PinCoordinates.MIN_X - MainPinConsts.ACTIVE_SHIFT_X) {
-      mainPin.style.left = (window.data.PinCoordinates.MIN_X - MainPinConsts.ACTIVE_SHIFT_X) + `px`;
-    } else if (mainPin.offsetLeft > window.data.PinCoordinates.MAX_X - MainPinConsts.ACTIVE_SHIFT_X) {
-      mainPin.style.left = (window.data.PinCoordinates.MAX_X - MainPinConsts.ACTIVE_SHIFT_X) + `px`;
+    if (mainPin.offsetLeft < window.map.pinCoordinates.MIN_X - MainPinConsts.ACTIVE_SHIFT_X) {
+      mainPin.style.left = (window.map.pinCoordinates.MIN_X - MainPinConsts.ACTIVE_SHIFT_X) + `px`;
+    } else if (mainPin.offsetLeft > window.map.pinCoordinates.MAX_X - MainPinConsts.ACTIVE_SHIFT_X) {
+      mainPin.style.left = (window.map.pinCoordinates.MAX_X - MainPinConsts.ACTIVE_SHIFT_X) + `px`;
     } else {
       mainPin.style.left = (mainPin.offsetLeft - shift.x) + `px`;
     }

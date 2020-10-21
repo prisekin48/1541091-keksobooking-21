@@ -2,23 +2,7 @@
 
 (() => {
 
-
-  const PinCoordinates = {
-    MIN_Y: 130,
-    MAX_Y: 630,
-    MIN_X: 0,
-    MAX_X: 1200
-  };
-  console.log(PinCoordinates);
-
-  // const PinCoordinates = {
-  //   MIN_Y: 130,
-  //   MAX_Y: 630,
-  //   MIN_X: 0,
-  //   MAX_X: 1200
-  // };
-
-  const adMocksData = {
+  const AdMocksData = {
     TITLES: [`Квартира`, `Дом`, `Апартаменты`, `Помещение свободного назначения`],
     PRICES_MIN: 10000,
     PRICES_MAX: 45000000,
@@ -50,48 +34,45 @@
     GUESTS_MAX: 5
   };
 
-  window.data = {
-    PinCoordinates: PinCoordinates,
-    adMocksData: adMocksData,
-    /** Generates an array with adds descriptions from prepared object with needed data.
-     *  @param {int} count - Quantity of needed objects in descriptions array
-     *  @return {array.<Object>} ads - Array of objects
-     */
-    generateAds: (count) => {
-      const ads = [];
+  /** Generates an array with adds descriptions from prepared object with needed data.
+   *  @param {int} count - Quantity of needed objects in descriptions array
+   *  @return {array.<Object>} ads - Array of objects
+   */
+  const generateAds = (count) => {
+    const ads = [];
 
-      for (let j = 0; j < count; j++) {
-        const ad = {
-          author: {
-            avatar: `img/avatars/user0${j + 1}.png`
-          },
-          offer: {
-            title: window.util.getRandomElementFromArray(adMocksData.TITLES),
-            price: window.util.getRandomNumber(adMocksData.PRICES_MIN, adMocksData.PRICES_MAX),
-            type: window.util.getRandomElementFromArray(Object.keys(adMocksData.TYPES_DESCRIPTION)),
-            rooms: window.util.getRandomNumber(AdsDataConsts.ROOMS_MIN, AdsDataConsts.ROOMS_MAX),
-            guests: window.util.getRandomNumber(AdsDataConsts.GUESTS_MIN, AdsDataConsts.GUESTS_MAX),
-            checkin: window.util.getRandomElementFromArray(adMocksData.CHECKIN_CHECKOUT_TIMES),
-            checkout: window.util.getRandomElementFromArray(adMocksData.CHECKIN_CHECKOUT_TIMES),
-            features: window.util.getRandomArray(adMocksData.FEATURES),
-            description: window.util.getRandomElementFromArray(adMocksData.DESCRIPTIONS),
-            photos: window.util.getRandomArray(adMocksData.PHOTOS)
-          },
-          location: {
-            x: window.util.getRandomNumber(PinCoordinates.MIN_X, PinCoordinates.MAX_X),
-            y: window.util.getRandomNumber(PinCoordinates.MIN_Y, PinCoordinates.MAX_Y)
-          }
-        };
-        ad.offer.address = `${ad.location.x}, ${ad.location.y}`;
-        ads.push(ad);
-      }
-
-      return ads;
+    for (let j = 0; j < count; j++) {
+      const ad = {
+        author: {
+          avatar: `img/avatars/user0${j + 1}.png`
+        },
+        offer: {
+          title: window.util.getRandomElementFromArray(AdMocksData.TITLES),
+          price: window.util.getRandomNumber(AdMocksData.PRICES_MIN, AdMocksData.PRICES_MAX),
+          type: window.util.getRandomElementFromArray(Object.keys(AdMocksData.TYPES_DESCRIPTION)),
+          rooms: window.util.getRandomNumber(AdsDataConsts.ROOMS_MIN, AdsDataConsts.ROOMS_MAX),
+          guests: window.util.getRandomNumber(AdsDataConsts.GUESTS_MIN, AdsDataConsts.GUESTS_MAX),
+          checkin: window.util.getRandomElementFromArray(AdMocksData.CHECKIN_CHECKOUT_TIMES),
+          checkout: window.util.getRandomElementFromArray(AdMocksData.CHECKIN_CHECKOUT_TIMES),
+          features: window.util.getRandomArray(AdMocksData.FEATURES),
+          description: window.util.getRandomElementFromArray(AdMocksData.DESCRIPTIONS),
+          photos: window.util.getRandomArray(AdMocksData.PHOTOS)
+        },
+        location: {
+          x: window.util.getRandomNumber(window.map.pinCoordinates.MIN_X, window.map.pinCoordinates.MAX_X),
+          y: window.util.getRandomNumber(window.map.pinCoordinates.MIN_Y, window.map.pinCoordinates.MAX_Y)
+        }
+      };
+      ad.offer.address = `${ad.location.x}, ${ad.location.y}`;
+      ads.push(ad);
     }
+
+    return ads;
   };
 
-  window.data.ads = window.data.generateAds(AdsDataConsts.ADS_COUNT);
-
-
+  window.data = {
+    adMocksData: AdMocksData,
+    ads: generateAds(AdsDataConsts.ADS_COUNT)
+  };
 })();
 
