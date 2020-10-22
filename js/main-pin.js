@@ -69,6 +69,7 @@
    * @param  {object.event} moveEvt Mousemove event
    */
   const onMainPinMouseMove = (moveEvt) => {
+
     let shift = {
       x: currentCoords.x - moveEvt.clientX,
       y: currentCoords.y - moveEvt.clientY,
@@ -78,6 +79,7 @@
     currentCoords.y = moveEvt.clientY;
 
     setCoords(shift, moveEvt);
+
   };
 
   /**
@@ -127,18 +129,14 @@
    * Adds mousedown (for main button) and keydown (for enter) event listeners to the main pin
    */
   const addMainPinListeners = () => {
-    mainPin.addEventListener(`click`, window.mainPin.onMainPinClick);
-    mainPin.addEventListener(`mousedown`, window.mainPin.onMainPinMouseDown);
-    mainPin.addEventListener(`keydown`, window.mainPin.onMainPinPressEnter);
+    mainPin.addEventListener(`click`, onMainPinClick);
+    mainPin.addEventListener(`mousedown`, onMainPinMouseDown);
+    mainPin.addEventListener(`keydown`, onMainPinPressEnter);
   };
 
   window.mainPin = {
     setAddress: setAddress,
     htmlNode: mainPin,
-    consts: MainPinConsts,
-    onMainPinPressEnter: onMainPinPressEnter,
-    onMainPinMouseDown: onMainPinMouseDown,
-    onMainPinClick: onMainPinClick,
     addMainPinListeners: addMainPinListeners
   };
 })();

@@ -74,7 +74,7 @@
       card.remove();
     }
 
-    window.map.unsetActivePin();
+    unsetActivePin();
     document.removeEventListener(`keydown`, window.map.onDocumentEscPress);
   };
 
@@ -109,12 +109,8 @@
   window.map = {
     switchState: switchState,
     pinCoordinates: PinCoordinates,
-    htmlNode: map,
     onDocumentEscPress: onDocumentEscPress,
-    removePins: removePins,
-    unsetActivePin: unsetActivePin,
     setActivePin: setActivePin,
-    renderPins: renderPins,
     removeCurrentCard: removeCurrentCard,
     switchFiltersState: switchFiltersState
   };

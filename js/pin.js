@@ -1,6 +1,12 @@
 'use strict';
 
 (() => {
+
+  const PinShifts = {
+    X: 25,
+    Y: 70
+  };
+
   const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
 
   /**
@@ -13,7 +19,7 @@
     if (evt.key === `Enter`) {
       window.map.removeCurrentCard();
       window.map.setActivePin(pin);
-      window.card.renderCard(ad);
+      window.card.render(ad);
     }
   };
 
@@ -35,8 +41,8 @@
   const createPin = (adData) => {
     const pinElement = pinTemplate.cloneNode(true);
     const pinElementImage = pinElement.querySelector(`img`);
-    pinElement.style.left = `${adData.location.x - window.pin.PinShifts.X}px`;
-    pinElement.style.top = `${adData.location.y - window.pin.PinShifts.Y}px`;
+    pinElement.style.left = `${adData.location.x - PinShifts.X}px`;
+    pinElement.style.top = `${adData.location.y - PinShifts.Y}px`;
     pinElementImage.src = `${adData.author.avatar}`;
     pinElementImage.alt = `${adData.offer.title}`;
 
@@ -52,10 +58,6 @@
   };
 
   window.pin = {
-    PinShifts: {
-      X: 25,
-      Y: 70
-    },
     create: createPin
   };
 })();

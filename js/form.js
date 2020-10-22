@@ -167,6 +167,5 @@
     adAddress: adAddress,
     enable: enableForm,
     disable: disableForm,
-    setCapacity: setCapacity
   };
 })();
