@@ -10,6 +10,24 @@
   const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
 
   /**
+   * Unsets active pin state
+   */
+  const unsetActivePin = () => {
+    const activePin = document.querySelector(`.map__pin--active`);
+    if (activePin) {
+      activePin.classList.remove(`map__pin--active`);
+    }
+  };
+
+  /**
+   * Sets given pin as active
+   * @param  {object.HTML-node} pin Currently active pin
+   */
+  const setActivePin = (pin) => {
+    pin.classList.add(`map__pin--active`);
+  };
+
+  /**
    * Invokes when Enter is pressed on a pin
    * @param  {object.event} evt Given event
    * @param  {object} ad  Given ad object
@@ -17,8 +35,8 @@
    */
   const onPinPressEnter = (evt, ad, pin) => {
     if (evt.key === `Enter`) {
+      setActivePin(pin);
       window.map.removeCurrent();
-      window.map.setActivePin(pin);
       window.card.render(ad);
     }
   };
@@ -29,8 +47,8 @@
    * @param {object.HTML-node} pin Clicked pin
    */
   const onPinClick = (ad, pin) => {
+    setActivePin(pin);
     window.card.removeCurrent();
-    window.map.setActivePin(pin);
     window.card.render(ad);
   };
 
@@ -58,6 +76,7 @@
   };
 
   window.pin = {
-    create: createPin
+    create: createPin,
+    unsetActive: unsetActivePin
   };
 })();

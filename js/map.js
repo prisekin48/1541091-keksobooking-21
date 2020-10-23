@@ -16,24 +16,6 @@
     }
   };
 
-  /**
-   * Unsets active pin state
-   */
-  const unsetActivePin = () => {
-    const activePin = map.querySelector(`.map__pin--active`);
-    if (activePin) {
-      activePin.classList.remove(`map__pin--active`);
-    }
-  };
-
-  /**
-   * Sets given pin as active
-   * @param  {object.HTML-node} pin Currently active pin
-   */
-  const setActivePin = (pin) => {
-    pin.classList.add(`map__pin--active`);
-  };
-
   /** Adds prepared pin elements to an html fragment and render the fragment into .map__pins
    *  @param {Array.<Object>} ads - An array with ad's data
    */
@@ -79,7 +61,6 @@
   window.map = {
     htmlNode: map,
     switchState: switchState,
-    setActivePin: setActivePin,
-    unsetActivePin: unsetActivePin
+
   };
 })();

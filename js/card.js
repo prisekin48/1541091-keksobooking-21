@@ -80,7 +80,7 @@
       card.remove();
     }
 
-    window.map.unsetActivePin();
+    window.pin.unsetActive();
     document.removeEventListener(`keydown`, onDocumentEscPress);
   };
 
@@ -104,22 +104,22 @@
     cardElement.querySelector(`.popup__avatar`).src = ad.author.avatar;
 
     closeButton.addEventListener(`click`, () => {
-      window.map.removeCurrentCard();
+      removeCurrentCard();
     });
 
     closeButton.addEventListener(`keydown`, (evt) => {
       if (evt.key === `Enter`) {
-        window.map.removeCurrentCard();
+        removeCurrentCard();
       }
     });
 
-    document.addEventListener(`keydown`, window.map.onDocumentEscPress);
+    document.addEventListener(`keydown`, onDocumentEscPress);
 
     document.querySelector(`.map__filters-container`).before(cardElement);
   };
 
   window.card = {
-    render: renderCard
+    render: renderCard,
     removeCurrent: removeCurrentCard
   };
 })();
