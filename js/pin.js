@@ -36,7 +36,7 @@
   const onPinPressEnter = (evt, ad, pin) => {
     if (evt.key === `Enter`) {
       setActivePin(pin);
-      window.map.removeCurrent();
+      window.card.removeCurrent();
       window.card.render(ad);
     }
   };
