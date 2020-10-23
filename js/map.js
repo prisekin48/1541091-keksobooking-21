@@ -46,7 +46,6 @@
    * Switches state of the map depending on the given flag
    */
   const switchState = (flag) => {
-
     switchFiltersState(flag);
 
     if (flag) {
@@ -59,8 +58,6 @@
   };
 
   window.map = {
-    htmlNode: map,
-    switchState: switchState,
-
+    switchState: switchState
   };
 })();

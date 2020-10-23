@@ -1,6 +1,8 @@
 'use strict';
 
 (() => {
+  const mainPin = document.querySelector(`.map__pin--main`);
+
   let isActive = false;
 
   /**
@@ -9,21 +11,20 @@
   const activate = () => {
     window.main.isActive = true;
     window.map.switchState(window.main.isActive);
+    window.mainPin.setAddress(window.main.isActive, mainPin.offsetLeft, mainPin.offsetTop);
     window.form.enable();
-
   };
 
   /**
    * Enables inactive mode
    */
   const deactivate = () => {
-    isActive = false;
-    window.map.switchState(isActive);
-    window.form.disable();
+    window.main.isActive = false;
+    window.map.switchState(window.main.isActive);
     window.mainPin.addMainPinListeners();
-    window.mainPin.setAddress(window.main.isActive, window.mainPin.htmlNode.offsetLeft, window.mainPin.htmlNode.offsetTop);
+    window.mainPin.reset();
+    window.form.disable();
   };
-
 
   window.main = {
     isActive: isActive,

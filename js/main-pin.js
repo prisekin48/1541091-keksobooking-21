@@ -24,13 +24,6 @@
     y: MainPinConsts.START_Y
   };
 
-  /**
-   * Resets the main pin to its initial position
-   */
-  const resetMainPin = () => {
-    mainPin.style.left = MainPinConsts.START_X;
-    mainPin.style.top = MainPinConsts.START_Y;
-  };
 
   /**
    * Set address according to the map mode
@@ -41,6 +34,15 @@
     } else {
       window.form.adAddress.setAttribute(`value`, `${x + MainPinConsts.INACTIVE_SHIFT_X}, ${y + MainPinConsts.INACTIVE_SHIFT_Y}`);
     }
+  };
+
+  /**
+   * Resets the main pin to its initial position
+   */
+  const resetMainPin = () => {
+    mainPin.style.left = MainPinConsts.START_X + `px`;
+    mainPin.style.top = MainPinConsts.START_Y + `px`
+    setAddress(window.main.isActive, mainPin.offsetLeft, mainPin.offsetTop);
   };
 
   /**
@@ -127,9 +129,8 @@
    */
   const onMainPinClick = (evt) => {
     window.main.activate();
-    window.mainPin.setAddress(window.main.isActive, mainPin.offsetLeft, mainPin.offsetTop);
-    window.mainPin.htmlNode.removeEventListener(`keydown`, onMainPinPressEnter);
-    window.mainPin.htmlNode.removeEventListener(`click`, onMainPinClick);
+    mainPin.removeEventListener(`keydown`, onMainPinPressEnter);
+    mainPin.removeEventListener(`click`, onMainPinClick);
   };
 
   /**
@@ -142,9 +143,9 @@
   };
 
   window.mainPin = {
-    WorkingArea: WorkingArea,
+    reset: resetMainPin,
     setAddress: setAddress,
-    htmlNode: mainPin,
+    WorkingArea: WorkingArea,
     addMainPinListeners: addMainPinListeners
   };
 })();
