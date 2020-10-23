@@ -4,7 +4,6 @@
 
   const form = document.querySelector(`.ad-form`);
   const allFieldsets = form.querySelectorAll(`fieldset`);
-  const adAddress = form.querySelector(`#address`);
   const adTitle = form.querySelector(`#title`);
   const adPrice = form.querySelector(`#price`);
   const adType = form.querySelector(`#type`);
@@ -75,43 +74,50 @@
     adPrice.reportValidity();
   };
 
-  window.form = {
-    adAddress: adAddress,
-    /**
-     * Disables all the form inputs and the form itself
-     */
-    disableForm: () => {
-      form.classList.add(`ad-form--disabled`);
-      for (const fieldset of allFieldsets) {
-        fieldset.disabled = true;
-      }
-    },
+  /**
+   * Sets correct capacity according to RoomsToCapacityIndexesCorrelation
+   */
+  const setCapacity = () => {
+    const adRoomNumberIndex = adRoomNumber.options.selectedIndex;
 
-    /**
-     * Enables all the form inputs and the form itself
-     */
-    enableForm: () => {
-      form.classList.remove(`ad-form--disabled`);
-      for (const fieldset of allFieldsets) {
-        fieldset.disabled = false;
-      }
-    },
+    for (const index of RoomsToCapacityIndexesCorrelation[adRoomNumberIndex].disabled) {
+      adCapacity.options[index].disabled = true;
+    }
 
-    /**
-     * Sets correct capacity according to RoomsToCapacityIndexesCorrelation
-     */
-    setCapacity: () => {
-      const adRoomNumberIndex = adRoomNumber.options.selectedIndex;
-
-      for (const index of RoomsToCapacityIndexesCorrelation[adRoomNumberIndex].disabled) {
-        adCapacity.options[index].disabled = true;
-      }
-
-      for (const index of RoomsToCapacityIndexesCorrelation[adRoomNumberIndex].enabled) {
-        adCapacity.options[index].disabled = false;
-      }
+    for (const index of RoomsToCapacityIndexesCorrelation[adRoomNumberIndex].enabled) {
+      adCapacity.options[index].disabled = false;
     }
   };
+
+  /**
+   * Disables all the form inputs and the form itself
+   */
+  const disableForm = () => {
+    form.classList.add(`ad-form--disabled`);
+    for (const fieldset of allFieldsets) {
+      fieldset.disabled = true;
+    }
+    setCapacity();
+  };
+
+  /**
+   * Enables all the form inputs and the form itself
+   */
+  const enableForm = () => {
+    form.classList.remove(`ad-form--disabled`);
+    for (const fieldset of allFieldsets) {
+      fieldset.disabled = false;
+    }
+  };
+
+  /**
+   * Sets min and max attributes for #price input
+   */
+  const setMinMaxPrice = () => {
+    adPrice.min = AdConsts.MIN_PRICE[adType.value];
+    adPrice.max = AdConsts.MAX_PRICE;
+  };
+
 
   adTitle.addEventListener(`input`, function () {
     let invalidMessage = `Заголовок объявления должен содержать от
@@ -142,6 +148,7 @@
 
   adType.addEventListener(`change`, function () {
     adPrice.placeholder = AdConsts.MIN_PRICE[adType.value];
+    setMinMaxPrice();
     checkPriceValidity();
   });
 
@@ -150,6 +157,13 @@
     const adRoomNumberIndex = adRoomNumber.options.selectedIndex;
     adCapacity.options.selectedIndex = RoomsToCapacityIndexesCorrelation[adRoomNumberIndex].enabled[anyEnabledIndex];
 
-    window.form.setCapacity();
+    setCapacity();
   });
+
+  setMinMaxPrice();
+
+  window.form = {
+    enable: enableForm,
+    disable: disableForm,
+  };
 })();
