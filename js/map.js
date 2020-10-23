@@ -7,16 +7,6 @@
   const mapFilterFeatures = map.querySelector(`.map__features`);
 
   /**
-   * Removes currently opened card if Escape is pressed
-   * @param  {object} evt Given event
-   */
-  const onDocumentEscPress = (evt) => {
-    if (evt.key === `Escape`) {
-      window.map.removeCurrentCard();
-    }
-  };
-
-  /**
    * Removes all pins except the main one;
    */
   const removePins = () => {
@@ -59,19 +49,6 @@
   };
 
   /**
-   * Removes currently opened card;
-   */
-  const removeCurrentCard = () => {
-    const card = map.querySelector(`.map__card`);
-    if (card) {
-      card.remove();
-    }
-
-    unsetActivePin();
-    document.removeEventListener(`keydown`, window.map.onDocumentEscPress);
-  };
-
-  /**
    * Switches filters state according to the map mode
    * @param {boolean} flag Is-map-active flag
    */
@@ -102,8 +79,7 @@
   window.map = {
     htmlNode: map,
     switchState: switchState,
-    onDocumentEscPress: onDocumentEscPress,
     setActivePin: setActivePin,
-    removeCurrentCard: removeCurrentCard,
+    unsetActivePin: unsetActivePin
   };
 })();

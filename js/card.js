@@ -61,6 +61,29 @@
     }
   };
 
+  /**
+   * Removes currently opened card if Escape is pressed
+   * @param  {object} evt Given event
+   */
+  const onDocumentEscPress = (evt) => {
+    if (evt.key === `Escape`) {
+      removeCurrentCard();
+    }
+  };
+
+  /**
+   * Removes currently opened card;
+   */
+  const removeCurrentCard = () => {
+    const card = document.querySelector(`.map__card`);
+    if (card) {
+      card.remove();
+    }
+
+    window.map.unsetActivePin();
+    document.removeEventListener(`keydown`, onDocumentEscPress);
+  };
+
   /** Prepares and renders .map__card element with ad`s data
    *  @param {object} ad - An object with mocks data needed for cardElement filling
    */
@@ -97,5 +120,6 @@
 
   window.card = {
     render: renderCard
+    removeCurrent: removeCurrentCard
   };
 })();

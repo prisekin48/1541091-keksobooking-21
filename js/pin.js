@@ -17,7 +17,7 @@
    */
   const onPinPressEnter = (evt, ad, pin) => {
     if (evt.key === `Enter`) {
-      window.map.removeCurrentCard();
+      window.map.removeCurrent();
       window.map.setActivePin(pin);
       window.card.render(ad);
     }
@@ -29,7 +29,7 @@
    * @param {object.HTML-node} pin Clicked pin
    */
   const onPinClick = (ad, pin) => {
-    window.map.removeCurrentCard();
+    window.card.removeCurrent();
     window.map.setActivePin(pin);
     window.card.render(ad);
   };
