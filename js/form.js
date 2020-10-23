@@ -110,8 +110,8 @@
     }
   };
 
-
-  /**Sets min and max attributes for #price input
+  /**
+   * Sets min and max attributes for #price input
    */
   const setMinMaxPrice = () => {
     adPrice.min = AdConsts.MIN_PRICE[adType.value];

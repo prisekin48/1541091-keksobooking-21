@@ -41,9 +41,9 @@
     mapFilterFeatures.disabled = !flag;
   };
 
-
   /**
    * Switches state of the map depending on the given flag
+   * @param  {boolean} flag Is-map-active flag
    */
   const switchState = (flag) => {
     switchFiltersState(flag);

@@ -25,9 +25,11 @@
     y: MainPinConsts.START_Y
   };
 
-
   /**
    * Set address according to the map mode
+   * @param  {boolean} flag Is-map-active flag
+   * @param  {[type]} x    X-coordinate
+   * @param  {[type]} y    Y-coordinate
    */
   const setAddress = (flag, x, y) => {
     if (flag) {
@@ -42,7 +44,7 @@
    */
   const resetMainPin = () => {
     mainPin.style.left = MainPinConsts.START_X + `px`;
-    mainPin.style.top = MainPinConsts.START_Y + `px`
+    mainPin.style.top = MainPinConsts.START_Y + `px`;
     setAddress(window.main.isActive, mainPin.offsetLeft, mainPin.offsetTop);
   };
 
@@ -70,8 +72,6 @@
     }
 
     setAddress(window.main.isActive, mainPin.offsetLeft, mainPin.offsetTop);
-    console.log(mainPin.offsetLeft, mainPin.offsetTop, window.main.isActive);
-
   };
 
   /**
@@ -94,9 +94,8 @@
 
   /**
    * Removes `mousemove` and `mouseup` listeners on `mouseup` event
-   * @return {object.event} upEvt Up event
    */
-  const onMainPinMouseUp = (upEvt) => {
+  const onMainPinMouseUp = () => {
     document.removeEventListener('mousemove', onMainPinMouseMove);
     document.removeEventListener('mouseup', onMainPinMouseUp);
   };
@@ -126,9 +125,8 @@
 
   /**
    * Initiates page activation, removes main pin `keydown` and `click` listeners
-   * @param  {object} evt - transfered event object from the listener
    */
-  const onMainPinClick = (evt) => {
+  const onMainPinClick = () => {
     window.main.activate();
     mainPin.removeEventListener(`keydown`, onMainPinPressEnter);
     mainPin.removeEventListener(`click`, onMainPinClick);
