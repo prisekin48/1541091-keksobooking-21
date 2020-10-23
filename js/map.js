@@ -2,13 +2,6 @@
 
 (() => {
 
-  const PinCoordinates = {
-    MIN_Y: 130,
-    MAX_Y: 630,
-    MIN_X: 0,
-    MAX_X: 1200
-  };
-
   const map = document.querySelector(`.map`);
   const mapFilters = map.querySelectorAll(`.map__filter`);
   const mapFilterFeatures = map.querySelector(`.map__features`);
@@ -107,11 +100,10 @@
   };
 
   window.map = {
+    htmlNode: map,
     switchState: switchState,
-    pinCoordinates: PinCoordinates,
     onDocumentEscPress: onDocumentEscPress,
     setActivePin: setActivePin,
     removeCurrentCard: removeCurrentCard,
-    switchFiltersState: switchFiltersState
   };
 })();

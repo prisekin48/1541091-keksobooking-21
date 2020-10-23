@@ -1,6 +1,9 @@
 'use strict';
 
 (() => {
+
+  const types = window.data.accomTypes;
+
   /**
    * Inserts text data into an element if the data exists
    * @param {string} text - taken string
@@ -69,7 +72,7 @@
     insertAndCheckTextData(ad.offer.title, cardElement.querySelector(`.popup__title`));
     insertAndCheckTextData(ad.offer.address, cardElement.querySelector(`.popup__text--address`));
     insertAndCheckTextData(`${ad.offer.price}₽/ночь`, cardElement.querySelector(`.popup__text--price`));
-    insertAndCheckTextData(window.data.adMocksData.TYPES_DESCRIPTION[ad.offer.type], cardElement.querySelector(`.popup__type`));
+    insertAndCheckTextData(types[ad.offer.type], cardElement.querySelector(`.popup__type`));
     insertAndCheckTextData(`${ad.offer.rooms} комнаты для ${ad.offer.guests} гостей`, cardElement.querySelector(`.popup__text--capacity`));
     insertAndCheckTextData(`Заезд после ${ad.offer.checkin}, выезд до ${ad.offer.checkout}`, cardElement.querySelector(`.popup__text--time`));
     renderFeatures(cardElement.querySelector(`.popup__features`), ad.offer.features);

@@ -2,6 +2,14 @@
 
 (() => {
 
+  const AdsDataConsts = {
+    ADS_COUNT: 8,
+    ROOMS_MIN: 1,
+    ROOMS_MAX: 5,
+    GUESTS_MIN: 1,
+    GUESTS_MAX: 5
+  };
+
   const AdMocksData = {
     TITLES: [`Квартира`, `Дом`, `Апартаменты`, `Помещение свободного назначения`],
     PRICES_MIN: 10000,
@@ -26,13 +34,6 @@
     ]
   };
 
-  const AdsDataConsts = {
-    ADS_COUNT: 8,
-    ROOMS_MIN: 1,
-    ROOMS_MAX: 5,
-    GUESTS_MIN: 1,
-    GUESTS_MAX: 5
-  };
 
   /** Generates an array with adds descriptions from prepared object with needed data.
    *  @param {int} count - Quantity of needed objects in descriptions array
@@ -59,8 +60,8 @@
           photos: window.util.getRandomArray(AdMocksData.PHOTOS)
         },
         location: {
-          x: window.util.getRandomNumber(window.map.pinCoordinates.MIN_X, window.map.pinCoordinates.MAX_X),
-          y: window.util.getRandomNumber(window.map.pinCoordinates.MIN_Y, window.map.pinCoordinates.MAX_Y)
+          x: window.util.getRandomNumber(window.mainPin.WorkingArea.MIN_X, window.mainPin.WorkingArea.MAX_X),
+          y: window.util.getRandomNumber(window.mainPin.WorkingArea.MIN_Y, window.mainPin.WorkingArea.MAX_Y)
         }
       };
       ad.offer.address = `${ad.location.x}, ${ad.location.y}`;
@@ -71,7 +72,7 @@
   };
 
   window.data = {
-    adMocksData: AdMocksData,
+    accomTypes: AdMocksData.TYPES_DESCRIPTION,
     ads: generateAds(AdsDataConsts.ADS_COUNT)
   };
 })();

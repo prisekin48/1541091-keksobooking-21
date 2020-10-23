@@ -3,6 +3,13 @@
 (() => {
   const mainPin = document.querySelector(`.map__pin--main`);
 
+  const WorkingArea = {
+    MIN_Y: 130,
+    MAX_Y: 630,
+    MIN_X: 0,
+    MAX_X: 1200
+  };
+
   const MainPinConsts = {
     INACTIVE_SHIFT_X: 32,
     INACTIVE_SHIFT_Y: 32,
@@ -43,18 +50,18 @@
    */
   const setCoords = (shift, moveEvt) => {
 
-    if (mainPin.offsetTop < window.map.pinCoordinates.MIN_Y - MainPinConsts.ACTIVE_SHIFT_Y) {
-      mainPin.style.top = (window.map.pinCoordinates.MIN_Y - MainPinConsts.ACTIVE_SHIFT_Y) + `px`;
-    } else if (mainPin.offsetTop > window.map.pinCoordinates.MAX_Y - MainPinConsts.ACTIVE_SHIFT_Y) {
-      mainPin.style.top = (window.map.pinCoordinates.MAX_Y - MainPinConsts.ACTIVE_SHIFT_Y) + `px`;
+    if (mainPin.offsetTop < WorkingArea.MIN_Y - MainPinConsts.ACTIVE_SHIFT_Y) {
+      mainPin.style.top = (WorkingArea.MIN_Y - MainPinConsts.ACTIVE_SHIFT_Y) + `px`;
+    } else if (mainPin.offsetTop > WorkingArea.MAX_Y - MainPinConsts.ACTIVE_SHIFT_Y) {
+      mainPin.style.top = (WorkingArea.MAX_Y - MainPinConsts.ACTIVE_SHIFT_Y) + `px`;
     } else {
       mainPin.style.top = (mainPin.offsetTop - shift.y) + `px`;
     }
 
-    if (mainPin.offsetLeft < window.map.pinCoordinates.MIN_X - MainPinConsts.ACTIVE_SHIFT_X) {
-      mainPin.style.left = (window.map.pinCoordinates.MIN_X - MainPinConsts.ACTIVE_SHIFT_X) + `px`;
-    } else if (mainPin.offsetLeft > window.map.pinCoordinates.MAX_X - MainPinConsts.ACTIVE_SHIFT_X) {
-      mainPin.style.left = (window.map.pinCoordinates.MAX_X - MainPinConsts.ACTIVE_SHIFT_X) + `px`;
+    if (mainPin.offsetLeft < WorkingArea.MIN_X - MainPinConsts.ACTIVE_SHIFT_X) {
+      mainPin.style.left = (WorkingArea.MIN_X - MainPinConsts.ACTIVE_SHIFT_X) + `px`;
+    } else if (mainPin.offsetLeft > WorkingArea.MAX_X - MainPinConsts.ACTIVE_SHIFT_X) {
+      mainPin.style.left = (WorkingArea.MAX_X - MainPinConsts.ACTIVE_SHIFT_X) + `px`;
     } else {
       mainPin.style.left = (mainPin.offsetLeft - shift.x) + `px`;
     }
@@ -135,6 +142,7 @@
   };
 
   window.mainPin = {
+    WorkingArea: WorkingArea,
     setAddress: setAddress,
     htmlNode: mainPin,
     addMainPinListeners: addMainPinListeners
