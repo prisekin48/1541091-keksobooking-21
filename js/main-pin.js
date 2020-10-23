@@ -20,11 +20,6 @@
     START_Y: 375
   };
 
-  let currentCoords = {
-    x: MainPinConsts.START_X,
-    y: MainPinConsts.START_Y
-  };
-
   /**
    * Set address according to the map mode
    * @param  {boolean} flag Is-map-active flag
@@ -48,31 +43,7 @@
     setAddress(window.main.isActive, mainPin.offsetLeft, mainPin.offsetTop);
   };
 
-  /**
-   * Sets mainPin coordinates if it's been moving into certain area
-   * @param  {object} shift   Given object with shifts
-   * @param  {[type]} moveEvt `mousemove` event
-   */
-  const setCoords = (shift, moveEvt) => {
-
-    if (mainPin.offsetTop < WorkingArea.MIN_Y - MainPinConsts.ACTIVE_SHIFT_Y) {
-      mainPin.style.top = (WorkingArea.MIN_Y - MainPinConsts.ACTIVE_SHIFT_Y) + `px`;
-    } else if (mainPin.offsetTop > WorkingArea.MAX_Y - MainPinConsts.ACTIVE_SHIFT_Y) {
-      mainPin.style.top = (WorkingArea.MAX_Y - MainPinConsts.ACTIVE_SHIFT_Y) + `px`;
-    } else {
-      mainPin.style.top = (mainPin.offsetTop - shift.y) + `px`;
-    }
-
-    if (mainPin.offsetLeft < WorkingArea.MIN_X - MainPinConsts.ACTIVE_SHIFT_X) {
-      mainPin.style.left = (WorkingArea.MIN_X - MainPinConsts.ACTIVE_SHIFT_X) + `px`;
-    } else if (mainPin.offsetLeft > WorkingArea.MAX_X - MainPinConsts.ACTIVE_SHIFT_X) {
-      mainPin.style.left = (WorkingArea.MAX_X - MainPinConsts.ACTIVE_SHIFT_X) + `px`;
-    } else {
-      mainPin.style.left = (mainPin.offsetLeft - shift.x) + `px`;
-    }
-
-    setAddress(window.main.isActive, mainPin.offsetLeft, mainPin.offsetTop);
-  };
+  let currentCursorCoords = {};
 
   /**
    * Manages `mousemove` event calculating mainPin coords
@@ -81,15 +52,22 @@
   const onMainPinMouseMove = (moveEvt) => {
 
     let shift = {
-      x: currentCoords.x - moveEvt.clientX,
-      y: currentCoords.y - moveEvt.clientY,
+      x: currentCursorCoords.x - moveEvt.clientX,
+      y: currentCursorCoords.y - moveEvt.clientY,
     };
 
-    currentCoords.x = moveEvt.clientX;
-    currentCoords.y = moveEvt.clientY;
+    currentCursorCoords.x = moveEvt.clientX;
+    currentCursorCoords.y = moveEvt.clientY;
 
-    setCoords(shift, moveEvt);
+    if (moveEvt.clientY >= WorkingArea.MIN_Y - MainPinConsts.ACTIVE_SHIFT_Y - cursorFromPinShifts.y &&
+        moveEvt.clientY <= WorkingArea.MAX_Y - MainPinConsts.ACTIVE_SHIFT_Y - cursorFromPinShifts.y &&
+        moveEvt.clientX >= WorkingArea.MIN_X - MainPinConsts.ACTIVE_SHIFT_X - cursorFromPinShifts.x &&
+        moveEvt.clientX <= WorkingArea.MAX_X - MainPinConsts.ACTIVE_SHIFT_X - cursorFromPinShifts.x) {
+      mainPin.style.top = (mainPin.offsetTop - shift.y) + `px`;
+      mainPin.style.left = (mainPin.offsetLeft - shift.x) + `px`;
+    }
 
+    setAddress(window.main.isActive, mainPin.offsetLeft, mainPin.offsetTop);
   };
 
   /**
@@ -110,14 +88,21 @@
     }
   };
 
+  let cursorFromPinShifts = {};
+
   /**
    * Adds `mousemove` and `mouseup` listeners on main pin mouse down, and rewrites currentCoords
    * @param  {object} evt - transfered MouseEvent from the listener
    */
   const onMainPinMouseDown = (evt) => {
     if (evt.button === 0) {
-      currentCoords.x = evt.clientX;
-      currentCoords.y = evt.clientY;
+
+      currentCursorCoords.x = evt.clientX;
+      currentCursorCoords.y = evt.clientY;
+
+      cursorFromPinShifts.x = mainPin.offsetLeft - currentCursorCoords.x;
+      cursorFromPinShifts.y = mainPin.offsetTop - currentCursorCoords.y;
+
       document.addEventListener(`mousemove`, onMainPinMouseMove);
       document.addEventListener(`mouseup`, onMainPinMouseUp);
     }
