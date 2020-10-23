@@ -2,6 +2,7 @@
 
 (() => {
   const mainPin = document.querySelector(`.map__pin--main`);
+  const adAddress = document.querySelector(`#address`);
 
   const WorkingArea = {
     MIN_Y: 130,
@@ -30,9 +31,9 @@
    */
   const setAddress = (flag, x, y) => {
     if (flag) {
-      window.form.adAddress.setAttribute(`value`, `${x + MainPinConsts.ACTIVE_SHIFT_X}, ${y + MainPinConsts.ACTIVE_SHIFT_Y}`);
+      adAddress.setAttribute(`value`, `${x + MainPinConsts.ACTIVE_SHIFT_X}, ${y + MainPinConsts.ACTIVE_SHIFT_Y}`);
     } else {
-      window.form.adAddress.setAttribute(`value`, `${x + MainPinConsts.INACTIVE_SHIFT_X}, ${y + MainPinConsts.INACTIVE_SHIFT_Y}`);
+      adAddress.setAttribute(`value`, `${x + MainPinConsts.INACTIVE_SHIFT_X}, ${y + MainPinConsts.INACTIVE_SHIFT_Y}`);
     }
   };
 

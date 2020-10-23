@@ -4,7 +4,6 @@
 
   const form = document.querySelector(`.ad-form`);
   const allFieldsets = form.querySelectorAll(`fieldset`);
-  const adAddress = form.querySelector(`#address`);
   const adTitle = form.querySelector(`#title`);
   const adPrice = form.querySelector(`#price`);
   const adType = form.querySelector(`#type`);
@@ -164,7 +163,6 @@
   setMinMaxPrice();
 
   window.form = {
-    adAddress: adAddress,
     enable: enableForm,
     disable: disableForm,
   };
