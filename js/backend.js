@@ -12,7 +12,6 @@
 
   const MESSAGE_TIME = 5000;
 
-  const URL = `https://21.javascript.pages.academy/keksobooking/data`;
 
   const map = document.querySelector(`.map`);
 
@@ -51,34 +50,13 @@
   };
 
   /**
-   * Invokes if the request to the server was successful ads renders pins
-   * @param  {array} response Array of ads
-   */
-  const onSuccess = (response) => {
-    window.backend.ads = response;
-    window.map.renderPins(response);
-    showMessage(`Объявления загружены успешно`, false);
-  };
-
-    /**
-   * Invokes if the request to the server was successful
-   * @param  {string} error Error description
-   */
-  const onError = (error) => {
-    showMessage(`При загрузке объявлений произошла ошибка: ${error}`, true);
-  };
-
-  /**
-   * Makes a request to the server to get ads
-   * @param  {string} URL       Requested URL
+   * Checks request status
+   * @param  {object.XMLHttpRequest} xhr       Request object
    * @param  {object.function} onSuccess Invokes if the request is successful
-   * @param  {object.function} onError   Invokes if the request gets error
+   * @param  {object.function} onError   Invokes if the request is not successful
+   * @return {[type]}           [description]
    */
-  const makeRequest = (URL, onSuccess, onError) => {
-    const xhr = new XMLHttpRequest();
-
-    xhr.responseType = `json`;
-
+  const checkRequest = (xhr, onSuccess, onError) => {
     xhr.addEventListener(`load`, () => {
       let error;
       switch (xhr.status) {
@@ -114,18 +92,83 @@
     xhr.addEventListener('timeout', () => {
       onError('Запрос не успел выполниться за ' + xhr.timeout + ' мс');
     });
+  };
+
+
+  /**
+   * Invokes if the request to the server was successful ads renders pins
+   * @param  {array} response Array of ads
+   */
+  const onSuccessfulAdsLoading = (response) => {
+    window.backend.ads = response;
+    window.map.renderPins(response);
+    showMessage(`Объявления загружены успешно`, false);
+  };
+
+    /**
+   * Invokes if the request to the server was successful
+   * @param  {string} error Error description
+   */
+  const onUnsuccessfulAdsLoading = (error) => {
+    showMessage(`При загрузке объявлений произошла ошибка: ${error}`, true);
+  };
+
+  /**
+   * Makes a request to the server to get ads
+   * @param  {string} URL       Requested URL
+   * @param  {object.function} onSuccess Invokes if the request is successful
+   * @param  {object.function} onError   Invokes if the request gets error
+   */
+  const makeRequest = (onSuccess, onError) => {
+    const url = `https://21.javascript.pages.academy/keksobooking/data`;
+    const xhr = new XMLHttpRequest();
+
+    xhr.responseType = `json`;
+
+    checkRequest(xhr, onSuccess, onError);
 
     xhr.timeout = MAX_REQUEST_TIMEOUT;
 
-    xhr.open(`GET`, URL);
+    xhr.open(`GET`, url);
     xhr.send();
   };
 
-  // makeRequest(URL, onSuccess, onError);
+  /**
+   * Invokes if the form submit is successful
+   * @param {&&&} response [description]
+   */
+  const onSuccessfulFormSubmit = (response) => {
+    showMessage(response, 0);
+  };
+
+  /**
+   * Invokes if the form submit is not successful
+   * @param {string} error Error text
+   */
+  const onUnsuccessfulFormSubmit = (error) => {
+    showMessage(response, 0);
+  };
+
+  const submitForm = (data, onSuccess, onError) => {
+
+    console.log(data);
+    const url = `https://21.javascript.pages.academy/keksobooking`;
+    const xhr = new XMLHttpRequest();
+
+    checkRequest(xhr, onSuccess, onError);
+
+    xhr.timeout = MAX_REQUEST_TIMEOUT;
+
+    xhr.open(`POST`, url);
+    xhr.send(data);
+  };
 
   window.backend = {
     makeRequest: () => {
-      makeRequest(URL, onSuccess, onError);
+      makeRequest(onSuccessfulAdsLoading, onUnsuccessfulAdsLoading);
+    },
+    submitForm: (data) => {
+      submitForm(data, onSuccessfulFormSubmit, onUnsuccessfulFormSubmit);
     }
   };
 })();

@@ -11,6 +11,11 @@
   const adTimeout = form.querySelector(`#timeout`);
   const adRoomNumber = form.querySelector(`#room_number`);
   const adCapacity = form.querySelector(`#capacity`);
+  const formReset = form.querySelector(`.ad-form__reset`);
+  const avatar = form.querySelector(`#avatar`);
+  const images = form.querySelector(`#images`);
+  const description = form.querySelector(`#description`);
+  const features = form.querySelectorAll(`.feature__checkbox`);
 
   const AdConsts = {
     MIN_TITLE_LENGHT: 30,
@@ -114,6 +119,7 @@
    * Sets min and max attributes for #price input
    */
   const setMinMaxPrice = () => {
+    adPrice.placeholder = AdConsts.MIN_PRICE[adType.value];
     adPrice.min = AdConsts.MIN_PRICE[adType.value];
     adPrice.max = AdConsts.MAX_PRICE;
   };
@@ -147,7 +153,6 @@
   });
 
   adType.addEventListener(`change`, function () {
-    adPrice.placeholder = AdConsts.MIN_PRICE[adType.value];
     setMinMaxPrice();
     checkPriceValidity();
   });
@@ -161,6 +166,35 @@
   });
 
   setMinMaxPrice();
+
+
+  /**
+   * Resets form
+   */
+  const resetForm = () => {
+    adTitle.textContent = ``;
+    adType.options.selectedIndex = 1;
+    adRoomNumber.options.selectedIndex = 0;
+    adTimein.options.selectedIndex = 0;
+    adTimeout.options.selectedIndex = 0;
+    setCapacity();
+    setMinMaxPrice();
+    avatar.value = ``;
+    images.value = ``;
+    description.textContent = ``;
+    features.forEach((feature) => {
+      feature.selected = false;
+    });
+  };
+
+  formReset.addEventListener(`click`, resetForm);
+
+  form.addEventListener(`submit`, (evt) => {
+    evt.preventDefault();
+    let formData = new FormData(form);
+    window.backend.submitForm(formData);
+    console.log(formData.get(`price`));
+  });
 
   window.form = {
     enable: enableForm,
