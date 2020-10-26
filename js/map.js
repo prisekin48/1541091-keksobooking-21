@@ -50,7 +50,7 @@
 
     if (flag) {
       map.classList.remove(`map--faded`);
-      renderPins(window.data.ads);
+      window.backend.makeRequest();
     } else {
       map.classList.add(`map--faded`);
       removePins();
@@ -58,6 +58,7 @@
   };
 
   window.map = {
-    switchState: switchState
+    switchState: switchState,
+    renderPins: renderPins
   };
 })();
