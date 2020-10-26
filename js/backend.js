@@ -1,6 +1,15 @@
 'use strict';
 
 (() => {
+  const REQUEST_STATUSES = {
+    ok: 200,
+    badRequest: 400,
+    userNotAuthorized: 401,
+    notFound: 404
+  };
+
+  const MAX_REQUEST_TIMEOUT = 10000;
+
   const URL = `https://21.javascript.pages.academy/keksobooking/data`;
 
   /**
@@ -45,19 +54,19 @@
     xhr.addEventListener(`load`, () => {
       let error;
       switch (xhr.status) {
-        case 200:
+        case REQUEST_STATUSES.ok:
           onSuccess(xhr.response);
           break;
 
-        case 400:
+        case REQUEST_STATUSES.badRequest:
           error = `Неверный запрос`;
           break;
 
-        case 401:
+        case REQUEST_STATUSES.userNotAuthorized:
           error = `Пользователь не авторизован`;
           break;
 
-        case 404:
+        case REQUEST_STATUSES.notFound:
           error = `Ничего не найдено`;
           break;
 
@@ -78,7 +87,7 @@
       onError('Запрос не успел выполниться за ' + xhr.timeout + ' мс');
     });
 
-    xhr.timeout = 10000;
+    xhr.timeout = MAX_REQUEST_TIMEOUT;
 
     xhr.open(`GET`, URL);
     xhr.send();
