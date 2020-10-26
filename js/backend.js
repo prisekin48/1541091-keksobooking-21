@@ -10,7 +10,45 @@
 
   const MAX_REQUEST_TIMEOUT = 10000;
 
+  const MESSAGE_TIME = 5000;
+
   const URL = `https://21.javascript.pages.academy/keksobooking/data`;
+
+  const map = document.querySelector(`.map`);
+
+  /**
+   * Shows message on the screen
+   * @param  {string}  text    Text of the message
+   * @param  {Boolean} isError If the message is about an error
+   *
+   */
+  const showMessage = (text, isError) => {
+    const message = document.createElement(`div`);
+    message.style.position = `absolute`;
+    message.style.maxWidth = `20%`;
+    message.style.top = `20px`;
+    message.style.left = `20px`;
+    message.style.padding = `10px`;
+
+    if (isError) {
+      message.style.backgroundColor = 'crimson';
+    } else {
+      message.style.backgroundColor = 'lightgreen';
+      }
+    message.textContent = text;
+
+    message.addEventListener(`click`, () => {
+      message.remove();
+    });
+
+    map.appendChild(message);
+
+    setTimeout(() => {
+      if (message) {
+        message.remove();
+      }
+    }, MESSAGE_TIME);
+  };
 
   /**
    * Invokes if the request to the server was successful ads renders pins
@@ -19,26 +57,15 @@
   const onSuccess = (response) => {
     window.backend.ads = response;
     window.map.renderPins(response);
+    showMessage(`Объявления загружены успешно`, false);
   };
 
-  /**
+    /**
    * Invokes if the request to the server was successful
    * @param  {string} error Error description
    */
   const onError = (error) => {
-    const map = document.querySelector(`.map`);
-    const errElement = document.querySelector(`#error`).content.querySelector(`.error`).cloneNode(true);
-    const errButton = errElement.querySelector(`.error__button`);
-
-    errElement.querySelector(`.error__message`).textContent = error;
-
-    errButton.addEventListener(`click`, (evt) => {
-      evt.preventDefault;
-      errElement.remove();
-      window.backend.makeRequest();
-    });
-
-    map.appendChild(errElement);
+    showMessage(`При загрузке объявлений произошла ошибка: ${error}`, true);
   };
 
   /**
