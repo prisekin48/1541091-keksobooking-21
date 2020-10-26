@@ -3,15 +3,12 @@
 (() => {
   const URL = `https://21.javascript.pages.academy/keksobooking/data`;
 
-  let ads = [];
-
   /**
    * Invokes if the request to the server was successful ads renders pins
    * @param  {array} response Array of ads
    */
   const onSuccess = (response) => {
-    ads = response;
-    window.map.renderPins(ads);
+    window.backend.ads = response;
   };
 
   /**
@@ -87,8 +84,9 @@
     xhr.send();
   };
 
+  makeRequest(URL, onSuccess, onError);
+
   window.backend = {
-    ads: ads,
     makeRequest: () => {
       makeRequest(URL, onSuccess, onError);
     }

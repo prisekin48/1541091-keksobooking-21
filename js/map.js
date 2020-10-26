@@ -50,7 +50,9 @@
 
     if (flag) {
       map.classList.remove(`map--faded`);
-      window.backend.makeRequest();
+      if (window.backend.ads) {
+        renderPins(window.backend.ads);
+      }
     } else {
       map.classList.add(`map--faded`);
       removePins();
