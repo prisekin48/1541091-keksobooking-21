@@ -18,6 +18,7 @@
    */
   const onSuccess = (response) => {
     window.backend.ads = response;
+    window.map.renderPins(response);
   };
 
   /**
@@ -93,7 +94,7 @@
     xhr.send();
   };
 
-  makeRequest(URL, onSuccess, onError);
+  // makeRequest(URL, onSuccess, onError);
 
   window.backend = {
     makeRequest: () => {
