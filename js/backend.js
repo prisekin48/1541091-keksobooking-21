@@ -138,7 +138,9 @@
    * @param {&&&} response [description]
    */
   const onSuccessfulFormSubmit = (response) => {
-    showMessage(response, 0);
+    console.log(`OK`);
+    window.form.reset();
+    window.main.deactivate();
   };
 
   /**
