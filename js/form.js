@@ -43,8 +43,6 @@
   const description = form.querySelector(`#description`);
   const features = form.querySelectorAll(`.feature__checkbox`);
 
-
-
   /**
    * Shows red border if the given input is invalid
    * @param {object.<HTML-element>} input Given input element
@@ -155,6 +153,16 @@
     }
   };
 
+  /**
+   * Collects form data and submit the form
+   * @param  {object.event} evt Submit event
+   */
+  const submitForm = (evt) => {
+    evt.preventDefault();
+    let formData = new FormData(form);
+    window.backend.submitForm(formData);
+  };
+
   adTitle.addEventListener(`input`, function () {
     let invalidMessage = `Заголовок объявления должен содержать от
                               ${AdConsts.MIN_TITLE_LENGHT} до ${AdConsts.MAX_TITLE_LENGHT} символов.
@@ -196,17 +204,14 @@
 
   formReset.addEventListener(`click`, resetForm);
 
-  form.addEventListener(`submit`, (evt) => {
-    evt.preventDefault();
-    let formData = new FormData(form);
-    window.backend.submitForm(formData);
-  });
+  form.addEventListener(`submit`, submitForm);
 
   setMinMaxPrice();
 
   window.form = {
     enable: enableForm,
     disable: disableForm,
-    reset: resetForm
+    reset: resetForm,
+    submit: submitForm
   };
 })();
