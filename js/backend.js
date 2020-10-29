@@ -1,11 +1,15 @@
 'use strict';
 
 (() => {
+  const GET_URL = `https://21.javascript.pages.academy/keksobooking/data`;
+
+  const SUBMIT_URL = `https://21.javascript.pages.academy/keksobooking`;
+
   const MAX_REQUEST_TIMEOUT = 10000;
 
   const MESSAGE_TIME = 5000;
 
-  const REQUEST_STATUSES = {
+  const RequestStatuses = {
     ok: 200,
     badRequest: 400,
     userNotAuthorized: 401,
@@ -55,27 +59,29 @@
    * @param  {object.function} onError   Invokes if the request is not successful
    */
   const checkRequest = (xhr, onSuccess, onError) => {
+    xhr.timeout = MAX_REQUEST_TIMEOUT;
+
     xhr.addEventListener(`load`, () => {
       let error;
       switch (xhr.status) {
-        case REQUEST_STATUSES.ok:
+        case RequestStatuses.ok:
           onSuccess(xhr.response);
           break;
 
-        case REQUEST_STATUSES.badRequest:
+        case RequestStatuses.badRequest:
           error = `Неверный запрос`;
           break;
 
-        case REQUEST_STATUSES.userNotAuthorized:
+        case RequestStatuses.userNotAuthorized:
           error = `Пользователь не авторизован`;
           break;
 
-        case REQUEST_STATUSES.notFound:
+        case RequestStatuses.notFound:
           error = `Ничего не найдено`;
           break;
 
         default:
-          error = `Статус ответа: ` + xhr.status + ` ` + xhr.statusText;
+          error = `Статус ответа: ${xhr.status} ${xhr.statusText}`;
       }
 
       if (error) {
@@ -88,7 +94,7 @@
     });
 
     xhr.addEventListener(`timeout`, () => {
-      onError(`Запрос не успел выполниться за ` + xhr.timeout + ` мс`);
+      onError(`Запрос не успел выполниться за ${xhr.timeout} мс`);
     });
   };
 
@@ -117,16 +123,13 @@
    * @param  {object.function} onError   Invokes if the request gets error
    */
   const makeRequest = (onSuccess, onError) => {
-    const url = `https://21.javascript.pages.academy/keksobooking/data`;
     const xhr = new XMLHttpRequest();
 
     xhr.responseType = `json`;
 
     checkRequest(xhr, onSuccess, onError);
 
-    xhr.timeout = MAX_REQUEST_TIMEOUT;
-
-    xhr.open(`GET`, url);
+    xhr.open(`GET`, GET_URL);
     xhr.send();
   };
 
@@ -200,14 +203,11 @@
    * @param  {[type]} onError   Invokes on unsuccessful form submit
    */
   const submitForm = (data, onSuccess, onError) => {
-    const url = `https://21.javascript.pages.academy/keksobooking`;
     const xhr = new XMLHttpRequest();
 
     checkRequest(xhr, onSuccess, onError);
 
-    xhr.timeout = MAX_REQUEST_TIMEOUT;
-
-    xhr.open(`POST`, url);
+    xhr.open(`POST`, SUBMIT_URL);
     xhr.send(data);
   };
 
