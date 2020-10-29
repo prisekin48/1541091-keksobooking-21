@@ -2,16 +2,6 @@
 
 (() => {
 
-  const form = document.querySelector(`.ad-form`);
-  const allFieldsets = form.querySelectorAll(`fieldset`);
-  const adTitle = form.querySelector(`#title`);
-  const adPrice = form.querySelector(`#price`);
-  const adType = form.querySelector(`#type`);
-  const adTimein = form.querySelector(`#timein`);
-  const adTimeout = form.querySelector(`#timeout`);
-  const adRoomNumber = form.querySelector(`#room_number`);
-  const adCapacity = form.querySelector(`#capacity`);
-
   const AdConsts = {
     MIN_TITLE_LENGHT: 30,
     MAX_TITLE_LENGHT: 100,
@@ -29,6 +19,29 @@
     2: {disabled: [3], enabled: [0, 1, 2]},
     3: {disabled: [0, 1, 2], enabled: [3]}
   };
+
+  const InputsInitialState = {
+    AD_TYPE: 1,
+    AD_ROOM_NUMBER: 0,
+    AD_TIMEIN: 0,
+    AD_TIMEOUT: 0,
+    AD_CAPACITY: 2
+  };
+
+  const form = document.querySelector(`.ad-form`);
+  const allFieldsets = form.querySelectorAll(`fieldset`);
+  const adTitle = form.querySelector(`#title`);
+  const adPrice = form.querySelector(`#price`);
+  const adType = form.querySelector(`#type`);
+  const adTimein = form.querySelector(`#timein`);
+  const adTimeout = form.querySelector(`#timeout`);
+  const adRoomNumber = form.querySelector(`#room_number`);
+  const adCapacity = form.querySelector(`#capacity`);
+  const formReset = form.querySelector(`.ad-form__reset`);
+  const avatar = form.querySelector(`#avatar`);
+  const images = form.querySelector(`#images`);
+  const description = form.querySelector(`#description`);
+  const features = form.querySelectorAll(`.feature__checkbox`);
 
   /**
    * Shows red border if the given input is invalid
@@ -114,10 +127,41 @@
    * Sets min and max attributes for #price input
    */
   const setMinMaxPrice = () => {
+    adPrice.placeholder = AdConsts.MIN_PRICE[adType.value];
     adPrice.min = AdConsts.MIN_PRICE[adType.value];
     adPrice.max = AdConsts.MAX_PRICE;
   };
 
+
+  /**
+   * Resets form to initial intputs' state
+   */
+  const resetForm = () => {
+    adTitle.value = ``;
+    adPrice.value = ``;
+    adType.options.selectedIndex = InputsInitialState.AD_TYPE;
+    adRoomNumber.options.selectedIndex = InputsInitialState.AD_ROOM_NUMBER;
+    adTimein.options.selectedIndex = InputsInitialState.AD_TIMEIN;
+    adTimeout.options.selectedIndex = InputsInitialState.AD_TIMEOUT;
+    adCapacity.options.selectedIndex = InputsInitialState.AD_CAPACITY;
+    avatar.value = ``;
+    images.value = ``;
+    description.value = ``;
+
+    for (let i = 0; i < features.length; i++) {
+      features[i].checked = false;
+    }
+  };
+
+  /**
+   * Collects form data and submit the form
+   * @param  {object.event} evt Submit event
+   */
+  const submitForm = (evt) => {
+    evt.preventDefault();
+    let formData = new FormData(form);
+    window.backend.submitForm(formData);
+  };
 
   adTitle.addEventListener(`input`, function () {
     let invalidMessage = `Заголовок объявления должен содержать от
@@ -147,7 +191,6 @@
   });
 
   adType.addEventListener(`change`, function () {
-    adPrice.placeholder = AdConsts.MIN_PRICE[adType.value];
     setMinMaxPrice();
     checkPriceValidity();
   });
@@ -156,14 +199,19 @@
     const anyEnabledIndex = 0;
     const adRoomNumberIndex = adRoomNumber.options.selectedIndex;
     adCapacity.options.selectedIndex = RoomsToCapacityIndexesCorrelation[adRoomNumberIndex].enabled[anyEnabledIndex];
-
     setCapacity();
   });
+
+  formReset.addEventListener(`click`, resetForm);
+
+  form.addEventListener(`submit`, submitForm);
 
   setMinMaxPrice();
 
   window.form = {
     enable: enableForm,
     disable: disableForm,
+    reset: resetForm,
+    submit: submitForm
   };
 })();

@@ -74,8 +74,8 @@
    * Removes `mousemove` and `mouseup` listeners on `mouseup` event
    */
   const onMainPinMouseUp = () => {
-    document.removeEventListener('mousemove', onMainPinMouseMove);
-    document.removeEventListener('mouseup', onMainPinMouseUp);
+    document.removeEventListener(`mousemove`, onMainPinMouseMove);
+    document.removeEventListener(`mouseup`, onMainPinMouseUp);
   };
 
   /**
