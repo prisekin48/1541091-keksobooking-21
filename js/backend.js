@@ -10,10 +10,10 @@
   const MESSAGE_TIME = 5000;
 
   const RequestStatuses = {
-    ok: 200,
-    badRequest: 400,
-    userNotAuthorized: 401,
-    notFound: 404
+    OK: 200,
+    BAD_REQUEST: 400,
+    USER_NOT_AUTHORIZED: 401,
+    NOT_FOUND: 404
   };
 
   const map = document.querySelector(`.map`);
@@ -64,19 +64,19 @@
     xhr.addEventListener(`load`, () => {
       let error;
       switch (xhr.status) {
-        case RequestStatuses.ok:
+        case RequestStatuses.OK:
           onSuccess(xhr.response);
           break;
 
-        case RequestStatuses.badRequest:
+        case RequestStatuses.BAD_REQUEST:
           error = `Неверный запрос`;
           break;
 
-        case RequestStatuses.userNotAuthorized:
+        case RequestStatuses.USER_NOT_AUTHORIZED:
           error = `Пользователь не авторизован`;
           break;
 
-        case RequestStatuses.notFound:
+        case RequestStatuses.NOT_FOUND:
           error = `Ничего не найдено`;
           break;
 
