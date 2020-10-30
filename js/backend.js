@@ -105,8 +105,8 @@
    * @param  {array} response Array of ads
    */
   const onSuccessfulAdsLoading = (response) => {
-    window.backend.ads = response;
-    window.map.renderPins(response.slice(ADS_COUNT));
+    window.backend.ads = response.slice(null, ADS_COUNT);
+    window.map.renderPins(window.backend.ads);
     showMessage(`Объявления загружены успешно`, false);
   };
 

@@ -84,6 +84,7 @@
    */
   const onMainPinPressEnter = (evt) => {
     if (evt.key === `Enter`) {
+      evt.preventDefault();
       window.main.activate();
     }
   };
