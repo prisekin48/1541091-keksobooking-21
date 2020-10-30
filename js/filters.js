@@ -21,6 +21,8 @@
     } else {
       window.map.renderPins(window.backend.ads);
     }
+
+    window.card.removeCurrent();
   }
 
   typeFilter.addEventListener(`change`, onTypeFilterChange);
