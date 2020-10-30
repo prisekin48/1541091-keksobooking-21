@@ -1,6 +1,8 @@
 'use strict';
 
 (() => {
+  const ADS_COUNT = 5;
+
   const GET_URL = `https://21.javascript.pages.academy/keksobooking/data`;
 
   const SUBMIT_URL = `https://21.javascript.pages.academy/keksobooking`;
@@ -98,14 +100,13 @@
     });
   };
 
-
   /**
    * Invokes if the request to the server was successful ads renders pins
    * @param  {array} response Array of ads
    */
   const onSuccessfulAdsLoading = (response) => {
     window.backend.ads = response;
-    window.map.renderPins(response);
+    window.map.renderPins(response.slice(ADS_COUNT));
     showMessage(`Объявления загружены успешно`, false);
   };
 

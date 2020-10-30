@@ -20,7 +20,6 @@
    *  @param {Array.<Object>} ads - An array with ad's data
    */
   const renderPins = (ads) => {
-    console.log(ads);
     const fragment = document.createDocumentFragment();
     const mapPins = map.querySelector(`.map__pins`);
 
