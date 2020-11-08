@@ -159,6 +159,7 @@
    */
   const submitForm = (evt) => {
     evt.preventDefault();
+    window.card.removeCurrent();
     let formData = new FormData(form);
     window.backend.submitForm(formData);
   };

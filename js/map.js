@@ -28,6 +28,7 @@
       fragment.appendChild(element);
     });
     mapPins.appendChild(fragment);
+    switchFiltersState(true);
   };
 
   /**
@@ -46,7 +47,6 @@
    * @param  {boolean} flag Is-map-active flag
    */
   const switchState = (flag) => {
-    switchFiltersState(flag);
 
     if (flag) {
       map.classList.remove(`map--faded`);
@@ -54,6 +54,7 @@
     } else {
       map.classList.add(`map--faded`);
       removePins();
+      switchFiltersState(flag);
     }
   };
 
