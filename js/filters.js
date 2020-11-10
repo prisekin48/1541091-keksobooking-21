@@ -1,6 +1,8 @@
 'use strict';
 
 (() => {
+  const DEBOUNCE_INTERVAL = 500;
+
   const Prices = {
     LOW: 9999,
     HIGH: 50001
@@ -41,10 +43,24 @@
 
   };
 
+  window.lastTimeout = null;
   /**
-   * Filters ads
+   * Invokes if there is a change on any filter.
    */
   const onAnyFilterChange = () => {
+    if (window.lastTimeout) {
+      window.clearTimeout(window.lastTimeout);
+    }
+    window.lastTimeout = window.setTimeout(() => {
+      renderFilteredPins(filterAds());
+    }, DEBOUNCE_INTERVAL);
+  };
+
+  /**
+   * Filters ads
+   * @return {array} Array of filtered ads
+   */
+  const filterAds = () => {
     let ads = window.backend.ads;
     const selectedType = typeFilter.options[typeFilter.options.selectedIndex].value;
     const selectedPrice = priceFilter.options[priceFilter.options.selectedIndex].value;
@@ -124,7 +140,7 @@
       });
     }
 
-    renderFilteredPins(ads);
+    return ads;
   };
 
   typeFilter.addEventListener(`change`, onAnyFilterChange);
