@@ -2,6 +2,7 @@
 
 (() => {
   const mainPin = document.querySelector(`.map__pin--main`);
+  const formReset = document.querySelector(`.ad-form__reset`);
 
   let isActive = false;
 
@@ -32,5 +33,6 @@
     deactivate: deactivate
   };
 
+  formReset.addEventListener(`click`, window.main.deactivate);
   deactivate();
 })();

@@ -37,7 +37,7 @@
   const adTimeout = form.querySelector(`#timeout`);
   const adRoomNumber = form.querySelector(`#room_number`);
   const adCapacity = form.querySelector(`#capacity`);
-  const formReset = form.querySelector(`.ad-form__reset`);
+
   const avatar = form.querySelector(`#avatar`);
   const images = form.querySelector(`#images`);
   const description = form.querySelector(`#description`);
@@ -106,6 +106,7 @@
    * Disables all the form inputs and the form itself
    */
   const disableForm = () => {
+    resetForm();
     form.classList.add(`ad-form--disabled`);
     for (const fieldset of allFieldsets) {
       fieldset.disabled = true;
@@ -140,6 +141,7 @@
     adTitle.value = ``;
     adPrice.value = ``;
     adType.options.selectedIndex = InputsInitialState.AD_TYPE;
+    setMinMaxPrice();
     adRoomNumber.options.selectedIndex = InputsInitialState.AD_ROOM_NUMBER;
     adTimein.options.selectedIndex = InputsInitialState.AD_TIMEIN;
     adTimeout.options.selectedIndex = InputsInitialState.AD_TIMEOUT;
@@ -202,8 +204,6 @@
     adCapacity.options.selectedIndex = RoomsToCapacityIndexesCorrelation[adRoomNumberIndex].enabled[anyEnabledIndex];
     setCapacity();
   });
-
-  formReset.addEventListener(`click`, resetForm);
 
   form.addEventListener(`submit`, submitForm);
 
