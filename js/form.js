@@ -140,6 +140,7 @@
     adTitle.value = ``;
     adPrice.value = ``;
     adType.options.selectedIndex = InputsInitialState.AD_TYPE;
+    setMinMaxPrice();
     adRoomNumber.options.selectedIndex = InputsInitialState.AD_ROOM_NUMBER;
     adTimein.options.selectedIndex = InputsInitialState.AD_TIMEIN;
     adTimeout.options.selectedIndex = InputsInitialState.AD_TIMEOUT;
