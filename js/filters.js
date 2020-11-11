@@ -140,7 +140,7 @@
       });
     }
 
-    return ads;
+    return ads.slice(null, window.ADS_COUNT);
   };
 
   typeFilter.addEventListener(`change`, onAnyFilterChange);
