@@ -163,7 +163,7 @@
     evt.preventDefault();
     window.card.removeCurrent();
     let formData = new FormData(form);
-    window.backend.onFormSubmit(formData);
+    window.backend.submitForm(formData);
   };
 
   adTitle.addEventListener(`input`, function () {

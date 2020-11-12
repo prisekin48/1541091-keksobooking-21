@@ -174,11 +174,11 @@
         window.form.submit(evt);
       });
     }
+    document.querySelector(`main`).appendChild(submitMessage);
 
     document.addEventListener(`keydown`, onDocumentEscPress);
     document.addEventListener(`click`, onDocumentClick);
 
-    document.querySelector(`main`).appendChild(submitMessage);
   };
 
   /**

@@ -1,6 +1,7 @@
 'use strict';
 
 (() => {
+  const ANY_STRING = `any`;
   const DEBOUNCE_INTERVAL = 500;
   const INITIAL_FILTERS_INDEX = 0;
 
@@ -74,13 +75,13 @@
     const isElevator = elevatorFilter.checked;
     const isConditioner = conditionerFilter.checked;
 
-    if (selectedType !== `any`) {
+    if (selectedType !== ANY_STRING) {
       ads = ads.filter((ad) => {
         return ad.offer.type === selectedType;
       });
     }
 
-    if (selectedPrice !== `any`) {
+    if (selectedPrice !== ANY_STRING) {
       ads = ads.filter((ad) => {
         if (selectedPrice === `low`) {
           return ad.offer.price <= Prices.LOW;
@@ -93,13 +94,13 @@
       });
     }
 
-    if (selectedRooms !== `any`) {
+    if (selectedRooms !== ANY_STRING) {
       ads = ads.filter((ad) => {
         return ad.offer.rooms === parseInt(selectedRooms, 10);
       });
     }
 
-    if (selectedGuests !== `any`) {
+    if (selectedGuests !== ANY_STRING) {
       ads = ads.filter((ad) => {
         return ad.offer.guests === parseInt(selectedGuests, 10);
       });
