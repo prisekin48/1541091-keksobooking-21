@@ -185,7 +185,6 @@
    * Invokes if the form submit is successful
    */
   const onSuccessfulFormSubmit = () => {
-    window.form.reset();
     window.main.deactivate();
     afterSubmitMessage(true);
   };

@@ -92,12 +92,12 @@
    */
   const setCapacity = () => {
     const adRoomNumberIndex = adRoomNumber.options.selectedIndex;
-
-    for (const index of RoomsToCapacityIndexesCorrelation[adRoomNumberIndex].disabled) {
+    console.log(adRoomNumberIndex);
+    for (let index of RoomsToCapacityIndexesCorrelation[adRoomNumberIndex].disabled) {
       adCapacity.options[index].disabled = true;
     }
 
-    for (const index of RoomsToCapacityIndexesCorrelation[adRoomNumberIndex].enabled) {
+    for (let index of RoomsToCapacityIndexesCorrelation[adRoomNumberIndex].enabled) {
       adCapacity.options[index].disabled = false;
     }
   };
@@ -106,12 +106,13 @@
    * Disables all the form inputs and the form itself
    */
   const disableForm = () => {
-    resetForm();
+    form.reset();
+    // resetForm();
     form.classList.add(`ad-form--disabled`);
     for (const fieldset of allFieldsets) {
       fieldset.disabled = true;
     }
-    setCapacity();
+    setMinMaxPrice();
   };
 
   /**
@@ -131,28 +132,6 @@
     adPrice.placeholder = AdConsts.MIN_PRICE[adType.value];
     adPrice.min = AdConsts.MIN_PRICE[adType.value];
     adPrice.max = AdConsts.MAX_PRICE;
-  };
-
-
-  /**
-   * Resets form to initial intputs' state
-   */
-  const resetForm = () => {
-    adTitle.value = ``;
-    adPrice.value = ``;
-    adType.options.selectedIndex = InputsInitialState.AD_TYPE;
-    setMinMaxPrice();
-    adRoomNumber.options.selectedIndex = InputsInitialState.AD_ROOM_NUMBER;
-    adTimein.options.selectedIndex = InputsInitialState.AD_TIMEIN;
-    adTimeout.options.selectedIndex = InputsInitialState.AD_TIMEOUT;
-    adCapacity.options.selectedIndex = InputsInitialState.AD_CAPACITY;
-    avatar.value = ``;
-    images.value = ``;
-    description.value = ``;
-
-    for (let feature of features) {
-      feature.checked = false;
-    }
   };
 
   /**
@@ -212,7 +191,6 @@
   window.form = {
     enable: enableForm,
     disable: disableForm,
-    reset: resetForm,
     submit: onFormSubmit
   };
 })();
