@@ -150,8 +150,8 @@
     images.value = ``;
     description.value = ``;
 
-    for (let i = 0; i < features.length; i++) {
-      features[i].checked = false;
+    for (let feature of features) {
+      feature.checked = false;
     }
   };
 
