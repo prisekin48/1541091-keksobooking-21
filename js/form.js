@@ -159,11 +159,11 @@
    * Collects form data and submit the form
    * @param  {object.event} evt Submit event
    */
-  const submitForm = (evt) => {
+  const onFormSubmit = (evt) => {
     evt.preventDefault();
     window.card.removeCurrent();
     let formData = new FormData(form);
-    window.backend.submitForm(formData);
+    window.backend.onFormSubmit(formData);
   };
 
   adTitle.addEventListener(`input`, function () {
@@ -205,7 +205,7 @@
     setCapacity();
   });
 
-  form.addEventListener(`submit`, submitForm);
+  form.addEventListener(`submit`, onFormSubmit);
 
   setMinMaxPrice();
 
@@ -213,6 +213,6 @@
     enable: enableForm,
     disable: disableForm,
     reset: resetForm,
-    submit: submitForm
+    submit: onFormSubmit
   };
 })();
