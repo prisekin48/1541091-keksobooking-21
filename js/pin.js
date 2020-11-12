@@ -24,7 +24,7 @@
    * @param  {object.HTML-node} pin Currently active pin
    */
   const setActivePin = (pin) => {
-    pin.classList.add(`map__pin--active`);
+    pin.classList.add('map__pin--active');
   };
 
   /**
@@ -35,9 +35,9 @@
    */
   const onPinPressEnter = (evt, ad, pin) => {
     if (evt.key === `Enter`) {
-      setActivePin(pin);
       window.card.removeCurrent();
       window.card.render(ad);
+      setActivePin(pin);
     }
   };
 
@@ -47,9 +47,9 @@
    * @param {object.HTML-node} pin Clicked pin
    */
   const onPinClick = (ad, pin) => {
-    setActivePin(pin);
     window.card.removeCurrent();
     window.card.render(ad);
+    setActivePin(pin);
   };
 
   /** Prepares and returns .map__pin element with adData
