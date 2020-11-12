@@ -2,6 +2,7 @@
 
 (() => {
   const DEBOUNCE_INTERVAL = 500;
+  const INITIAL_FILTERS_INDEX = 0;
 
   const Prices = {
     LOW: 9999,
@@ -143,6 +144,23 @@
     return ads.slice(null, window.ADS_COUNT);
   };
 
+
+  /**
+   * Resets all the filters on initial state
+   */
+  const resetFilters = () => {
+    typeFilter.selectedIndex = INITIAL_FILTERS_INDEX;
+    priceFilter.selectedIndex = INITIAL_FILTERS_INDEX;
+    roomsFilter.selectedIndex = INITIAL_FILTERS_INDEX;
+    guestsFilter.selectedIndex = INITIAL_FILTERS_INDEX;
+    wifiFilter.checked = false;
+    dishwasherFilter.checked = false;
+    parkingFilter.checked = false;
+    washerFilter.checked = false;
+    elevatorFilter.checked = false;
+    conditionerFilter.checked = false;
+  };
+
   typeFilter.addEventListener(`change`, onAnyFilterChange);
   priceFilter.addEventListener(`change`, onAnyFilterChange);
   roomsFilter.addEventListener(`change`, onAnyFilterChange);
@@ -153,4 +171,8 @@
   washerFilter.addEventListener(`change`, onAnyFilterChange);
   elevatorFilter.addEventListener(`change`, onAnyFilterChange);
   conditionerFilter.addEventListener(`change`, onAnyFilterChange);
+
+  window.filters = {
+    reset: resetFilters
+  };
 })();

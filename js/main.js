@@ -22,6 +22,7 @@
   const deactivate = () => {
     window.main.isActive = false;
     window.map.switchState(window.main.isActive);
+    window.filters.reset();
     window.mainPin.addMainPinListeners();
     window.mainPin.reset();
     window.form.disable();
