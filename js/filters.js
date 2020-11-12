@@ -106,37 +106,37 @@
       });
     }
 
-    if (isWifi === true) {
+    if (isWifi) {
       ads = ads.filter((ad) => {
         return ad.offer.features.includes(Features.WIFI);
       });
     }
 
-    if (isDishwasher === true) {
+    if (isDishwasher) {
       ads = ads.filter((ad) => {
         return ad.offer.features.includes(Features.DISHWASHER);
       });
     }
 
-    if (isParking === true) {
+    if (isParking) {
       ads = ads.filter((ad) => {
         return ad.offer.features.includes(Features.PARKING);
       });
     }
 
-    if (isWasher === true) {
+    if (isWasher) {
       ads = ads.filter((ad) => {
         return ad.offer.features.includes(Features.WASHER);
       });
     }
 
-    if (isElevator === true) {
+    if (isElevator) {
       ads = ads.filter((ad) => {
         return ad.offer.features.includes(Features.ELEVATOR);
       });
     }
 
-    if (isConditioner === true) {
+    if (isConditioner) {
       ads = ads.filter((ad) => {
         return ad.offer.features.includes(Features.CONDITIONER);
       });
