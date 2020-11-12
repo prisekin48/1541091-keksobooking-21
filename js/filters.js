@@ -64,10 +64,10 @@
    */
   const filterAds = () => {
     let ads = window.backend.ads;
-    const selectedType = typeFilter.options[typeFilter.options.selectedIndex].value;
-    const selectedPrice = priceFilter.options[priceFilter.options.selectedIndex].value;
-    const selectedRooms = roomsFilter.options[roomsFilter.options.selectedIndex].value;
-    const selectedGuests = guestsFilter.options[guestsFilter.options.selectedIndex].value;
+    const selectedType = typeFilter.value;
+    const selectedPrice = priceFilter.value;
+    const selectedRooms = roomsFilter.value;
+    const selectedGuests = guestsFilter.value;
     const isWifi = wifiFilter.checked;
     const isDishwasher = dishwasherFilter.checked;
     const isParking = parkingFilter.checked;
