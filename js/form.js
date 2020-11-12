@@ -166,7 +166,7 @@
     window.backend.submitForm(formData);
   };
 
-  adTitle.addEventListener(`input`, function () {
+  adTitle.addEventListener(`input`, () => {
     let invalidMessage = `Заголовок объявления должен содержать от
                               ${AdConsts.MIN_TITLE_LENGHT} до ${AdConsts.MAX_TITLE_LENGHT} символов.
                               \nВы ввели ${adTitle.value.length}.`;
@@ -185,20 +185,20 @@
 
   adPrice.addEventListener(`input`, checkPriceValidity);
 
-  adTimein.addEventListener(`change`, function (evt) {
+  adTimein.addEventListener(`change`, (evt) => {
     setCheckInOutTimes(evt);
   });
 
-  adTimeout.addEventListener(`change`, function (evt) {
+  adTimeout.addEventListener(`change`, (evt) => {
     setCheckInOutTimes(evt);
   });
 
-  adType.addEventListener(`change`, function () {
+  adType.addEventListener(`change`, (evt) => {
     setMinMaxPrice();
     checkPriceValidity();
   });
 
-  adRoomNumber.addEventListener(`change`, function () {
+  adRoomNumber.addEventListener(`change`, (evt) => {
     const anyEnabledIndex = 0;
     const adRoomNumberIndex = adRoomNumber.options.selectedIndex;
     adCapacity.options.selectedIndex = RoomsToCapacityIndexesCorrelation[adRoomNumberIndex].enabled[anyEnabledIndex];
