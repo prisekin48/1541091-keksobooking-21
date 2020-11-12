@@ -29,18 +29,19 @@
    *
    */
   const renderFeatures = (template, features) => {
-    let element = template.querySelector(`.popup__feature`).cloneNode();
-    template.innerHTML = ``;
-
     if (features.length > 0) {
       let fragment = document.createDocumentFragment();
 
       for (let feature of features) {
+        let element = template.querySelector(`.popup__feature`).cloneNode();
         element.classList.value = `popup__feature popup__feature--${feature}`;
         element.textContent = feature;
         fragment.appendChild(element);
       }
+      template.innerHTML = ``;
       template.appendChild(fragment);
+    } else {
+      template.innerHTML = ``;
     }
   };
 
