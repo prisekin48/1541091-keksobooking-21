@@ -3,11 +3,11 @@
 (() => {
 
   const AccomTypes = {
-      palace: `Дворец`,
-      flat: `Квартира`,
-      house: `Дом`,
-      bungalow: `Бунгало`
-    };
+    palace: `Дворец`,
+    flat: `Квартира`,
+    house: `Дом`,
+    bungalow: `Бунгало`
+  };
 
   /**
    * Inserts text data into an element if the data exists

@@ -24,7 +24,7 @@
    * @param  {object.HTML-node} pin Currently active pin
    */
   const setActivePin = (pin) => {
-    pin.classList.add('map__pin--active');
+    pin.classList.add(`map__pin--active`);
   };
 
   /**

@@ -20,14 +20,6 @@
     3: {disabled: [0, 1, 2], enabled: [3]}
   };
 
-  const InputsInitialState = {
-    AD_TYPE: 1,
-    AD_ROOM_NUMBER: 0,
-    AD_TIMEIN: 0,
-    AD_TIMEOUT: 0,
-    AD_CAPACITY: 2
-  };
-
   const form = document.querySelector(`.ad-form`);
   const allFieldsets = form.querySelectorAll(`fieldset`);
   const adTitle = form.querySelector(`#title`);
@@ -37,11 +29,6 @@
   const adTimeout = form.querySelector(`#timeout`);
   const adRoomNumber = form.querySelector(`#room_number`);
   const adCapacity = form.querySelector(`#capacity`);
-
-  const avatar = form.querySelector(`#avatar`);
-  const images = form.querySelector(`#images`);
-  const description = form.querySelector(`#description`);
-  const features = form.querySelectorAll(`.feature__checkbox`);
 
   /**
    * Shows red border if the given input is invalid
@@ -92,7 +79,6 @@
    */
   const setCapacity = () => {
     const adRoomNumberIndex = adRoomNumber.options.selectedIndex;
-    console.log(adRoomNumberIndex);
     for (let index of RoomsToCapacityIndexesCorrelation[adRoomNumberIndex].disabled) {
       adCapacity.options[index].disabled = true;
     }
@@ -172,12 +158,12 @@
     setCheckInOutTimes(evt);
   });
 
-  adType.addEventListener(`change`, (evt) => {
+  adType.addEventListener(`change`, () => {
     setMinMaxPrice();
     checkPriceValidity();
   });
 
-  adRoomNumber.addEventListener(`change`, (evt) => {
+  adRoomNumber.addEventListener(`change`, () => {
     const anyEnabledIndex = 0;
     const adRoomNumberIndex = adRoomNumber.options.selectedIndex;
     adCapacity.options.selectedIndex = RoomsToCapacityIndexesCorrelation[adRoomNumberIndex].enabled[anyEnabledIndex];
