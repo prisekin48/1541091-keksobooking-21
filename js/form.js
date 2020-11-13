@@ -1,5 +1,7 @@
 'use strict';
 
+const BASE_AVA_SRC = `img/muffin-grey.svg`;
+
 const AdConsts = {
   MIN_TITLE_LENGHT: 30,
   MAX_TITLE_LENGHT: 100,
@@ -92,6 +94,8 @@ const setCapacity = () => {
 const disableForm = () => {
   form.reset();
   // resetForm();
+  document.querySelector(`.ad-form__photo`).innerHTML = ``;
+  document.querySelector(`.ad-form-header__preview img`).src = BASE_AVA_SRC;
   form.classList.add(`ad-form--disabled`);
   for (const fieldset of allFieldsets) {
     fieldset.disabled = true;
