@@ -1,4 +1,4 @@
-`use strict`;
+'use strict';
 
 const FILE_TYPES = [`image/jpg`, `image/jpeg`, `image/png`];
 
@@ -21,8 +21,8 @@ const onAvaLoad = (result) => {
  */
 const onImageLoad = (result) => {
   let element = document.createElement(`img`);
-  element.style.width = `70px`
-  element.style.height = `70px`
+  element.style.width = `70px`;
+  element.style.height = `70px`;
   element.src = result;
   imagePreviewBlock.innerHTML = ``;
   imagePreviewBlock.append(element);
@@ -38,14 +38,14 @@ const onChooserChange = (chooser, onLoad) => {
   let matches = false;
   if (image) {
     matches = FILE_TYPES.some((it) => {
-    return image.type === it;
+      return image.type === it;
     });
   }
 
   if (matches) {
     const reader = new FileReader();
 
-    reader.addEventListener('load', () => {
+    reader.addEventListener(`load`, () => {
       onLoad(reader.result);
     });
 
@@ -53,10 +53,10 @@ const onChooserChange = (chooser, onLoad) => {
   }
 };
 
-avaChooser.addEventListener('change', () => {
+avaChooser.addEventListener(`change`, () => {
   onChooserChange(avaChooser, onAvaLoad);
 });
 
-imageChooser.addEventListener('change', () => {
+imageChooser.addEventListener(`change`, () => {
   onChooserChange(imageChooser, onImageLoad);
 });
