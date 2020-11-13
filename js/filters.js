@@ -10,13 +10,10 @@
     HIGH: 50001
   };
 
-  const Features = {
-    WIFI: `wifi`,
-    DISHWASHER: `dishwasher`,
-    PARKING: `parking`,
-    WASHER: `washer`,
-    ELEVATOR: `elevator`,
-    CONDITIONER: `conditioner`
+  const PriceSelectValues = {
+    LOW: `low`,
+    MID: `middle`,
+    HIGH: `high`
   };
 
   const filters = document.querySelector(`.map__filters`);
@@ -30,6 +27,7 @@
   const washerFilter = filters.querySelector(`#filter-washer`);
   const elevatorFilter = filters.querySelector(`#filter-elevator`);
   const conditionerFilter = filters.querySelector(`#filter-conditioner`);
+  const allFeatures = document.querySelectorAll(`.map__checkbox`);
 
   /**
    * Removes all pins and renders pins with filtered ads
@@ -54,97 +52,9 @@
       window.clearTimeout(window.lastTimeout);
     }
     window.lastTimeout = window.setTimeout(() => {
-      renderFilteredPins(filterAds());
+      renderFilteredPins(collectProperAds());
     }, DEBOUNCE_INTERVAL);
   };
-
-  /**
-   * Filters ads
-   * @return {array} Array of filtered ads
-   */
-  const filterAds = () => {
-    let ads = window.backend.ads;
-    const selectedType = typeFilter.value;
-    const selectedPrice = priceFilter.value;
-    const selectedRooms = roomsFilter.value;
-    const selectedGuests = guestsFilter.value;
-    const isWifi = wifiFilter.checked;
-    const isDishwasher = dishwasherFilter.checked;
-    const isParking = parkingFilter.checked;
-    const isWasher = washerFilter.checked;
-    const isElevator = elevatorFilter.checked;
-    const isConditioner = conditionerFilter.checked;
-
-    if (selectedType !== ANY_STRING) {
-      ads = ads.filter((ad) => {
-        return ad.offer.type === selectedType;
-      });
-    }
-
-    if (selectedPrice !== ANY_STRING) {
-      ads = ads.filter((ad) => {
-        if (selectedPrice === `low`) {
-          return ad.offer.price <= Prices.LOW;
-        }
-        if (selectedPrice === `high`) {
-          return ad.offer.price >= Prices.HIGH;
-        } else {
-          return (ad.offer.price > Prices.LOW && ad.offer.price < Prices.HIGH);
-        }
-      });
-    }
-
-    if (selectedRooms !== ANY_STRING) {
-      ads = ads.filter((ad) => {
-        return ad.offer.rooms === parseInt(selectedRooms, 10);
-      });
-    }
-
-    if (selectedGuests !== ANY_STRING) {
-      ads = ads.filter((ad) => {
-        return ad.offer.guests === parseInt(selectedGuests, 10);
-      });
-    }
-
-    if (isWifi) {
-      ads = ads.filter((ad) => {
-        return ad.offer.features.includes(Features.WIFI);
-      });
-    }
-
-    if (isDishwasher) {
-      ads = ads.filter((ad) => {
-        return ad.offer.features.includes(Features.DISHWASHER);
-      });
-    }
-
-    if (isParking) {
-      ads = ads.filter((ad) => {
-        return ad.offer.features.includes(Features.PARKING);
-      });
-    }
-
-    if (isWasher) {
-      ads = ads.filter((ad) => {
-        return ad.offer.features.includes(Features.WASHER);
-      });
-    }
-
-    if (isElevator) {
-      ads = ads.filter((ad) => {
-        return ad.offer.features.includes(Features.ELEVATOR);
-      });
-    }
-
-    if (isConditioner) {
-      ads = ads.filter((ad) => {
-        return ad.offer.features.includes(Features.CONDITIONER);
-      });
-    }
-
-    return ads.slice(null, window.ADS_COUNT);
-  };
-
 
   /**
    * Resets all the filters on initial state
@@ -160,6 +70,119 @@
     washerFilter.checked = false;
     elevatorFilter.checked = false;
     conditionerFilter.checked = false;
+  };
+
+  /**
+   * Checks if a given ad matches to the type filter
+   * @param  {object} ad An ad to be checked
+   * @return {Boolean}    Returns true if the ad matches the filter, false otherwise.
+   */
+  const checkMatchByType = (ad) => {
+    if (typeFilter.value === ANY_STRING) {
+      return true;
+    } else {
+      return ad.offer.type === typeFilter.value;
+    }
+  };
+
+  /**
+   * Checks if a given ad matches to the price filter
+   * @param  {object} ad An ad to be checked
+   * @return {Boolean}    Returns true if the ad matches the filter, false otherwise.
+   */
+  const checkMatchByPrice = (ad) => {
+    switch (priceFilter.value) {
+      case ANY_STRING:
+        return true;
+      case PriceSelectValues.LOW:
+        return ad.offer.price <= Prices.LOW;
+      case PriceSelectValues.HIGH:
+        return ad.offer.price >= Prices.HIGH;
+      case PriceSelectValues.MID:
+        return (ad.offer.price > Prices.LOW && ad.offer.price < Prices.HIGH);
+    }
+  };
+
+  /**
+   * Checks if a given ad matches to the rooms filter
+   * @param  {object} ad An ad to be checked
+   * @return {Boolean}    Returns true if the ad matches the filter, false otherwise.
+   */
+  const checkMatchByRooms = (ad) => {
+    if (roomsFilter.value === ANY_STRING) {
+      return true;
+    } else {
+      return ad.offer.rooms === parseInt(roomsFilter.value, 10);
+    }
+  };
+
+  /**
+   * Checks if a given ad matches to the guests filter
+   * @param  {object} ad An ad to be checked
+   * @return {Boolean}    Returns true if the ad matches the filter, false otherwise.
+   */
+  const checkMatchByGuests = (ad) => {
+    if (guestsFilter.value === ANY_STRING) {
+      return true;
+    } else {
+      return ad.offer.guests === parseInt(guestsFilter.value, 10);
+    }
+  };
+
+  /**
+   * Checks if a given ad matches to the features filter
+   * @param  {object} ad An ad to be checked
+   * @return {Boolean}    Returns true if the ad matches the filter, false otherwise.
+   */
+  const checkMatchByFeatures = (ad) => {
+    let selectedFeatures = [];
+
+    allFeatures.forEach((feature) => {
+      if (feature.checked) {
+        selectedFeatures.push(feature.value);
+      }
+    });
+
+    for (let feature of selectedFeatures) {
+      if (ad.offer.features.includes(feature) === false) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  /**
+   * Checks if a given ad matches to all the filters
+   * @param  {object} ad A given ad
+   * @return {Boolean}    Returns true if the ad matches all the selected filters, false otherwise.
+   */
+  const checkAdFiltersMatching = (ad) => {
+    return (checkMatchByType(ad) &&
+            checkMatchByPrice(ad) &&
+            checkMatchByRooms(ad) &&
+            checkMatchByGuests(ad) &&
+            checkMatchByFeatures(ad));
+  };
+
+  /**
+   * Collects proper ads accordong to selected filters
+   * @return {Array} Array with filtered ads (not more than window.ADS_COUNT)
+   */
+  const collectProperAds = () => {
+    const ads = window.backend.ads;
+
+    let filteredAds = [];
+
+    for (let i = 0; i < ads.length; i++) {
+      if (checkAdFiltersMatching(ads[i])) {
+        filteredAds.push(ads[i]);
+        if (filteredAds.length === window.ADS_COUNT) {
+          break;
+        }
+      }
+    }
+
+    return (filteredAds.length <= window.ADS_COUNT) ? filteredAds : filteredAds.slice(null, window.ADS_COUNT);
   };
 
   typeFilter.addEventListener(`change`, onAnyFilterChange);
