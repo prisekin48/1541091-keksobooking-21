@@ -1,28 +1,62 @@
 `use strict`;
 
-(() => {
-  var FILE_TYPES = [`image/gif`, `image/jpg`, `image/jpeg`, `image/png`];
+const FILE_TYPES = [`image/jpg`, `image/jpeg`, `image/png`];
 
-  var avaChooser = document.querySelector(`#avatar`);
-  var avaPreview = document.querySelector(`.ad-form-header__preview img`);
-  var imageChooser = document.querySelector(`#images`);
-  var imagePreviewBlock = document.querySelector(`.ad-form__photo`);
+const avaChooser = document.querySelector(`#avatar`);
+const avaPreview = document.querySelector(`.ad-form-header__preview img`);
+const imageChooser = document.querySelector(`#images`);
+const imagePreviewBlock = document.querySelector(`.ad-form__photo`);
 
-  avaChooser.addEventListener('change', () => {
-    var ava = avaChooser.files[0];
-    var matches = FILE_TYPES.some((it) => {
-     return ava.type === it;
+/**
+ * Invokes when avatar image is loaded
+ * @param  {String} result FileReader result
+ */
+const onAvaLoad = (result) => {
+  avaPreview.src = result;
+};
+
+/**
+ * Invokes when custom ad image is loaded
+ * @param  {String} result FileReader result
+ */
+const onImageLoad = (result) => {
+  let element = document.createElement(`img`);
+  element.style.width = `70px`
+  element.style.height = `70px`
+  element.src = result;
+  imagePreviewBlock.innerHTML = ``;
+  imagePreviewBlock.append(element);
+};
+
+/**
+ * Invokes when a file is choosen
+ * @param  {HTML-node} chooser File input
+ * @param  {Function} onLoad  Invokes when the file is loaded
+ */
+const onChooserChange = (chooser, onLoad) => {
+  const image = chooser.files[0];
+  let matches = false;
+  if (image) {
+    matches = FILE_TYPES.some((it) => {
+    return image.type === it;
+    });
+  }
+
+  if (matches) {
+    const reader = new FileReader();
+
+    reader.addEventListener('load', () => {
+      onLoad(reader.result);
     });
 
-    if (matches) {
-      var reader = new FileReader();
+    reader.readAsDataURL(image);
+  }
+};
 
-      reader.addEventListener('load', () => {
-        avaPreview.src = reader.result;
-      });
+avaChooser.addEventListener('change', () => {
+  onChooserChange(avaChooser, onAvaLoad);
+});
 
-      reader.readAsDataURL(ava);
-    }
-  });
-
-})();
+imageChooser.addEventListener('change', () => {
+  onChooserChange(imageChooser, onImageLoad);
+});
