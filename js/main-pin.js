@@ -1,5 +1,7 @@
 'use strict';
 
+const MAIN_MOUSE_BUTTON_CODE = 0;
+
 const mainPin = document.querySelector(`.map__pin--main`);
 const adAddress = document.querySelector(`#address`);
 
@@ -95,7 +97,7 @@ let cursorFromPinShifts = {};
  * @param  {object} evt - transfered MouseEvent from the listener
  */
 const onMainPinMouseDown = (evt) => {
-  if (evt.button === 0) {
+  if (evt.button === MAIN_MOUSE_BUTTON_CODE) {
 
     currentCursorCoords.x = evt.clientX;
     currentCursorCoords.y = evt.clientY;

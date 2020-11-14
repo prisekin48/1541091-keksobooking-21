@@ -15,6 +15,7 @@ const PriceSelectValues = {
   HIGH: `high`
 };
 
+const allFeatures = document.querySelectorAll(`.map__checkbox`);
 const filters = document.querySelector(`.map__filters`);
 const typeFilter = filters.querySelector(`#housing-type`);
 const priceFilter = filters.querySelector(`#housing-price`);
@@ -26,7 +27,6 @@ const parkingFilter = filters.querySelector(`#filter-parking`);
 const washerFilter = filters.querySelector(`#filter-washer`);
 const elevatorFilter = filters.querySelector(`#filter-elevator`);
 const conditionerFilter = filters.querySelector(`#filter-conditioner`);
-const allFeatures = document.querySelectorAll(`.map__checkbox`);
 
 /**
  * Removes all pins and renders pins with filtered ads
@@ -79,9 +79,8 @@ const resetFilters = () => {
 const checkMatchByType = (ad) => {
   if (typeFilter.value === ANY_STRING) {
     return true;
-  } else {
-    return ad.offer.type === typeFilter.value;
   }
+  return ad.offer.type === typeFilter.value;
 };
 
 /**
@@ -112,9 +111,9 @@ const checkMatchByPrice = (ad) => {
 const checkMatchByRooms = (ad) => {
   if (roomsFilter.value === ANY_STRING) {
     return true;
-  } else {
-    return ad.offer.rooms === parseInt(roomsFilter.value, 10);
   }
+  return ad.offer.rooms === parseInt(roomsFilter.value, 10);
+
 };
 
 /**
@@ -125,9 +124,8 @@ const checkMatchByRooms = (ad) => {
 const checkMatchByGuests = (ad) => {
   if (guestsFilter.value === ANY_STRING) {
     return true;
-  } else {
-    return ad.offer.guests === parseInt(guestsFilter.value, 10);
   }
+  return ad.offer.guests === parseInt(guestsFilter.value, 10);
 };
 
 /**
@@ -149,6 +147,7 @@ const checkMatchByFeatures = (ad) => {
       return false;
     }
   }
+
   return true;
 };
 
@@ -183,7 +182,7 @@ const collectProperAds = () => {
     }
   }
 
-  return (filteredAds.length <= window.ADS_COUNT) ? filteredAds : filteredAds.slice(null, window.ADS_COUNT);
+  return filteredAds;
 };
 
 typeFilter.addEventListener(`change`, onAnyFilterChange);

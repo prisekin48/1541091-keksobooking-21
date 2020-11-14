@@ -33,5 +33,8 @@ window.main = {
   deactivate
 };
 
-formReset.addEventListener(`click`, window.main.deactivate);
+formReset.addEventListener(`click`, () => {
+  window.main.deactivate();
+});
+
 deactivate();

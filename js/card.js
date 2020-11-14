@@ -1,5 +1,8 @@
 'use strict';
 
+const cardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
+const mapFiltersContainer = document.querySelector(`.map__filters-container`);
+
 const AccomTypes = {
   palace: `Дворец`,
   flat: `Квартира`,
@@ -27,19 +30,20 @@ const insertAndCheckTextData = (text, target) => {
  *
  */
 const renderFeatures = (template, features) => {
+  const featureTemplate = template.querySelector(`.popup__feature`);
+  template.innerHTML = ``;
+
   if (features.length > 0) {
     let fragment = document.createDocumentFragment();
 
     for (let feature of features) {
-      let element = template.querySelector(`.popup__feature`).cloneNode();
+      let element = featureTemplate.cloneNode();
       element.classList.value = `popup__feature popup__feature--${feature}`;
       element.textContent = feature;
       fragment.appendChild(element);
     }
-    template.innerHTML = ``;
+
     template.appendChild(fragment);
-  } else {
-    template.innerHTML = ``;
   }
 };
 
@@ -49,18 +53,19 @@ const renderFeatures = (template, features) => {
  * @param {array} photos - Array of links
  */
 const renderPhotos = (template, photos) => {
+  const photoTemplate = template.querySelector(`.popup__photo`);
+  template.innerHTML = ``;
+
   if (photos.length > 0) {
     let fragment = document.createDocumentFragment();
 
     for (let photo of photos) {
-      let element = template.querySelector(`.popup__photo`).cloneNode();
+      let element = photoTemplate.cloneNode();
       element.src = photo;
       fragment.appendChild(element);
     }
-    template.innerHTML = ``;
+
     template.appendChild(fragment);
-  } else {
-    template.innerHTML = ``;
   }
 };
 
@@ -91,7 +96,7 @@ const removeCurrentCard = () => {
  *  @param {object} ad - An object with mocks data needed for cardElement filling
  */
 const renderCard = (ad) => {
-  const cardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
+
   const cardElement = cardTemplate.cloneNode(true);
   const closeButton = cardElement.querySelector(`.popup__close`);
 
@@ -118,7 +123,7 @@ const renderCard = (ad) => {
 
   document.addEventListener(`keydown`, onDocumentEscPress);
 
-  document.querySelector(`.map__filters-container`).before(cardElement);
+  mapFiltersContainer.before(cardElement);
 };
 
 window.card = {

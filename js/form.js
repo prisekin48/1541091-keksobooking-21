@@ -150,7 +150,9 @@ adTitle.addEventListener(`input`, () => {
   adTitle.reportValidity();
 });
 
-adPrice.addEventListener(`input`, checkPriceValidity);
+adPrice.addEventListener(`input`, () => {
+  checkPriceValidity();
+});
 
 adTimein.addEventListener(`change`, (evt) => {
   setCheckInOutTimes(evt);
