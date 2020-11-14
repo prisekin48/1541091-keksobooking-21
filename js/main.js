@@ -28,7 +28,7 @@ const deactivate = () => {
 };
 
 window.main = {
-  isActive: isActive,
+  isActive,
   activate,
   deactivate
 };

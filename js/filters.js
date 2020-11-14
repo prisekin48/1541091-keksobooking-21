@@ -99,6 +99,8 @@ const checkMatchByPrice = (ad) => {
       return ad.offer.price >= Prices.HIGH;
     case PriceSelectValues.MID:
       return (ad.offer.price > Prices.LOW && ad.offer.price < Prices.HIGH);
+    default:
+      return false;
   }
 };
 
