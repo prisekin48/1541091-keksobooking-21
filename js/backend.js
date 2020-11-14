@@ -18,6 +18,7 @@ const RequestStatuses = {
 };
 
 const map = document.querySelector(`.map`);
+const submitButton = document.querySelector(`.ad-form__submit`);
 
 /**
  * Shows message on the screen
@@ -174,6 +175,8 @@ const afterSubmitMessage = (isSubmitOk) => {
     });
   }
   document.querySelector(`main`).appendChild(submitMessage);
+
+  submitButton.blur();
 
   document.addEventListener(`keydown`, onDocumentEscPress);
   document.addEventListener(`click`, onDocumentClick);
