@@ -37,9 +37,9 @@ const getRandomNumber = (min, max) => {
 };
 
 window.util = {
-  getRandomElementFromArray: getRandomElementFromArray,
-  getRandomArray: getRandomArray,
-  getRandomNumber: getRandomNumber
+  getRandomElementFromArray,
+  getRandomArray,
+  getRandomNumber
 };
 
 

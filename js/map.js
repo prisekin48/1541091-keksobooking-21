@@ -57,6 +57,6 @@ const switchState = (flag) => {
 };
 
 window.map = {
-  switchState: switchState,
-  renderPins: renderPins
+  switchState,
+  renderPins
 };

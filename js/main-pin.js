@@ -128,7 +128,7 @@ const addMainPinListeners = () => {
 
 window.mainPin = {
   reset: resetMainPin,
-  setAddress: setAddress,
-  WorkingArea: WorkingArea,
-  addMainPinListeners: addMainPinListeners
+  setAddress,
+  WorkingArea,
+  addMainPinListeners
 };

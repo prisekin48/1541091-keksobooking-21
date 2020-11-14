@@ -29,8 +29,8 @@ const deactivate = () => {
 
 window.main = {
   isActive: isActive,
-  activate: activate,
-  deactivate: deactivate
+  activate,
+  deactivate
 };
 
 formReset.addEventListener(`click`, window.main.deactivate);
