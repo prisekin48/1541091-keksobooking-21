@@ -93,13 +93,12 @@ const setCapacity = () => {
  */
 const disableForm = () => {
   form.reset();
-  // resetForm();
   document.querySelector(`.ad-form__photo`).innerHTML = ``;
   document.querySelector(`.ad-form-header__preview img`).src = BASE_AVA_SRC;
   form.classList.add(`ad-form--disabled`);
-  for (const fieldset of allFieldsets) {
-    fieldset.disabled = true;
-  }
+  // for (const fieldset of allFieldsets) {
+  //   fieldset.disabled = true;
+  // }
   setMinMaxPrice();
 };
 
@@ -177,6 +176,7 @@ adRoomNumber.addEventListener(`change`, () => {
 form.addEventListener(`submit`, onFormSubmit);
 
 setMinMaxPrice();
+setCapacity();
 
 window.form = {
   enable: enableForm,
