@@ -2,7 +2,6 @@
 
 const ANY_STRING = `any`;
 const DEBOUNCE_INTERVAL = 500;
-const INITIAL_FILTERS_INDEX = 0;
 
 const Prices = {
   LOW: 9999,
